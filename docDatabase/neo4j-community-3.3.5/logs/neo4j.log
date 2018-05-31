@@ -1,0 +1,87 @@
+
+nohup: input ignorato
+2018-05-24 09:11:20.460+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-05-24 09:11:20.599+0000 INFO  Starting...
+2018-05-24 09:11:20.830+0000 ERROR Failed to start Neo4j: Starting Neo4j failed: Component 'org.neo4j.server.database.LifecycleManagingDatabase@aecb35a' was successfully initialized, but failed to start. Please see the attached cause exception "/home/paoloc/go/src/github.com/tirocinio/docDatabase/neo4j-community-3.3.5/logs/debug.log (Permesso negato)". Starting Neo4j failed: Component 'org.neo4j.server.database.LifecycleManagingDatabase@aecb35a' was successfully initialized, but failed to start. Please see the attached cause exception "/home/paoloc/go/src/github.com/tirocinio/docDatabase/neo4j-community-3.3.5/logs/debug.log (Permesso negato)".
+org.neo4j.server.ServerStartupException: Starting Neo4j failed: Component 'org.neo4j.server.database.LifecycleManagingDatabase@aecb35a' was successfully initialized, but failed to start. Please see the attached cause exception "/home/paoloc/go/src/github.com/tirocinio/docDatabase/neo4j-community-3.3.5/logs/debug.log (Permesso negato)".
+	at org.neo4j.server.exception.ServerStartupErrors.translateToServerStartupError(ServerStartupErrors.java:68)
+	at org.neo4j.server.AbstractNeoServer.start(AbstractNeoServer.java:220)
+	at org.neo4j.server.ServerBootstrapper.start(ServerBootstrapper.java:111)
+	at org.neo4j.server.ServerBootstrapper.start(ServerBootstrapper.java:79)
+	at org.neo4j.server.CommunityEntryPoint.main(CommunityEntryPoint.java:32)
+Caused by: org.neo4j.kernel.lifecycle.LifecycleException: Component 'org.neo4j.server.database.LifecycleManagingDatabase@aecb35a' was successfully initialized, but failed to start. Please see the attached cause exception "/home/paoloc/go/src/github.com/tirocinio/docDatabase/neo4j-community-3.3.5/logs/debug.log (Permesso negato)".
+	at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.start(LifeSupport.java:466)
+	at org.neo4j.kernel.lifecycle.LifeSupport.start(LifeSupport.java:107)
+	at org.neo4j.server.AbstractNeoServer.start(AbstractNeoServer.java:212)
+	... 3 more
+Caused by: java.lang.RuntimeException: java.io.FileNotFoundException: /home/paoloc/go/src/github.com/tirocinio/docDatabase/neo4j-community-3.3.5/logs/debug.log (Permesso negato)
+	at org.neo4j.kernel.impl.factory.PlatformModule.createLogService(PlatformModule.java:301)
+	at org.neo4j.kernel.impl.factory.PlatformModule.<init>(PlatformModule.java:161)
+	at org.neo4j.kernel.impl.factory.GraphDatabaseFacadeFactory.createPlatform(GraphDatabaseFacadeFactory.java:244)
+	at org.neo4j.kernel.impl.factory.GraphDatabaseFacadeFactory.initFacade(GraphDatabaseFacadeFactory.java:158)
+	at org.neo4j.kernel.impl.factory.GraphDatabaseFacadeFactory.newFacade(GraphDatabaseFacadeFactory.java:126)
+	at org.neo4j.server.CommunityNeoServer.lambda$static$0(CommunityNeoServer.java:58)
+	at org.neo4j.server.database.LifecycleManagingDatabase.start(LifecycleManagingDatabase.java:88)
+	at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.start(LifeSupport.java:445)
+	... 5 more
+Caused by: java.io.FileNotFoundException: /home/paoloc/go/src/github.com/tirocinio/docDatabase/neo4j-community-3.3.5/logs/debug.log (Permesso negato)
+	at java.io.FileOutputStream.open0(Native Method)
+	at java.io.FileOutputStream.open(FileOutputStream.java:270)
+	at java.io.FileOutputStream.<init>(FileOutputStream.java:213)
+	at org.neo4j.io.fs.DefaultFileSystemAbstraction.openAsOutputStream(DefaultFileSystemAbstraction.java:76)
+	at org.neo4j.io.file.Files.createOrOpenAsOuputStream(Files.java:51)
+	at org.neo4j.logging.RotatingFileOutputStreamSupplier.openOutputFile(RotatingFileOutputStreamSupplier.java:336)
+	at org.neo4j.logging.RotatingFileOutputStreamSupplier.<init>(RotatingFileOutputStreamSupplier.java:135)
+	at org.neo4j.logging.RotatingFileOutputStreamSupplier.<init>(RotatingFileOutputStreamSupplier.java:119)
+	at org.neo4j.kernel.impl.logging.StoreLogService.<init>(StoreLogService.java:180)
+	at org.neo4j.kernel.impl.logging.StoreLogService.<init>(StoreLogService.java:44)
+	at org.neo4j.kernel.impl.logging.StoreLogService$Builder.build(StoreLogService.java:124)
+	at org.neo4j.kernel.impl.factory.PlatformModule.createLogService(PlatformModule.java:297)
+	... 12 more
+2018-05-24 09:11:20.853+0000 INFO  Neo4j Server shutdown initiated by request
+nohup: input ignorato
+2018-05-24 09:20:26.743+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-05-24 09:20:26.916+0000 INFO  Starting...
+2018-05-24 09:20:27.150+0000 ERROR Failed to start Neo4j: Starting Neo4j failed: Component 'org.neo4j.server.database.LifecycleManagingDatabase@aecb35a' was successfully initialized, but failed to start. Please see the attached cause exception "/home/paoloc/go/src/github.com/tirocinio/docDatabase/neo4j-community-3.3.5/logs/debug.log (Permesso negato)". Starting Neo4j failed: Component 'org.neo4j.server.database.LifecycleManagingDatabase@aecb35a' was successfully initialized, but failed to start. Please see the attached cause exception "/home/paoloc/go/src/github.com/tirocinio/docDatabase/neo4j-community-3.3.5/logs/debug.log (Permesso negato)".
+org.neo4j.server.ServerStartupException: Starting Neo4j failed: Component 'org.neo4j.server.database.LifecycleManagingDatabase@aecb35a' was successfully initialized, but failed to start. Please see the attached cause exception "/home/paoloc/go/src/github.com/tirocinio/docDatabase/neo4j-community-3.3.5/logs/debug.log (Permesso negato)".
+	at org.neo4j.server.exception.ServerStartupErrors.translateToServerStartupError(ServerStartupErrors.java:68)
+	at org.neo4j.server.AbstractNeoServer.start(AbstractNeoServer.java:220)
+	at org.neo4j.server.ServerBootstrapper.start(ServerBootstrapper.java:111)
+	at org.neo4j.server.ServerBootstrapper.start(ServerBootstrapper.java:79)
+	at org.neo4j.server.CommunityEntryPoint.main(CommunityEntryPoint.java:32)
+Caused by: org.neo4j.kernel.lifecycle.LifecycleException: Component 'org.neo4j.server.database.LifecycleManagingDatabase@aecb35a' was successfully initialized, but failed to start. Please see the attached cause exception "/home/paoloc/go/src/github.com/tirocinio/docDatabase/neo4j-community-3.3.5/logs/debug.log (Permesso negato)".
+	at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.start(LifeSupport.java:466)
+	at org.neo4j.kernel.lifecycle.LifeSupport.start(LifeSupport.java:107)
+	at org.neo4j.server.AbstractNeoServer.start(AbstractNeoServer.java:212)
+	... 3 more
+Caused by: java.lang.RuntimeException: java.io.FileNotFoundException: /home/paoloc/go/src/github.com/tirocinio/docDatabase/neo4j-community-3.3.5/logs/debug.log (Permesso negato)
+	at org.neo4j.kernel.impl.factory.PlatformModule.createLogService(PlatformModule.java:301)
+	at org.neo4j.kernel.impl.factory.PlatformModule.<init>(PlatformModule.java:161)
+	at org.neo4j.kernel.impl.factory.GraphDatabaseFacadeFactory.createPlatform(GraphDatabaseFacadeFactory.java:244)
+	at org.neo4j.kernel.impl.factory.GraphDatabaseFacadeFactory.initFacade(GraphDatabaseFacadeFactory.java:158)
+	at org.neo4j.kernel.impl.factory.GraphDatabaseFacadeFactory.newFacade(GraphDatabaseFacadeFactory.java:126)
+	at org.neo4j.server.CommunityNeoServer.lambda$static$0(CommunityNeoServer.java:58)
+	at org.neo4j.server.database.LifecycleManagingDatabase.start(LifecycleManagingDatabase.java:88)
+	at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.start(LifeSupport.java:445)
+	... 5 more
+Caused by: java.io.FileNotFoundException: /home/paoloc/go/src/github.com/tirocinio/docDatabase/neo4j-community-3.3.5/logs/debug.log (Permesso negato)
+	at java.io.FileOutputStream.open0(Native Method)
+	at java.io.FileOutputStream.open(FileOutputStream.java:270)
+	at java.io.FileOutputStream.<init>(FileOutputStream.java:213)
+	at org.neo4j.io.fs.DefaultFileSystemAbstraction.openAsOutputStream(DefaultFileSystemAbstraction.java:76)
+	at org.neo4j.io.file.Files.createOrOpenAsOuputStream(Files.java:51)
+	at org.neo4j.logging.RotatingFileOutputStreamSupplier.openOutputFile(RotatingFileOutputStreamSupplier.java:336)
+	at org.neo4j.logging.RotatingFileOutputStreamSupplier.<init>(RotatingFileOutputStreamSupplier.java:135)
+	at org.neo4j.logging.RotatingFileOutputStreamSupplier.<init>(RotatingFileOutputStreamSupplier.java:119)
+	at org.neo4j.kernel.impl.logging.StoreLogService.<init>(StoreLogService.java:180)
+	at org.neo4j.kernel.impl.logging.StoreLogService.<init>(StoreLogService.java:44)
+	at org.neo4j.kernel.impl.logging.StoreLogService$Builder.build(StoreLogService.java:124)
+	at org.neo4j.kernel.impl.factory.PlatformModule.createLogService(PlatformModule.java:297)
+	... 12 more
+2018-05-24 09:20:27.193+0000 INFO  Neo4j Server shutdown initiated by request
+nohup: input ignorato
+2018-05-24 09:25:47.524+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-05-24 09:25:47.646+0000 INFO  Starting...
+2018-05-24 09:25:50.799+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-05-24 09:26:03.213+0000 INFO  Started.
+2018-05-24 09:26:07.987+0000 INFO  Remote interface available at http://localhost:7474/
