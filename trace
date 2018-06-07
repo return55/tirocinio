@@ -1,3 +1,0 @@
-Can't execute `./docDatabase/neo4j-community-3.3.5/bin/neo4j start': No such file or directory
-failed to initialize process 13328: No such file or directory
-couldn't open program './docDatabase/neo4j-community-3.3.5/bin/neo4j start': No such file or directory

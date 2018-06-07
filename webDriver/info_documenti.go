@@ -2,21 +2,24 @@ package webDriver
 
 import (
 	"fmt"
-	"github.com/tebeka/selenium"
-	"github.com/tirocinio/structures"
 	"os"
 	"regexp"
 	"strconv"
 	"strings"
 	"encoding/gob"
+
+	"github.com/tirocinio/structures"
+		
+	"github.com/tebeka/selenium"
 )
 
 const (
 	seleniumPath    = "webDriver/selenium-server-standalone-3.11.0.jar"
-	geckoDriverPath = "webDriver/geckodriver-v0.20.1-linux64/geckodriver"
+	geckoDriverPath = "webDriver/geckodriver-v0.20.0-linux64/geckodriver"
 	port            = 8080
 )
 
+//Restituisco service solo per potrelo chiudere in main.go, non lo uso mai
 func StartSelenium() (*selenium.Service, selenium.WebDriver) {
 	opts := []selenium.ServiceOption{
 		selenium.StartFrameBuffer(),           // Start an X frame buffer for the browser to run in.
@@ -25,16 +28,16 @@ func StartSelenium() (*selenium.Service, selenium.WebDriver) {
 	}
 
 	service, err := selenium.NewSeleniumService(seleniumPath, port, opts...)
-
 	if err != nil {
 		panic(err)
 	}
 
-	selenium.SetDebug(false)
+	selenium.SetDebug(true)
 
 	// Connect to the WebDriver instance running locally.
 	caps := selenium.Capabilities{"browserName": "firefox"}
 	wd, err := selenium.NewRemote(caps, fmt.Sprintf("http://localhost:%d/wd/hub", port))
+
 	if err != nil {
 		panic(err)
 	}
@@ -42,8 +45,74 @@ func StartSelenium() (*selenium.Service, selenium.WebDriver) {
 	return service, wd
 }
 
-func GetInitialDocument(service *selenium.Service, wd selenium.WebDriver, startURL string) structures.Document {
-	if err := wd.Get(startURL); err != nil {
+//Data un pagina (impostata dal WebDriver) prendo un certo numero di documenti dalla pagina
+//partendo dal primo in alto.
+//Se il numero (numDocs) e' maggiore del numero di documenti nella pagina (tipicamente 10),
+//mi limito a restituire i documenti presenti nella pagina e la loro quantita'.
+func GetDocumentsFromPage(wd selenium.WebDriver, numDocs uint64) ([]structures.Document, uint16) {
+	//raccolgo le informazioni	
+	urls, err := wd.FindElements(selenium.ByXPATH, "//div/h3/a")
+	if err != nil {
+		panic(err)
+	}
+
+	authors, err := wd.FindElements(selenium.ByXPATH, "//div[@class='gs_a']")
+	if err != nil {
+		panic(err)
+	}
+
+	other, err := wd.FindElements(selenium.ByXPATH, "//div[@class='gs_fl']/a")
+	if err != nil {
+		panic("sto cercando i link di: citato da + related + versioni")
+	}
+
+	//imposto il valore del numero di documenti nella pagina in base a quanti 
+	//url di documenti ho letto
+	docInThePage := uint64(len(urls))
+	//numero di documenti che effettivamente leggo: numDocs = min(docInThePage, numDocs)
+	if docInThePage < numDocs {
+		numDocs = docInThePage
+	}
+	
+	documents := make([]structures.Document, numDocs)
+	var text string
+	var docIndex, otherIndex uint64
+	
+	for docIndex, otherIndex = 0, 0; docIndex < numDocs; docIndex, otherIndex = docIndex+1, otherIndex+1 {
+		fmt.Println(docIndex, "------", otherIndex)
+		documents[docIndex].Url, _ = urls[docIndex].GetAttribute("href")
+
+		text, _ = authors[docIndex].Text()
+		leftSide := strings.Split(text, " -")[0]
+		//!!!il carattere '…' che segue gli autori corrisponde a "\u2026" in utf-8!!!!
+		leftSide = strings.Replace(leftSide, "\u2026", "", -1)
+		documents[docIndex].Authors = strings.Split(leftSide, ", ")
+
+		//scorro other, mi fermo quando trovo un match con: "Citato da", cosi' so che sono sull'elemento giusto
+		for ; ; otherIndex++ {
+			text, err = other[otherIndex].Text()
+			if err!=nil {
+				panic(err)
+			}
+			if t, _ := regexp.MatchString("Citato da.*", text); t {
+				words := strings.Split(text, " ")
+				if numCitedBy, err := strconv.ParseUint(words[2], 10, 16); err != nil {
+					panic(err)
+				} else {
+					documents[docIndex].NumCitedBy = uint16(numCitedBy)
+				}
+				linkCitedBy, _ := other[otherIndex].GetAttribute("href")
+				documents[docIndex].LinkCitedBy = structures.URLScholar + linkCitedBy
+				break
+			}
+		}
+	}
+	return documents, uint16(docIndex)
+}
+
+//Restituisce il documento da cui inizia la ricerca
+func GetInitialDocument(wd selenium.WebDriver) structures.Document {
+	if err := wd.Get(structures.URLScholar); err != nil {
 		panic(err)
 	}
 	textBox, err := wd.FindElement(selenium.ByID, "gs_hdr_tsi")
@@ -60,115 +129,58 @@ func GetInitialDocument(service *selenium.Service, wd selenium.WebDriver, startU
 	if err := searchButton.Click(); err != nil {
 		panic(err)
 	}
-	//---------------------------------cerco le info sul documento-------------------------------------------
-	var initialDoc structures.Document
-	var text string
-
-	urls, err := wd.FindElements(selenium.ByXPATH, "//div/h3/a")
-	if err != nil {
-		panic(err)
+	//prendo il primo documento della pagina
+	docs, numDocs := GetDocumentsFromPage(wd, 1)
+	if numDocs > 1 {
+		panic(fmt.Sprintf("GetInitialDocument - GetDocumentsFromPage\nHa resituito piu' di un documento"))
 	}
-	initialDoc.Url, _ = urls[0].GetAttribute("href")
-
-	authors, err := wd.FindElements(selenium.ByXPATH, "//div[@class='gs_a']")
-	if err != nil {
-		panic(err)
-	}
-	//estrai dalla stringa authors i nomi degli autori (non imprta se ci sono tutti)
-	//esempio di authors[0] : "H Balakrishnan, VN Padmanabhan… - … ACM transactions on …, 1997 - ieeexplore.ieee.org"
-	text, _ = authors[0].Text()
-	leftSide := strings.Split(text, " -")[0]
-	//!!!il carattere ... che segue gli autori corrisponde a â in utf-8!!!!
-	leftSide = strings.Replace(leftSide, "\u2026", "", -1)
-	initialDoc.Authors = strings.Split(leftSide, ", ")
-
-	//altro = citato da + related + versioni
-	other, err := wd.FindElements(selenium.ByXPATH, "//div[@class='gs_fl']/a")
-	if err != nil {
-		panic("sto cercando i link di: citato da + related + versioni")
-	}
-
-	text, _ = other[2].Text()
-	words := strings.Split(text, " ")
-	if numCitedBy, err := strconv.ParseUint(words[2], 10, 16); err != nil {
-		panic(err)
-	} else {
-		initialDoc.NumCitedBy = uint16(numCitedBy)
-	}
-
-	linkCitedBy, _ := other[2].GetAttribute("href")
-	initialDoc.LinkCitedBy = structures.URLScholar + linkCitedBy
-
-	return initialDoc
+	return docs[0]
 }
 
-//--------------------------------------------------------------------------------------------------
-func GetCiteDocument(service *selenium.Service, wd selenium.WebDriver, initialDoc structures.Document) []structures.Document {
+func GetFirstDocumentOfPage(wd selenium.WebDriver, url string) structures.Document{
+	if err := wd.Get(url); err != nil {
+		panic(err)
+	}
+	//prendo il primo documento della pagina
+	docs, numDocs := GetDocumentsFromPage(wd, 1)
+	if numDocs > 1 {
+		panic(fmt.Sprintf("GetFirstDocumentOfPage - GetDocumentsFromPage\nHa resituito piu' di un documento\n"))
+	}
+	return docs[0]
+}
+
+func GetCiteDocument(wd selenium.WebDriver, initialDoc structures.Document, numDoc uint64) ([]structures.Document, uint64) {
 	if err := wd.Get(initialDoc.LinkCitedBy); err != nil {
 		panic(err)
-	} /*--------------------non mi serve--------------
-	textBox, err := wd.FindElement(selenium.ByID, "gs_hdr_tsi")
-	if err != nil {
-		panic(err)
 	}
-	if err := textBox.SendKeys(`TCP performance`); err != nil{
-		panic(err)
-	}
-	searchButton, err:= wd.FindElement(selenium.ByID, "gs_hdr_tsb")
-	if err != nil{
-		panic(err)
-	}
-	if err:=searchButton.Click(); err!=nil {
-		panic(err)
-	}*/
-	//---------------------------------cerco le info sul documento-------------------------------------------
-	citeInitialDoc := make([]structures.Document, 10 /*initialDoc.NumCitedBy*/)
-	var text string
-
-	urls, err := wd.FindElements(selenium.ByXPATH, "//div/h3/a")
-	if err != nil {
-		panic(err)
-	}
-
-	authors, err := wd.FindElements(selenium.ByXPATH, "//div[@class='gs_a']")
-	if err != nil {
-		panic(err)
-	}
-
-	other, err := wd.FindElements(selenium.ByXPATH, "//div[@class='gs_fl']/a")
-	if err != nil {
-		panic("sto cercando i link di: citato da + related + versioni")
-	}
-	fmt.Println(initialDoc.NumCitedBy)
-	var docIndex, otherIndex uint16
-	for docIndex, otherIndex = 0, 0; docIndex < 10; /*initialDoc.NumCitedBy*/ docIndex, otherIndex = docIndex+1, otherIndex+1 {
-		fmt.Println(docIndex, "------", otherIndex)
-		citeInitialDoc[docIndex].Url, _ = urls[docIndex].GetAttribute("href")
-
-		text, _ = authors[docIndex].Text()
-		leftSide := strings.Split(text, " -")[0]
-		//!!!il carattere ... che segue gli autori corrisponde a â in utf-8!!!!  NON FUNZIONA
-		leftSide = strings.Replace(leftSide, "\u2026", "", -1)
-		citeInitialDoc[docIndex].Authors = strings.Split(leftSide, ", ")
-
-		//scorro other, mi fermo quando trovo un match con citato da cosi' so che sono sull'elemento giusto
-		for ; ; otherIndex++ {
-			text, _ = other[otherIndex].Text()
-			if t, _ := regexp.MatchString("Citato da.*", text); t {
-				words := strings.Split(text, " ")
-				if numCitedBy, err := strconv.ParseUint(words[2], 10, 16); err != nil {
-					panic(err)
-				} else {
-					citeInitialDoc[docIndex].NumCitedBy = uint16(numCitedBy)
-				}
-
-				linkCitedBy, _ := other[otherIndex].GetAttribute("href")
-				citeInitialDoc[docIndex].LinkCitedBy = structures.URLScholar + linkCitedBy
-				break
+	var allDoc []structures.Document
+	var docRead uint64 = 0
+	
+	for ; numDoc > docRead ; {
+		newDoc, numNewDoc := GetDocumentsFromPage(wd, numDoc-docRead)
+		allDoc = append(allDoc, newDoc...)
+		//incremento il numero dei documenti letti
+		docRead = docRead + uint64(numNewDoc)
+		
+		//vado alla prosssima pagina, se possibile:
+		linkAvanti, err := wd.FindElement(selenium.ByXPATH, "//b[text()='Avanti']/..")
+		//se non trovo il link per andare avanti, mi fermo 
+		if err!=nil {
+			if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
+				return allDoc, docRead
+			}else{
+				panic(err)
 			}
 		}
+		url, err := linkAvanti.GetAttribute("href")
+		if err !=nil{
+			panic(err)
+		}
+		if err := wd.Get(structures.URLScholar + url); err != nil {
+			panic(err)
+		}		
 	}
-	return citeInitialDoc
+	return allDoc, docRead	
 }
 
 //modifica perche' riceva un unico array di document
