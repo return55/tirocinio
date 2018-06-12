@@ -91,3 +91,162 @@ nohup: input ignorato
 2018-06-01 21:00:00.361+0000 INFO  Bolt enabled on 0.0.0.0:7687.
 2018-06-01 21:00:10.485+0000 INFO  Started.
 2018-06-01 21:00:13.149+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-06-08 10:51:22.222+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-06-08 10:51:22.374+0000 INFO  Starting...
+2018-06-08 10:51:25.824+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-06-08 10:51:34.347+0000 INFO  Started.
+2018-06-08 10:51:40.212+0000 INFO  Remote interface available at http://localhost:7474/
+2018-06-08 14:49:37.437+0000 INFO  Neo4j Server shutdown initiated by request
+2018-06-08 14:49:40.011+0000 INFO  Stopping...
+2018-06-08 14:49:41.466+0000 INFO  Stopped.
+nohup: input ignorato
+2018-06-10 12:56:14.818+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-06-10 12:56:14.938+0000 INFO  Starting...
+2018-06-10 12:56:18.082+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-06-10 12:56:28.351+0000 INFO  Started.
+2018-06-10 12:56:31.702+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-06-11 12:48:45.276+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-06-11 12:48:45.455+0000 INFO  Starting...
+2018-06-11 12:48:50.473+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-06-11 12:49:02.789+0000 INFO  Started.
+2018-06-11 12:49:06.243+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-06-11 12:55:10.835+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-06-11 12:55:10.942+0000 INFO  Starting...
+2018-06-11 12:55:13.039+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-06-11 12:55:21.396+0000 INFO  Started.
+2018-06-11 12:55:24.256+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-06-11 13:03:47.333+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-06-11 13:03:47.450+0000 INFO  Starting...
+2018-06-11 13:03:49.859+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-06-11 13:03:58.956+0000 INFO  Started.
+2018-06-11 13:04:02.002+0000 INFO  Remote interface available at http://localhost:7474/
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "neo4j.Pooled-2"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "neo4j.Pooled-4"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "neo4j.PauseMonitor"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "qtp1185511429-34"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "RMI RenewClean-[127.0.1.1:34231]"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "RMI Scheduler(0)"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "Neo4j UDC Timer"
+nohup: input ignorato
+2018-06-11 13:19:19.440+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-06-11 13:19:19.553+0000 INFO  Starting...
+2018-06-11 13:19:21.661+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-06-11 13:19:30.211+0000 INFO  Started.
+2018-06-11 13:19:33.134+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-06-11 13:29:48.977+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-06-11 13:29:49.096+0000 INFO  Starting...
+2018-06-11 13:29:51.319+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-06-11 13:30:01.417+0000 INFO  Started.
+2018-06-11 13:30:08.019+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-06-11 13:35:27.472+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-06-11 13:35:27.576+0000 INFO  Starting...
+2018-06-11 13:35:29.779+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-06-11 13:35:38.444+0000 INFO  Started.
+2018-06-11 13:35:41.646+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-06-11 13:37:57.478+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-06-11 13:37:57.558+0000 INFO  Starting...
+2018-06-11 13:37:59.961+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-06-11 13:38:09.626+0000 INFO  Started.
+2018-06-11 13:38:15.414+0000 INFO  Remote interface available at http://localhost:7474/
+2018-06-11 13:47:54.547+0000 INFO  Neo4j Server shutdown initiated by request
+2018-06-11 13:47:54.668+0000 INFO  Stopping...
+2018-06-11 13:47:54.994+0000 INFO  Stopped.
+nohup: input ignorato
+2018-06-11 13:48:02.461+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-06-11 13:48:02.575+0000 INFO  Starting...
+2018-06-11 13:48:04.906+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-06-11 13:48:16.840+0000 INFO  Started.
+2018-06-11 13:48:24.791+0000 INFO  Remote interface available at http://localhost:7474/
+2018-06-12 09:38:27.161+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference a2748efd-b20a-4a0a-9d35-eb7f103b57e6.
+2018-06-12 09:38:47.165+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference e719d3e6-69dd-402b-85ee-4c4194e054cb.
+2018-06-12 09:39:07.166+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 9b169fee-1dd1-4cfa-aeb2-a90c0abe0a03.
+2018-06-12 09:39:27.166+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 53425bac-6d6b-4e50-a845-90ff70d85c0d.
+2018-06-12 09:39:48.002+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference ea38a23d-5c08-47b2-a0e8-2a70a502ec12.
+2018-06-12 09:40:07.594+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference dbac2174-af4f-4066-9057-ee9a3a9d3112.
+2018-06-12 09:40:27.595+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 1d44ae2d-2afa-4013-96b8-eaa6558e2957.
+2018-06-12 09:40:47.597+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference d678c74b-d63b-4af2-a17b-385f7c3c73d0.
+2018-06-12 09:41:07.599+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference f4af167e-28f2-4036-bd1f-eeeb55c8fea2.
+2018-06-12 09:41:27.600+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 1d08a315-af67-4925-8145-5282762c1d93.
+2018-06-12 09:41:47.605+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 7f4b10c5-1b56-4404-a4bc-c1d7ff00a2f8.
+2018-06-12 09:42:07.603+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference da60d92d-264d-4785-9682-430cd0ae6b36.
+2018-06-12 09:42:27.604+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 3b52f277-709f-4b44-9ff9-1113042726bd.
+2018-06-12 09:42:47.605+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 177fcc2b-be05-4f40-bd33-e7042b9d5052.
+2018-06-12 09:43:07.607+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference cf0bb79e-dcea-4739-a20d-62dd0f8d0f09.
+2018-06-12 09:43:27.608+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference dbf538e8-b76c-4bb1-ba1a-c0396da878c8.
+2018-06-12 09:43:47.609+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 0efa0c80-f725-44e9-8668-b11611706943.
+2018-06-12 09:44:07.611+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference fb2b2f13-2b53-4c78-a0f8-98664f6dc8e7.
+2018-06-12 09:44:27.612+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference ef33345a-92ae-44ba-84c5-5d68c017e08d.
+2018-06-12 09:44:47.614+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 0ff4ff03-4bc5-4274-85c0-e93825953b55.
+2018-06-12 09:45:07.617+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference a4cdb89d-4704-4ece-836a-646f83394201.
+2018-06-12 09:45:27.617+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 6ca20f08-8628-4f13-9824-84da37633344.
+2018-06-12 09:45:47.620+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 1171df62-25d9-4045-a01d-dc71974e9a0a.
+2018-06-12 09:46:07.622+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 0d9f65be-d2c6-4883-a1f5-93df02142e54.
+2018-06-12 09:46:27.622+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference f9ad9c6b-58f3-4e98-88b7-d4a074cb94dd.
+2018-06-12 09:46:47.625+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 209eba91-f39c-474b-95f6-40cb9d6308cf.
+2018-06-12 09:47:07.627+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference ca0ae60a-6229-420e-8e12-72ba98d3a934.
+2018-06-12 09:47:27.629+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference c645941a-73d2-4f78-a042-e2a01a262ac8.
+2018-06-12 09:47:47.630+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 3d049a1f-457c-4c25-97b2-863353e515cf.
+2018-06-12 09:48:07.631+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 5cef328c-6aad-4ba8-a121-9fabb9a802cc.
+2018-06-12 09:48:27.632+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 74140faa-5d06-4688-9421-87bbb80decf1.
+2018-06-12 09:48:47.634+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference d2beb9fd-aa49-4881-b710-a06cccd379f3.
+2018-06-12 09:49:07.635+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference bf61fc53-9e12-4e09-beb8-ed9b23a620a8.
+2018-06-12 09:49:27.638+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 526cffa3-bde6-4fed-964b-82c4c41a2f3d.
+2018-06-12 09:49:47.636+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference c986dbf1-93c1-40dc-9674-9e98b30914dd.
+2018-06-12 09:50:07.637+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 3dcce97f-3fbd-443c-b1df-8d7dd62dabb7.
+2018-06-12 09:50:27.638+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 786fc45e-3af5-468c-9a54-76b89e714c4c.
+2018-06-12 09:50:47.638+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference bd341408-c801-4634-80bf-7a7f6d58c3cb.
+2018-06-12 09:51:07.639+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 94a313d3-76ea-4fba-84be-bad28eb5f3c6.
+2018-06-12 09:51:27.641+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference b698424a-8420-44fd-91b6-a26409faa384.
+2018-06-12 09:51:47.641+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 365ac948-ab3a-4006-a9c1-128df92c4760.
+2018-06-12 09:52:07.643+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 5d959750-a761-4847-9ddf-5a5873956751.
+2018-06-12 09:52:27.643+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference e63daa04-a506-48d5-a582-59d5191e6602.
+2018-06-12 09:52:47.648+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference b37409f7-af2a-4566-984b-f2185b37467e.
+2018-06-12 09:53:07.645+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 5b2a8dfe-2b77-4069-b096-a1603032ba0f.
+2018-06-12 09:53:27.647+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 807022f2-6862-4f6d-b148-e42264157ed1.
+2018-06-12 09:53:47.648+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 64005a12-e494-46a4-a493-02cdf1d10ad2.
+2018-06-12 09:54:07.665+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 7d13c154-0391-4bdb-b1b8-2ad820e86c86.
+2018-06-12 09:54:24.977+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 76bb483d-9eb0-430a-b080-a8144d91bd3c.
+2018-06-12 09:54:28.433+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference f997a33a-9f38-4253-be2f-1265c16d3a40.
+2018-06-12 09:54:48.427+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 6983bd50-b545-447f-a3db-1a4224f343d7.
+2018-06-12 09:55:08.428+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 4bf489b7-2905-4f6f-b0ad-ba4f25de183b.
+2018-06-12 09:55:28.433+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 6d64ae67-b23d-4024-94b7-456ed88be87a.
+2018-06-12 09:55:48.436+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 7fd64631-c8da-4e6f-844f-65fc2aff5bc4.
+2018-06-12 09:56:08.437+0000 ERROR Client triggered an unexpected error [UnknownError]: java.lang.NullPointerException, reference 0cf7c6cc-b261-455b-9f8f-9569de6bab0f.
+2018-06-12 09:57:04.300+0000 INFO  Neo4j Server shutdown initiated by request
+2018-06-12 09:57:04.553+0000 INFO  Stopping...
+2018-06-12 09:57:04.834+0000 INFO  Stopped.
+nohup: input ignorato
+2018-06-12 09:57:13.107+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-06-12 09:57:13.218+0000 INFO  Starting...
+2018-06-12 09:57:16.216+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-06-12 09:57:25.914+0000 INFO  Started.
+2018-06-12 09:57:30.918+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-06-12 10:03:17.969+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-06-12 10:03:18.188+0000 INFO  Starting...
+2018-06-12 10:03:23.330+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-06-12 10:03:34.539+0000 INFO  Started.
+2018-06-12 10:03:38.080+0000 INFO  Remote interface available at http://localhost:7474/
+2018-06-12 11:47:01.877+0000 INFO  Neo4j Server shutdown initiated by request
+2018-06-12 11:47:02.119+0000 INFO  Stopping...
+2018-06-12 11:47:02.413+0000 INFO  Stopped.
+nohup: input ignorato
+2018-06-12 12:22:55.620+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-06-12 12:22:55.761+0000 INFO  Starting...
+2018-06-12 12:22:59.040+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-06-12 12:23:14.908+0000 INFO  Started.
+2018-06-12 12:23:20.423+0000 INFO  Remote interface available at http://localhost:7474/

@@ -2,9 +2,13 @@ package docDatabase
 
 import (
 	"fmt"
-	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
-	"github.com/tirocinio/structures"
 	"reflect"
+	"regexp"
+	"os/exec"
+
+	"github.com/return55/tirocinio/structures"
+	
+	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
 )
 
 //Aggiungo il documento, gli autori che lo hanno scritto (con le relative relazioni)
@@ -98,7 +102,7 @@ func DBGetFirstsNDoc(allDoc []structures.Document) {
 	defer conn.Close()
 
 	cleanAll(conn)
-	
+
 	//aggiungo il documento iniziale
 	addDocument(conn, allDoc[0], "")
 	for docIndex := 1; docIndex < len(allDoc); docIndex++ {
@@ -110,7 +114,17 @@ func DBGetFirstsNDoc(allDoc []structures.Document) {
 func cleanAll(conn bolt.Conn){
 	_, err:= conn.ExecNeo("MATCH (n), ()-[r]-() DELETE n,r", nil)
 	if err!= nil{
-		panic(err)
+		//se l'errore e' dovuto alla mancanza della memoria heap (il db e' troppo grosso)
+		if t, _ := regexp.MatchString(".*OutOfMemoryError.*", err.Error()); t {
+			if err:= exec.Command("rm", "-fr", "docDatabase/neo4j-community-3.3.5/data/databases/graph.db").Run(); err!=nil {
+				panic(err)
+			}
+			if err:= exec.Command("mkdir", "docDatabase/neo4j-community-3.3.5/data/databases/graph.db").Run(); err!=nil {
+				panic(err)
+			}	
+		}else{
+			panic(err)
+		}
 	}
 	fmt.Println("Ho pulito il database");
 }

@@ -8,7 +8,7 @@ import (
 	"strings"
 	"encoding/gob"
 
-	"github.com/tirocinio/structures"
+	"github.com/return55/tirocinio/structures"
 		
 	"github.com/tebeka/selenium"
 )

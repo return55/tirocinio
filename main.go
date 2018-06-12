@@ -5,9 +5,9 @@ import (
 	"os"
 	"strconv"
 	
-	"github.com/tirocinio/docDatabase"
-	"github.com/tirocinio/structures"
-	"github.com/tirocinio/webDriver"
+	"github.com/return55/tirocinio/docDatabase"
+	"github.com/return55/tirocinio/structures"
+	"github.com/return55/tirocinio/webDriver"
 	
 	"github.com/tebeka/selenium"
 )
@@ -70,7 +70,8 @@ func main() {
 	defer service.Stop()
 	defer wd.Quit()
 
-	//Classico: docIniziale + primi 10 che lo citano
+
+	//Classico: docIniziale + primi n che lo citano
 	if GetFirstsNDoc(wd) {
 		fmt.Println("Tutto ok")
 	}else{
