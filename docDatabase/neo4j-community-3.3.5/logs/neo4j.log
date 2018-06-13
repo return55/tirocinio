@@ -250,3 +250,9 @@ nohup: input ignorato
 2018-06-12 12:22:59.040+0000 INFO  Bolt enabled on 0.0.0.0:7687.
 2018-06-12 12:23:14.908+0000 INFO  Started.
 2018-06-12 12:23:20.423+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-06-13 08:55:49.094+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-06-13 08:55:49.267+0000 INFO  Starting...
+2018-06-13 08:55:53.018+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-06-13 08:56:14.294+0000 INFO  Started.
+2018-06-13 08:56:20.249+0000 INFO  Remote interface available at http://localhost:7474/

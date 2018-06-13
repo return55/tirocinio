@@ -70,21 +70,22 @@ func main() {
 	defer service.Stop()
 	defer wd.Quit()
 
-
+/*
 	//Classico: docIniziale + primi n che lo citano
 	if GetFirstsNDoc(wd) {
 		fmt.Println("Tutto ok")
 	}else{
 		fmt.Println("Non hai passato un valore al main")
 	}
-/*	
+*/
+
 	//Sempre Il Primo: docIniziale + n volte sempre il primo della classifica
 	if GetEverFirst(wd) {
 		fmt.Println("Tutto ok")
 	}else{
 		fmt.Println("Hai passato un valore non corretto al main")
 	}
-*/
+
 /*	//Metodi utili
 	webDriver.SaveDocuments(nil)
 	webDriver.LoadDocuments(allDoc)
