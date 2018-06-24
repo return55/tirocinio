@@ -14,7 +14,7 @@ import (
 //Aggiungo il documento, gli autori che lo hanno scritto (con le relative relazioni)
 //urlStartDoc e' l'URL del documento che viene citato da doc:
 //se e' "" allora doc e' il documento da cui e' partita l'esplorazione
-func addDocument(conn bolt.Conn, document structures.Document, urlStartDoc string){
+func AddDocument(conn bolt.Conn, document structures.Document, urlStartDoc string){
 	//mappa di un singolo documento
 	fieldsMap := make(map[string]interface{})
 	//devo usare la reflection per accedere ai campi di Document
@@ -68,50 +68,20 @@ func addDocument(conn bolt.Conn, document structures.Document, urlStartDoc strin
 	}
 }
 
-//aggiungo al database i documenti ottenuti col sistema GetEverFirst:
-//per ogni documento prendo la pagina di quelli che lo citano e prendo
-//il primo documento, poi per lui ripeto il processo.
-func DBGetEverFirst(allDoc []structures.Document) {
+//Crea una nuova connessione con Neo4j
+func StartNeo4j() bolt.Conn {
 	driver := bolt.NewDriver()
 	conn, err := driver.OpenNeo("bolt://127.0.0.1:7687")
 	if err != nil {
 		panic(err)
 	}
-	defer conn.Close()
-
-	cleanAll(conn)
-	
-	//aggiungo il documento iniziale
-	addDocument(conn, allDoc[0], "")
-	for docIndex := 1; docIndex < len(allDoc); docIndex++ {
-		addDocument(conn, allDoc[docIndex], allDoc[docIndex-1].Url)
-	}
+	return conn
 }
 
-//Aggiungo i documenti al database:
-//Documento: url, numCitedBy, linkCitedBy
-//Autore: string(nome cognome alla buona)
-//Relazioni:
-//doc -[cita]-> doc | doc -[scritto_da]-> aut | aut-[cita]->aut
-func DBGetFirstsNDoc(allDoc []structures.Document) {
-	driver := bolt.NewDriver()
-	conn, err := driver.OpenNeo("bolt://127.0.0.1:7687")
-	if err != nil {
-		panic(err)
-	}
-	defer conn.Close()
 
-	cleanAll(conn)
-
-	//aggiungo il documento iniziale
-	addDocument(conn, allDoc[0], "")
-	for docIndex := 1; docIndex < len(allDoc); docIndex++ {
-		addDocument(conn, allDoc[docIndex], allDoc[0].Url)
-	}
-}
 
 //Pulisce il database da tutti i nodi e le relazioni
-func cleanAll(conn bolt.Conn){
+func CleanAll(conn bolt.Conn){
 	_, err:= conn.ExecNeo("MATCH (n), ()-[r]-() DELETE n,r", nil)
 	if err!= nil{
 		//se l'errore e' dovuto alla mancanza della memoria heap (il db e' troppo grosso)

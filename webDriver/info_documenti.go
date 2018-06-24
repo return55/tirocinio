@@ -1,15 +1,15 @@
 package webDriver
 
 import (
+	"encoding/gob"
 	"fmt"
 	"os"
 	"regexp"
 	"strconv"
 	"strings"
-	"encoding/gob"
 
 	"github.com/return55/tirocinio/structures"
-		
+
 	"github.com/tebeka/selenium"
 )
 
@@ -50,7 +50,7 @@ func StartSelenium() (*selenium.Service, selenium.WebDriver) {
 //Se il numero (numDocs) e' maggiore del numero di documenti nella pagina (tipicamente 10),
 //mi limito a restituire i documenti presenti nella pagina e la loro quantita'.
 func GetDocumentsFromPage(wd selenium.WebDriver, numDocs uint64) ([]structures.Document, uint16) {
-	//raccolgo le informazioni	
+	//raccolgo le informazioni
 	urls, err := wd.FindElements(selenium.ByXPATH, "//div/h3/a")
 	if err != nil {
 		panic(err)
@@ -66,18 +66,18 @@ func GetDocumentsFromPage(wd selenium.WebDriver, numDocs uint64) ([]structures.D
 		panic("sto cercando i link di: citato da + related + versioni")
 	}
 
-	//imposto il valore del numero di documenti nella pagina in base a quanti 
+	//imposto il valore del numero di documenti nella pagina in base a quanti
 	//url di documenti ho letto
 	docInThePage := uint64(len(urls))
 	//numero di documenti che effettivamente leggo: numDocs = min(docInThePage, numDocs)
 	if docInThePage < numDocs {
 		numDocs = docInThePage
 	}
-	
+
 	documents := make([]structures.Document, numDocs)
 	var text string
 	var docIndex, otherIndex uint64
-	
+
 	for docIndex, otherIndex = 0, 0; docIndex < numDocs; docIndex, otherIndex = docIndex+1, otherIndex+1 {
 		fmt.Println(docIndex, "------", otherIndex)
 		documents[docIndex].Url, _ = urls[docIndex].GetAttribute("href")
@@ -91,7 +91,7 @@ func GetDocumentsFromPage(wd selenium.WebDriver, numDocs uint64) ([]structures.D
 		//scorro other, mi fermo quando trovo un match con: "Citato da", cosi' so che sono sull'elemento giusto
 		for ; ; otherIndex++ {
 			text, err = other[otherIndex].Text()
-			if err!=nil {
+			if err != nil {
 				panic(err)
 			}
 			if t, _ := regexp.MatchString("Citato da.*", text); t {
@@ -137,7 +137,7 @@ func GetInitialDocument(wd selenium.WebDriver) structures.Document {
 	return docs[0]
 }
 
-func GetFirstDocumentOfPage(wd selenium.WebDriver, url string) structures.Document{
+func GetFirstDocumentOfPage(wd selenium.WebDriver, url string) structures.Document {
 	if err := wd.Get(url); err != nil {
 		panic(err)
 	}
@@ -149,43 +149,43 @@ func GetFirstDocumentOfPage(wd selenium.WebDriver, url string) structures.Docume
 	return docs[0]
 }
 
-func GetCiteDocument(wd selenium.WebDriver, initialDoc structures.Document, numDoc uint64) ([]structures.Document, uint64) {
-	if err := wd.Get(initialDoc.LinkCitedBy); err != nil {
+func GetCiteDocuments(wd selenium.WebDriver, linkCitedBy string, numDoc uint64) ([]structures.Document, uint64) {
+	if err := wd.Get(linkCitedBy); err != nil {
 		panic(err)
 	}
 	var allDoc []structures.Document
 	var docRead uint64 = 0
-	
-	for ; numDoc > docRead ; {
+
+	for numDoc > docRead {
 		newDoc, numNewDoc := GetDocumentsFromPage(wd, numDoc-docRead)
 		allDoc = append(allDoc, newDoc...)
 		//incremento il numero dei documenti letti
 		docRead = docRead + uint64(numNewDoc)
-		
+
 		//vado alla prosssima pagina, se possibile:
 		linkAvanti, err := wd.FindElement(selenium.ByXPATH, "//b[text()='Avanti']/..")
-		//se non trovo il link per andare avanti, mi fermo 
-		if err!=nil {
+		//se non trovo il link per andare avanti, mi fermo
+		if err != nil {
 			if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
 				return allDoc, docRead
-			}else{
+			} else {
 				panic(err)
 			}
 		}
 		url, err := linkAvanti.GetAttribute("href")
-		if err !=nil{
+		if err != nil {
 			panic(err)
 		}
 		if err := wd.Get(structures.URLScholar + url); err != nil {
 			panic(err)
-		}		
+		}
 	}
-	return allDoc, docRead	
+	return allDoc, docRead
 }
 
 //modifica perche' riceva un unico array di document
-func PrintDocuments(allDoc[] structures.Document) {
-	if len(allDoc)==0 {
+func PrintDocuments(allDoc []structures.Document) {
+	if len(allDoc) == 0 {
 		fmt.Println("Non ci sono documenti da stampare")
 		return
 	}
@@ -197,7 +197,7 @@ func PrintDocuments(allDoc[] structures.Document) {
 	fmt.Println("Link ai documenti che lo citano: ", allDoc[0].LinkCitedBy)
 
 	fmt.Println("\nDocumento che citano:")
-	for docIndex:=1; docIndex<len(allDoc);  docIndex++ {
+	for docIndex := 1; docIndex < len(allDoc); docIndex++ {
 		fmt.Println("Url: ", allDoc[docIndex].Url, "\nAutori:")
 		for _, autore := range allDoc[docIndex].Authors {
 			fmt.Println("\t", autore)
@@ -208,26 +208,26 @@ func PrintDocuments(allDoc[] structures.Document) {
 }
 
 //salvo i documenti su un file
-func SaveDocuments(allDoc[] structures.Document){
+func SaveDocuments(allDoc []structures.Document) {
 	file, err := os.Create(structures.SaveFilePath)
-	if err!=nil{
+	if err != nil {
 		panic(err)
 	}
 	defer file.Close()
-	
+
 	enc := gob.NewEncoder(file)
 	enc.Encode(allDoc)
 }
 
 //carico i documenti da file
-func LoadDocuments(allDoc[] structures.Document){
+func LoadDocuments(allDoc []structures.Document) {
 	allDoc = nil
 	file, err := os.Open(structures.SaveFilePath)
-	if err!=nil{
+	if err != nil {
 		panic(err)
 	}
 	defer file.Close()
-	
+
 	dec := gob.NewDecoder(file)
 	dec.Decode(allDoc)
 }

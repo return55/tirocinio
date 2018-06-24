@@ -12,3 +12,5 @@ var FieldsName = []string{"Url", "Authors", "NumCitedBy", "LinkCitedBy"}
 const URLScholar = "https://scholar.google.com/"
 
 const SaveFilePath = "Documenti.txt"
+
+const MaxReadableDoc uint64 = 1000
