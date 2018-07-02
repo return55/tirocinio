@@ -13,4 +13,8 @@ const URLScholar = "https://scholar.google.com/"
 
 const SaveFilePath = "Documenti.txt"
 
-const MaxReadableDoc uint64 = 1000
+const MaxReadableDoc = 3000
+
+//Valore da cui ricavo il numero di porta specifico del thread.
+// thread_port = threadBasePort + id_del_thread
+const ThreadBasePort = 23513

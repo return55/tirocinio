@@ -277,3 +277,46 @@ nohup: input ignorato
 2018-06-20 12:30:32.984+0000 INFO  Bolt enabled on 0.0.0.0:7687.
 2018-06-20 12:30:43.475+0000 INFO  Started.
 2018-06-20 12:30:47.017+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-06-27 14:00:18.026+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-06-27 14:00:18.161+0000 INFO  Starting...
+2018-06-27 14:00:22.056+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-06-27 14:00:34.884+0000 INFO  Started.
+2018-06-27 14:00:39.064+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-06-27 14:21:50.780+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-06-27 14:21:50.926+0000 INFO  Starting...
+2018-06-27 14:21:55.483+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-06-27 14:22:21.769+0000 INFO  Started.
+2018-06-27 14:22:32.803+0000 INFO  Remote interface available at http://localhost:7474/
+2018-06-27 15:58:03.637+0000 INFO  Neo4j Server shutdown initiated by request
+2018-06-27 15:58:17.420+0000 INFO  Stopping...
+2018-06-27 15:58:33.860+0000 INFO  Stopped.
+nohup: input ignorato
+2018-06-27 17:56:46.470+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-06-27 17:56:46.739+0000 INFO  Starting...
+2018-06-27 17:56:50.703+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-06-27 17:57:00.492+0000 INFO  Started.
+2018-06-27 17:57:03.856+0000 INFO  Remote interface available at http://localhost:7474/
+2018-06-27 20:37:17.392+0000 INFO  Neo4j Server shutdown initiated by request
+2018-06-27 20:37:19.363+0000 INFO  Stopping...
+2018-06-27 20:37:19.774+0000 INFO  Stopped.
+nohup: input ignorato
+2018-06-28 14:27:07.001+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-06-28 14:27:08.453+0000 INFO  Starting...
+2018-06-28 14:27:29.021+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-06-28 14:28:30.053+0000 INFO  Started.
+2018-06-28 14:28:42.169+0000 INFO  Remote interface available at http://localhost:7474/
+2018-06-28 15:24:21.370+0000 ERROR Client triggered an unexpected error [UnknownError]: null, reference c3d2af9f-4599-41f3-ae51-5ba62a2f8572.
+2018-06-28 15:25:47.523+0000 INFO  Neo4j Server shutdown initiated by request
+2018-06-28 15:25:52.891+0000 INFO  Stopping...
+2018-06-28 15:25:54.867+0000 INFO  Stopped.
+nohup: input ignorato
+2018-06-28 15:38:19.374+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-06-28 15:38:19.587+0000 INFO  Starting...
+2018-06-28 15:38:23.663+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-06-28 15:38:34.052+0000 INFO  Started.
+2018-06-28 15:38:37.512+0000 INFO  Remote interface available at http://localhost:7474/
+2018-06-28 16:04:02.389+0000 INFO  Neo4j Server shutdown initiated by request
+2018-06-28 16:04:04.786+0000 INFO  Stopping...
+2018-06-28 16:04:07.803+0000 INFO  Stopped.

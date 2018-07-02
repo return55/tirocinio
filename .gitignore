@@ -1,2 +1,3 @@
 #ignora i databases creati in locale
 docDatabase/neo4j-community-3.3.5/data/databases/graph.db/*
+prova.go

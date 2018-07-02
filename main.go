@@ -9,6 +9,7 @@ import (
 	"github.com/return55/tirocinio/structures"
 	"github.com/return55/tirocinio/webDriver"
 
+	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
 	"github.com/tebeka/selenium"
 )
 
@@ -54,7 +55,7 @@ func GetEverFirst(wd selenium.WebDriver) bool {
 //parametro passato da riga di comando  e ne creo il database.
 func GetFirstsNDoc(wd selenium.WebDriver) bool {
 	if len(os.Args) > 1 {
-		numDocs, err := strconv.ParseUint(os.Args[1], 10, 64)
+		numDocs, err := strconv.ParseUint(os.Args[2], 10, 64)
 		if err != nil {
 			return false
 		}
@@ -86,7 +87,8 @@ func GetFirstsNDoc(wd selenium.WebDriver) bool {
 //1)Faccio partire N threads che sono in attesa su un canale contenete i link delle pagine che citano (links)
 //2)Partendo da un primo documento scelto da me, ne aggiungo il link ai documenti che lo citano al canale
 //2.1)Aggiungo quel documento al db
-//3)Parte il primo thread che
+//3)Parte il primo thread che aggiunge il documento iniziale al db e il suo linkCitedBy alla lista
+//4)Questa funzione termina quando ho letto un certo numero di documenti
 func Concurrency(wd selenium.WebDriver) bool {
 	numThreads, err := strconv.ParseUint(os.Args[2], 10, 64)
 	if err != nil {
@@ -107,20 +109,25 @@ func Concurrency(wd selenium.WebDriver) bool {
 	//4 per avere un po' di margine.
 	chanNumNewDoc := make(chan uint64, 4)
 
+	initialDoc := webDriver.GetInitialDocument(wd)
+	//mi collego a neo4j e apro un pool di connessioni
+	pool := docDatabase.StartPoolNeo4j(int(numThreads) + 1)
+	for _, conn := range pool {
+		defer conn.Close()
+	}
+	//connessione di Concurrency
+	concurrencyConn := pool[0]
+
 	//faccio partire i threads di ricerca dei documenti
 	var id uint64
 	for id = 1; id <= numThreads; id++ {
-		go threadGetDocument(id, docPerPage, links, chanNumNewDoc)
+		go threadGetDocument(id, docPerPage, links, chanNumNewDoc, pool[id])
 	}
 
-	initialDoc := webDriver.GetInitialDocument(wd)
-	//mi collego a neo4j e aggiungo il primo documento
-	conn := docDatabase.StartNeo4j()
-	defer conn.Close()
 	//pulisco il db
-	docDatabase.CleanAll(conn)
+	docDatabase.CleanAll(concurrencyConn)
 	//aggiungo il documento iniziale
-	docDatabase.AddDocument(conn, initialDoc, "")
+	docDatabase.AddDocument(concurrencyConn, initialDoc, "")
 
 	//aggiungo il suo link ai doc che lo citano alla lista (links)
 	fakeList := make([]string, 1)
@@ -141,15 +148,13 @@ func Concurrency(wd selenium.WebDriver) bool {
 
 //Thread che si occupa di estrarre docPerPage documenti dalla pagina indicata
 //dal link che estrae dalla lista, invoca un altro thread che aggiunge i LinkCitedBy
-//alla lista links, aggiunge i documenti al database.
-func threadGetDocument(id uint64, docPerPage uint64, links chan string, chanNumNewDoc chan uint64) {
+//alla lista links, aggiunge i documenti al database e invia a Cuncurrency il
+//numero di documenti letti.
+func threadGetDocument(id uint64, docPerPage uint64, links chan string, chanNumNewDoc chan uint64, conn bolt.Conn) {
 	//creo il web driver personale
-	service, wd := webDriver.StartSelenium()
+	service, wd := webDriver.StartSelenium(structures.ThreadBasePort + int(id))
 	defer service.Stop()
 	defer wd.Quit()
-	//creo la connesione con neo4j personale
-	conn := docDatabase.StartNeo4j()
-	defer conn.Close()
 
 	for true {
 		startLink := <-links
@@ -173,10 +178,17 @@ func threadGetDocument(id uint64, docPerPage uint64, links chan string, chanNumN
 		if err != nil {
 			panic(err)
 		}
+		//chiudo lo stream
+		err = rows.Close()
+		if err != nil {
+			panic(err)
+		}
 		fmt.Println("Thread ", id, ": link = ", URL[0].(string))
 		//aggiungo i nuovi documenti al database
-		for _, newDoc := range newDocuments {
+		//togli la i!!!!!!!!!!!!!!!!!!!!!!!!!
+		for i, newDoc := range newDocuments {
 			docDatabase.AddDocument(conn, newDoc, URL[0].(string))
+			fmt.Println("Thread id= ", id, " ha scritto doc numero ", i)
 		}
 		//aggiungo il numero  dei documenti letti al canale
 		chanNumNewDoc <- numNewDoc
@@ -197,7 +209,7 @@ func main() {
 		return
 	}
 
-	service, wd := webDriver.StartSelenium()
+	service, wd := webDriver.StartSelenium(-1)
 
 	defer service.Stop()
 	defer wd.Quit()

@@ -16,23 +16,30 @@ import (
 const (
 	seleniumPath    = "webDriver/selenium-server-standalone-3.11.0.jar"
 	geckoDriverPath = "webDriver/geckodriver-v0.20.0-linux64/geckodriver"
-	port            = 8080
+	defaultPort     = 8080
 )
 
 //Restituisco service solo per potrelo chiudere in main.go, non lo uso mai
-func StartSelenium() (*selenium.Service, selenium.WebDriver) {
+//port sara' diverso da -1 solo nel caso stia aprendo delle connesioni per i thread
+func StartSelenium(port int) (*selenium.Service, selenium.WebDriver) {
 	opts := []selenium.ServiceOption{
 		selenium.StartFrameBuffer(),           // Start an X frame buffer for the browser to run in.
 		selenium.GeckoDriver(geckoDriverPath), // Specify the path to GeckoDriver in order to use Firefox.
 		selenium.Output(os.Stderr),            // Output debug information to STDERR.
 	}
 
-	service, err := selenium.NewSeleniumService(seleniumPath, port, opts...)
+	if port == -1 {
+		port = defaultPort
+	}
+
+	var service *selenium.Service
+	var err error
+	service, err = selenium.NewSeleniumService(seleniumPath, port, opts...)
 	if err != nil {
 		panic(err)
 	}
 
-	selenium.SetDebug(true)
+	selenium.SetDebug(false)
 
 	// Connect to the WebDriver instance running locally.
 	caps := selenium.Capabilities{"browserName": "firefox"}
@@ -220,8 +227,8 @@ func SaveDocuments(allDoc []structures.Document) {
 }
 
 //carico i documenti da file
-func LoadDocuments(allDoc []structures.Document) {
-	allDoc = nil
+func LoadDocuments(dim int) []structures.Document {
+	allDoc := make([]structures.Document, dim)
 	file, err := os.Open(structures.SaveFilePath)
 	if err != nil {
 		panic(err)
@@ -230,4 +237,6 @@ func LoadDocuments(allDoc []structures.Document) {
 
 	dec := gob.NewDecoder(file)
 	dec.Decode(allDoc)
+	fmt.Println(allDoc[0])
+	return allDoc
 }
