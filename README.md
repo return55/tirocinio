@@ -4,11 +4,8 @@
 Sulla macchina devono essere presenti: la jre 8 e il pacchetto "xvfb" per permettere al web driver (Selenium) di funzionare.
 ### Firefox
 Selenium vuole che in '/usr/bin/firefox' sia presente una versione di firefox non inferiore alla 57.
-Cosi' e' come me la sono procurata (tutti i comandi richiedono di essere amministatore):
-*   apt-get install snapd
-*   snap install firefox
-*   mv /usr/bin/firefox /usr/bin/qualcosa (se e' gia' presente un file firefox)
-*   ln -s /snap/firefox/current/firefox /usr/bin/firefox
+E' necessario scaricarlo dal sito ufficiale e creare un link alleseguibile:
+* sudo ln -s /path-to-firefox-directory/firefox-bin /usr/bin/firefox
 ### Altri
 * Scarica Go dal sito e configuralo (anche GOBIN)
 * Scarica e configura git:      user.name, user.email
@@ -25,8 +22,5 @@ Al momento per usare il progetto e' necessario andare nella directory del preoge
 ### Neo4j
 * Se le prestazioni di neo4j sono scarse o se da errore per mancanza di memoria heap, puo' essere utile modificare nel file:  
 "docDatabase/neo4j-community-3.3.5/conf/neo4j.conf" il campo "dbms.memory.heap.max_size" e dare al dbms piu' memoria.
-* All'avvio di neo4j, il dbms si potrebbe lamentare del max numero di file open. E' possibile modificarne il valore tra le 
+* All'avvio di neo4j, il dbms si potrebbe lamentare del max numero di file open. E' possibile modificarne il valore tra le
 impostazioni di sicurezza ma anche facendolo non ho notato cambiamenti nelle prestazioni.
-
-
-

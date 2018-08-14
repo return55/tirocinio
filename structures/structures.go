@@ -1,15 +1,48 @@
 package structures
 
+import "time"
+
+//Document e' utilizzata per i documenti presi da Google Scholar
+//!!!!!!!!! CAMBIA CitedBy CON Citations !!!!!!!!!!!!!!
 type Document struct {
-	Url         string
-	Authors     []string
-	NumCitedBy  uint16
-	LinkCitedBy string
+	Url         string   //Singolo link a una sorgente della pubblicazione
+	Authors     []string //Alcuni nomi degli autori del documento
+	NumCitedBy  uint16   //Numero dei documenti che lo citano
+	LinkCitedBy string   //URL a quei documenti
+}
+
+//MADocument e' utilizzata per i documenti presi da Microsoft Academic
+type MADocument struct {
+	Url            sources  //URL dei vari sorgenti disponibili
+	Authors        []author //Nomi, cognomi e affiliazioni dei vari autori
+	NumCitations   uint16
+	LinkCitations  string //Link alla pagina di Academy con i documenti che lo citano
+	NumReferences  uint16
+	LinkReferences string //Link alla pagina di Academy con i documenti che cita
+	Abstract       string
+	Date           time.Time //Data pubblicazione
+	FieldsOfStudy  []string
+}
+
+//Gli URL di un documento posso essere di 2 tipi: PDF o link a siti Internet
+type sources struct {
+	PDF []string
+	WWW []string
+}
+
+//Oltre al nome e cognome dell'autore, memorizzo anche le informazioni sulla sua
+//affiliazione che puo' essere diversa da pubblicazione a pubblicazione ma unica
+//per ognuna
+type author struct {
+	Name        string //Contenuto: "nome cognome"
+	Affiliation string //Ente con cui l'autore ha collaborato per scrivere la pubblicazione
 }
 
 var FieldsName = []string{"Url", "Authors", "NumCitedBy", "LinkCitedBy"}
 
 const URLScholar = "https://scholar.google.com/"
+
+const URLAcademic = "https://academic.microsoft.com/"
 
 const SaveFilePath = "Documenti.txt"
 

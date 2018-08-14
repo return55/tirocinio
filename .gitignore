@@ -1,3 +1,12 @@
-#ignora i databases creati in locale
+#ignora i database creati in locale
 docDatabase/neo4j-community-3.3.5/data/databases/graph.db/*
-prova.go
+
+#prova.go
+out
+
+webDriver/geckodriver-v0.20.0-linux64/geckodriver
+webDriver/geckodriver-v0.20.1-linux64/geckodriver
+
+webDriver/selenium-server-standalone-3.11.0.jar
+webDriver/selenium-server-standalone-3.12.0.jar
+webDriver/selenium-server-standalone-3.14.0.jar
