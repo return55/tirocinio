@@ -1,4 +1,4 @@
-# Document Collector from Scholar
+# Document Collector
 !! Questo codice e' stato sviluppato e testato solo su Debian 9 !!
 ## Prerequisiti:
 Sulla macchina devono essere presenti: la jre 8 e il pacchetto "xvfb" per permettere al web driver (Selenium) di funzionare.
