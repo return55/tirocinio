@@ -33,7 +33,8 @@ func GetEverFirst(wd selenium.WebDriver) bool {
 		}
 		fmt.Println("Numero iterazioni: ", repeatFor)
 		allDoc := make([]structures.Document, repeatFor+1)
-		initialDoc := webDriver.GetInitialDocument_MA(wd)
+//		initialDoc := webDriver.GetInitialDocument_MA(wd)
+		initialDoc := webDriver.GetInitialDocument(wd)
 		allDoc[0] = initialDoc
 
 		var firstDoc structures.Document

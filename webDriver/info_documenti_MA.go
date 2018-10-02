@@ -2,7 +2,7 @@ package webDriver
 
 import (
 	"fmt"
-
+	
 	"github.com/return55/tirocinio/structures"
 
 	"github.com/tebeka/selenium"
@@ -17,11 +17,28 @@ import (
 // Date 		time.Time  //Date=time.Date(anno,mese,giorno,0,0,0,0,time.UTC) //year, month, day := d.Date()
 // FieldsOfStudy	[]string
 
+
+//Condizione per il caricamento della pagina (aspetto 1 article)
+func condition(wd selenium.WebDriver) (bool, error){
+	 elem, err := wd.FindElements(selenium.ByXPATH, "//article")
+	 
+	 if err != nil{
+	 	panic(err)
+	 }
+	 if len(elem)==0{
+	 	return false, err
+	 }
+	 return  true, err 
+}
+
 //Data un pagina (impostata dal WebDriver) prendo un certo numero di documenti dalla pagina
 //partendo dal primo in alto.
 //Se il numero (numDocs) e' maggiore del numero di documenti nella pagina (tipicamente 8),
 //mi limito a restituire i documenti presenti nella pagina e la loro quantita'.
 func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs uint64) ([]structures.Document, uint16) {
+	//aspetto che gli elementi article siano caricati
+	//wd.Wait(condition)
+	
 	//scorro i link ai documenti presenti nella pagina
 	links, err := wd.FindElements(selenium.ByXPATH, "//article")
 	if err != nil {
