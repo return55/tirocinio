@@ -6,6 +6,7 @@ import (
 	"os"
 	"regexp"
 	"strconv"
+	"strings"
 
 	"github.com/return55/tirocinio/structures"
 
@@ -32,7 +33,7 @@ var (
 
 //Condizione per il caricamento della pagina (aspetto 1 article)
 func condition(wd selenium.WebDriver) (bool, error) {
-	elem, err := wd.FindElements(selenium.ByXPATH, "//article")
+	elem, err := wd.FindElements(selenium.ByXPATH, "//article[@class='paper paper-mode-2 card']")
 
 	if err != nil {
 		panic(err)
@@ -52,19 +53,19 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 	wd.Wait(condition)
 
 	//scorro i link ai documenti presenti nella pagina
-	// links, err := wd.FindElements(selenium.ByXPATH, "//article")
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// fmt.Println("Lunghezza: ", len(links))
-	// for _, link := range links {
-	// 	url, err := link.GetAttribute("class")
-	// 	if err != nil {
-	// 		fmt.Println("---------------------------------")
-	// 	}
-	// 	fmt.Println(url)
-	// }
-	// return nil, 0
+	/*links, err := wd.FindElements(selenium.ByXPATH, "//article")
+	if err != nil {
+		panic(err)
+	}
+	 fmt.Println("Lunghezza: ", len(links))
+	for _, link := range links {
+	 	url, err := link.GetAttribute("class")
+	 	if err != nil {
+	 		fmt.Println("---------------------------------")
+	 	}
+	 	fmt.Println(url)
+	 }
+	 return nil, 0*/
 
 	//prendo i titoli dei documenti  (titles.GetAttribute("title"))
 	titles, err := wd.FindElements(selenium.ByXPATH,
@@ -81,16 +82,31 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 		min = len(titles)
 	}
 	documents := make([]structures.MADocument, min)
+	
+	//controllo
+	/*fmt.Println("Numero documenti: ", len(titles))
+	for _, t := range titles {
+		tit, _ := t.GetAttribute("title")
+		tit = strings.Replace(tit, "%!(EXTRA string=", "", 1)
+		tit = strings.TrimSuffix(tit, ")")
+		fmt.Println("Titolo: ", tit)
+	}
+	return nil, 0*/
 
 	//scorro i documenti della pagina
 	for count := 0; count < min; count++ {
 		//assegno il titolo
-		documents[count].Title, _ = titles[count].GetAttribute("title")
+		tit, _ := titles[count].GetAttribute("title")
+		//Devo rimuovere il prefisso: %!(EXTRA string= e il suffisso: )
+		//Non ho idea da dove arrivino
+		tit = strings.Replace(tit, "%!(EXTRA string=", "", 1)
+		tit = strings.TrimSuffix(tit, ")")
+		documents[count].Title = tit
 		//per prendere tutte le informazioni devo andare alla pagina del documento:
 		titles[count].Click()
-		//Espando tutti gli "show more": fields of study, sources, references, citations
+		//Espando tutti gli "show more": fields of study, sources
 		showMore, err := wd.FindElements(selenium.ByXPATH,
-			"//div[@class='ulist-show-more']/a")
+			"//section[@class='pure-u-1 pure-u-md-1-4 entity-right detail-right']//div[@class='ulist-show-more']/a")
 		if err != nil {
 			if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
 				currentUrl, err := wd.CurrentURL()
@@ -108,13 +124,16 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 				panic(err)
 			}
 		}
+		currentUrl, err := wd.CurrentURL()
+		fmt.Println("URL: ", currentUrl)
 		//prendo i fields of study e sources
 		fieldsAndSources, err := wd.FindElements(selenium.ByXPATH,
 			"//section[@class='pure-u-1 pure-u-md-1-4 entity-right detail-right']"+
-				"/ma-ulist/div/div[@class='ulist-body]/ul[@class='ulist-content']")
+				"/ma-ulist/div/div[@class='ulist-body']/ul[@class='ulist-content']")
 		if err != nil {
 			panic(err)
 		}
+		fmt.Println(fieldsAndSources)
 		//fields of study
 		fieldsOfStudy, err := fieldsAndSources[0].FindElements(selenium.ByXPATH,
 			"li/a/span")
