@@ -14,8 +14,9 @@ func main() {
 
 	defer service.Stop()
 	defer wd.Quit()
-	_ = webDriver.GetInitialDocument_MA(wd)
+	docs := webDriver.GetInitialDocument_MA(wd)
 
+	fmt.Println(docs)
 	return
 
 	_, _ = webDriver.StartSelenium(-1)

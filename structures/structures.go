@@ -1,7 +1,5 @@
 package structures
 
-import "time"
-
 //Document e' utilizzata per i documenti presi da Google Scholar
 //!!!!!!!!! CAMBIA CitedBy CON Citations !!!!!!!!!!!!!!
 type Document struct {
@@ -13,14 +11,15 @@ type Document struct {
 
 //MADocument e' utilizzata per i documenti presi da Microsoft Academic
 type MADocument struct {
+	Title          string
 	Url            sources  //URL dei vari sorgenti disponibili
-	Authors        []author //Nomi, cognomi e affiliazioni dei vari autori
-	NumCitations   uint16
+	Authors        []Author //Nomi, cognomi e affiliazioni dei vari autori
+	NumCitations   int64
 	LinkCitations  string //Link alla pagina di Academy con i documenti che lo citano
-	NumReferences  uint16
+	NumReferences  int64
 	LinkReferences string //Link alla pagina di Academy con i documenti che cita
 	Abstract       string
-	Date           time.Time //Data pubblicazione
+	Date           string //time.Time //Data pubblicazione
 	FieldsOfStudy  []string
 }
 
@@ -33,7 +32,7 @@ type sources struct {
 //Oltre al nome e cognome dell'autore, memorizzo anche le informazioni sulla sua
 //affiliazione che puo' essere diversa da pubblicazione a pubblicazione ma unica
 //per ognuna
-type author struct {
+type Author struct {
 	Name        string //Contenuto: "nome cognome"
 	Affiliation string //Ente con cui l'autore ha collaborato per scrivere la pubblicazione
 }
