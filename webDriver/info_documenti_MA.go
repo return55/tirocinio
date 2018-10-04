@@ -418,3 +418,72 @@ func GetInitialDocument_MA(wd selenium.WebDriver) []structures.MADocument {
 	return docs
 	//return docs[0]
 }
+
+
+//DA METTERE A POSTO-------------------------------------------------------
+//Dato un link alla pagina di partenza, comincio a raccogliere i documenti (8 per pagina)
+//finche' non arrivo a numDoc.
+func GetCiteDocuments(wd selenium.WebDriver, linkCitedBy string, numDoc uint64) ([]structures.MADocument, uint64) {
+	if err := wd.Get(linkCitedBy); err != nil {
+		panic(err)
+	}
+	var allDoc []structures.MADocument
+	var docRead int = 0
+	fmt.Println("***** docRead= " + strconv.FormatUint(docRead, 10))
+	fmt.Println("***** numDoc= " + strconv.FormatUint(numDoc, 10))
+
+	//genero la sequenza di numeri casuali
+	r:=rand.New(rand.NewSource(12))
+	
+	for numDoc > docRead {
+
+		newDoc, numNewDoc := GetDocumentsFromPage(wd, numDoc-docRead)
+		allDoc = append(allDoc, newDoc...)
+		//incremento il numero dei documenti letti
+		docRead = docRead + uint64(numNewDoc)
+		fmt.Println("***** docRead= " + strconv.FormatUint(docRead, 10))
+		
+		/* Scorro una pagina alla volta in sequenza 
+		//vado alla prosssima pagina, se possibile:
+		linkAvanti, err := wd.FindElement(selenium.ByXPATH, "//b[text()='Next']/..")
+		//se non trovo il link per andare avanti, mi fermo
+		if err != nil {
+			if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
+				return allDoc, docRead
+			} else {
+				panic(err)
+			}
+		}
+
+		url, err := linkAvanti.GetAttribute("href")
+		if err != nil {
+			panic(err)
+		}
+		///////////////////////////////////*/
+
+		/* Scorro in sequenza ma aspetto un tempo che cresce in modo esponenziale */
+		waitTimeSec := time.Duration((math.Round(r.ExpFloat64())))
+		time.Sleep(waitTimeSec * time.Second)
+		
+		//vado alla prosssima pagina, se possibile:
+		linkAvanti, err := wd.FindElement(selenium.ByXPATH, "//div[@class='entityResultPager']/ul/li/a[@aria-label='Next']")
+		//se non trovo il link per andare avanti, mi fermo
+		if err != nil {
+			if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
+				return allDoc, docRead
+			} else {
+				panic(err)
+			}
+		}
+
+		err := linkAvanti.Click()
+		if err != nil {
+			panic(err)
+		}
+		//////////////////////////////////////////////
+		/*if err := wd.Get(structures.URLScholar + url); err != nil {
+			panic(err)
+		}*/
+	}
+	return allDoc, docRead
+}
