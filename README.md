@@ -4,7 +4,7 @@
 Sulla macchina devono essere presenti: la jre 8 e il pacchetto "xvfb" per permettere al web driver (Selenium) di funzionare.
 ### Firefox
 Selenium vuole che in '/usr/bin/firefox' sia presente una versione di firefox non inferiore alla 57.
-E' necessario scaricarlo dal sito ufficiale e creare un link alleseguibile:
+E' necessario scaricarlo dal sito ufficiale e creare un link all'eseguibile:
 * sudo ln -s /path-to-firefox-directory/firefox-bin /usr/bin/firefox
 ### Altri
 * Scarica Go dal sito e configuralo (anche GOBIN)
