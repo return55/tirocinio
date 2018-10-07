@@ -14,22 +14,28 @@ func main() {
 
 	defer service.Stop()
 	defer wd.Quit()
-	_ = webDriver.GetInitialDocument_MA(wd)
+	initialDoc := webDriver.GetInitialDocument_MA(wd)
 
-	//fmt.Println(docs)
-	return
-
-	_, _ = webDriver.StartSelenium(-1)
-
-	fmt.Println("111111111111111111111111111111111111111111")
-	allDoc := webDriver.LoadDocuments(47)
-	webDriver.PrintDocuments(allDoc)
-
-	fmt.Println("222222222222222222222222222222222222222222")
-	pool := docDatabase.StartPoolNeo4j(6)
-	for i, conn := range pool {
-		docDatabase.AddDocument(conn, allDoc[i], "")
+	fmt.Println("Link alle citazioni: ",initialDoc.LinkCitations)
+	
+	citeInitialDoc, _ := webDriver.GetCiteDocuments_MA(wd, initialDoc.LinkCitations, 33)
+	
+	allDoc := append(citeInitialDoc, initialDoc)
+	allDoc[0], allDoc[len(allDoc)-1] = allDoc[len(allDoc)-1], allDoc[0]
+	
+	//Apro connessione neo4j
+	conn := docDatabase.StartNeo4j()
+	defer conn.Close()
+	//Aggiungo il prioìmo doc
+	docDatabase.AddDocument_MA(conn, allDoc[0], "")
+	
+	for i:=1; i<len(allDoc); i++ {
+		fmt.Println("Titolo ",i," : ", allDoc[i].Title)
+		docDatabase.AddDocument_MA(conn, allDoc[i], allDoc[0].Title)
 	}
+	
+	
+	return
 
 }
 

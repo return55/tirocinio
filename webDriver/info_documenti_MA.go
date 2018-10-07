@@ -7,6 +7,9 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"math/rand"
+	"math"
+	"time"
 
 	"github.com/return55/tirocinio/structures"
 
@@ -65,7 +68,7 @@ func conditionDocumentPage(wd selenium.WebDriver) (bool, error) {
 //partendo dal primo in alto.
 //Se il numero (numDocs) e' maggiore del numero di documenti nella pagina (tipicamente 8),
 //mi limito a restituire i documenti presenti nella pagina e la loro quantita'.
-func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.MADocument, uint16) {
+func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.MADocument, uint64) {
 	//aspetto che gli elementi article siano caricati
 	wd.Wait(conditionResultPage)
 
@@ -374,12 +377,12 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 		wd.Back()
 	}
 
-	return documents, uint16(min)
+	return documents, uint64(min)
 
 }
 
 //Restituisce il documento da cui inizia la ricerca
-func GetInitialDocument_MA(wd selenium.WebDriver) []structures.MADocument {
+func GetInitialDocument_MA(wd selenium.WebDriver) structures.MADocument {
 	if err := wd.Get(structures.URLAcademic); err != nil {
 		panic(err)
 	}
@@ -414,34 +417,33 @@ func GetInitialDocument_MA(wd selenium.WebDriver) []structures.MADocument {
 	if numDocs > 1 {
 		panic(fmt.Sprintf("GetInitialDocument - GetDocumentsFromPage\nHa resituito piu' di un documento"))
 	}
-	fmt.Println("\n\n", numDocs, docs)
-	return docs
-	//return docs[0]
+
+	return docs[0]
 }
 
 
 //DA METTERE A POSTO-------------------------------------------------------
 //Dato un link alla pagina di partenza, comincio a raccogliere i documenti (8 per pagina)
 //finche' non arrivo a numDoc.
-func GetCiteDocuments(wd selenium.WebDriver, linkCitedBy string, numDoc uint64) ([]structures.MADocument, uint64) {
+func GetCiteDocuments_MA(wd selenium.WebDriver, linkCitedBy string, numDoc uint64) ([]structures.MADocument, uint64) {
 	if err := wd.Get(linkCitedBy); err != nil {
 		panic(err)
 	}
 	var allDoc []structures.MADocument
-	var docRead int = 0
-	fmt.Println("***** docRead= " + strconv.FormatUint(docRead, 10))
+	//Mi serve per dire quanti documenti ho preso
+	initialNumDoc := numDoc
 	fmt.Println("***** numDoc= " + strconv.FormatUint(numDoc, 10))
 
 	//genero la sequenza di numeri casuali
 	r:=rand.New(rand.NewSource(12))
 	
-	for numDoc > docRead {
+	for numDoc > 0 {
 
-		newDoc, numNewDoc := GetDocumentsFromPage(wd, numDoc-docRead)
+		newDoc, numNewDoc := GetDocumentsFromPage_MA(wd, int(numDoc))
 		allDoc = append(allDoc, newDoc...)
-		//incremento il numero dei documenti letti
-		docRead = docRead + uint64(numNewDoc)
-		fmt.Println("***** docRead= " + strconv.FormatUint(docRead, 10))
+		//tolgo il numero di documenti appena letti
+		numDoc = numDoc - numNewDoc
+		fmt.Println("***** docRead= ", numNewDoc)
 		
 		/* Scorro una pagina alla volta in sequenza 
 		//vado alla prosssima pagina, se possibile:
@@ -470,13 +472,13 @@ func GetCiteDocuments(wd selenium.WebDriver, linkCitedBy string, numDoc uint64) 
 		//se non trovo il link per andare avanti, mi fermo
 		if err != nil {
 			if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
-				return allDoc, docRead
+				return allDoc, initialNumDoc - numDoc
 			} else {
 				panic(err)
 			}
 		}
 
-		err := linkAvanti.Click()
+		err = linkAvanti.Click()
 		if err != nil {
 			panic(err)
 		}
@@ -485,5 +487,5 @@ func GetCiteDocuments(wd selenium.WebDriver, linkCitedBy string, numDoc uint64) 
 			panic(err)
 		}*/
 	}
-	return allDoc, docRead
+	return allDoc, initialNumDoc - numDoc
 }
