@@ -18,8 +18,8 @@ import (
 )
 
 const (
-	seleniumPath    = "webDriver/selenium-server-standalone-3.13.0.jar"
-	geckoDriverPath = "webDriver/geckodriver-v0.21.0-linux64/geckodriver"
+	seleniumPath    = "webDriver/selenium-server-standalone-3.14.0.jar"
+	geckoDriverPath = "webDriver/geckodriver-v0.23.0-linux64/geckodriver"
 	defaultPort     = 8080
 )
 
