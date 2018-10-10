@@ -1,15 +1,14 @@
-
 package webDriver
 
 import (
 	"fmt"
 	"log"
+	"math"
+	"math/rand"
 	"os"
 	"regexp"
 	"strconv"
 	"strings"
-	"math/rand"
-	"math"
 	"time"
 
 	"github.com/return55/tirocinio/structures"
@@ -25,13 +24,13 @@ import (
 // *LinkCitations  string //Link alla pagina di Academy con i documenti che lo citano
 // *NumReferences  uint16
 // *LinkReferences string //Link alla pagina di Academy con i documenti che cita
-// Abstract       string
+// *Abstract       string
 // *Date           per ora string//time.Time //Data pubblicazione
 // *FieldsOfStudy  []string
 
 var (
 	//creo il logger per la ricerca in Microsoft Academic
-	fileMA, _ = os.OpenFile("robaMA.LOG", os.O_WRONLY, 0600)
+	fileMA, _ = os.OpenFile("sorgentePrimaTitoli.html", os.O_WRONLY, 0600)
 	logger    = log.New(fileMA, "", 0)
 )
 
@@ -42,28 +41,28 @@ func conditionResultPage(wd selenium.WebDriver) (bool, error) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Condizione result page")
+	fmt.Println("Condizione pagina dei risultati")
 	if len(elem) == 0 {
 		return false, err
 	}
-	
+
 	return true, err
 }
 
 //Condizione per il caricamento della pagina del singolo documento (aspetto i fields of study)
 func conditionDocumentPage(wd selenium.WebDriver) (bool, error) {
-	elem, err := wd.FindElements(selenium.ByXPATH, 
+	elem, err := wd.FindElements(selenium.ByXPATH,
 		"//section[@class='pure-u-1 pure-u-md-1-4 entity-right detail-right']"+
-		"/ma-ulist/div/div[@class='ulist-body']/ul[@class='ulist-content']")
+			"/ma-ulist/div/div[@class='ulist-body']/ul[@class='ulist-content']")
 
 	if err != nil {
 		panic(err)
 	}
 	if len(elem) == 0 {
-		fmt.Println("Lunghezza 0")
+		fmt.Println("Condizione caricamento pagina documento")
 		return false, err
 	}
-	fmt.Println("************* ",elem)
+	fmt.Println("************* ", elem)
 	return true, err
 }
 
@@ -72,20 +71,23 @@ func conditionDocumentPage(wd selenium.WebDriver) (bool, error) {
 //Se il numero (numDocs) e' maggiore del numero di documenti nella pagina (tipicamente 8),
 //mi limito a restituire i documenti presenti nella pagina e la loro quantita'.
 func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.MADocument, uint64) {
-	
-	_=wd.Refresh()
-	//aspetto che gli elementi article siano caricati
-	wd.WaitWithTimeout(conditionResultPage, 5000 * time.Millisecond)
-	
+
 	currentUrl, err := wd.CurrentURL()
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println("Url attuale: ", currentUrl)
-	
-	sorgente, _ := wd.PageSource()
+
+	//_=wd.Refresh()
+	//aspetto che gli elementi article siano caricati
+	wd.WaitWithTimeout(conditionResultPage, 5000*time.Millisecond)
+
+	sorgente, err := wd.PageSource()
+	if err != nil {
+		panic(err)
+	}
 	logger.Println(sorgente)
-				
+
 	//scorro i link ai documenti presenti nella pagina
 	/*links, err := wd.FindElements(selenium.ByXPATH, "//article")
 	if err != nil {
@@ -107,11 +109,19 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 	if err != nil {
 		panic(err)
 	}
-	
+
+	fileS, _ := os.OpenFile("sorgenteDopoTitoli.html", os.O_WRONLY, 0600)
+	logger = log.New(fileS, "", 0)
+	sorgente, err = wd.PageSource()
+	if err != nil {
+		panic(err)
+	}
+	logger.Println(sorgente)
+
 	fmt.Println("Numero titoli: ", len(titles))
 	for i, t := range titles {
 		ti, _ := t.GetAttribute("title")
-		fmt.Println("Titolo ",i,": ", ti)
+		fmt.Println("Titolo ", i, ": ", ti)
 	}
 	currentUrl, err = wd.CurrentURL()
 	if err != nil {
@@ -127,103 +137,103 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 		min = len(titles)
 	}
 	documents := make([]structures.MADocument, min)
-	
+
 	//-----------------------------------------------------------------------
 	authorsAndAffiliations, err := wd.FindElements(selenium.ByXPATH,
-			"//section[@class='paper-authors']/ma-ulist/div/div[@class='ulist-body']/ul")
+		"//section[@class='paper-authors']/ma-ulist/div/div[@class='ulist-body']/ul")
 
-		if err != nil {
-			if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
-				currentUrl, err := wd.CurrentURL()
-				if err != nil {
-					panic(err)
-				}
-				logger.Printf("Alla pagina %s non ci sono info sugli Autori", currentUrl)
-				//gli autori rimangono array vuoti, non devo fare niente				
-				//ci andra' un return
-			} else {
-				panic(err)
-			}
-		}
-		fmt.Println("Numero tot autori: ", len(authorsAndAffiliations)); 
-		//se il numero degli autori e' diverso da quello dei titoli, c'e' un problema
-		if len(titles) != len(authorsAndAffiliations) {
+	if err != nil {
+		if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
 			currentUrl, err := wd.CurrentURL()
 			if err != nil {
 				panic(err)
 			}
-			logger.Printf("Numero titoli(%i) != numero gruppi autori(%i) per %s\n", len(titles), len(authorsAndAffiliations), currentUrl) 
+			logger.Printf("Alla pagina %s non ci sono info sugli Autori", currentUrl)
+			//gli autori rimangono array vuoti, non devo fare niente
+			//ci andra' un return
+		} else {
+			panic(err)
 		}
-		//scorro autori e affiliazioni
-		for pos:=0; pos<min; pos++ {
-			//prendo gli autori
-			authors, err := authorsAndAffiliations[pos].FindElements(selenium.ByXPATH,
-				"li/span/a")
-					fmt.Println("Numero autori: ", len(authors))
+	}
+	fmt.Println("Numero tot autori: ", len(authorsAndAffiliations))
+	//se il numero degli autori e' diverso da quello dei titoli, c'e' un problema
+	if len(titles) != len(authorsAndAffiliations) {
+		currentUrl, err := wd.CurrentURL()
+		if err != nil {
+			panic(err)
+		}
+		logger.Printf("Numero titoli(%i) != numero gruppi autori(%i) per %s\n", len(titles), len(authorsAndAffiliations), currentUrl)
+	}
+	//scorro autori e affiliazioni
+	for pos := 0; pos < min; pos++ {
+		//prendo gli autori
+		authors, err := authorsAndAffiliations[pos].FindElements(selenium.ByXPATH,
+			"li/span/a")
+		fmt.Println("Numero autori: ", len(authors))
+		if err != nil {
+			panic(err)
+		}
+
+		textAuthors := make([]string, len(authors))
+		for i := 0; i < len(authors); i++ {
+			textAuthors[i], err = authors[i].Text()
+			fmt.Println("Autrice: ", textAuthors[i])
 			if err != nil {
 				panic(err)
 			}
-		
-			textAuthors := make([]string, len(authors))
-			for i := 0; i < len(authors); i++ {
-				textAuthors[i], err = authors[i].Text()
-				fmt.Println("Autrice: ", textAuthors[i])
+		}
+		//prendo le affiliazioni
+		//NOTA:
+		//un autore puo' avere piu' affiliazioni per lo stesso articolo, io
+		//prendo solo la prima.
+		affiliation, err := authorsAndAffiliations[pos].FindElements(selenium.ByXPATH,
+			"li/span/span[@class='affiliation']/ul")
+		fmt.Println("Numero affiliazioni: ", len(authors))
+		textAffiliation := make([]string, len(authors))
+		if err != nil {
+			if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
+				//Non ci sono affiliazioni
+				currentUrl, err := wd.CurrentURL()
 				if err != nil {
 					panic(err)
 				}
-			}
-			//prendo le affiliazioni 
-			//NOTA:
-			//un autore puo' avere piu' affiliazioni per lo stesso articolo, io
-			//prendo solo la prima.
-			affiliation, err := authorsAndAffiliations[pos].FindElements(selenium.ByXPATH,
-				"li/span/span[@class='affiliation']/ul")
-								fmt.Println("Numero affiliazioni: ", len(authors))
-			textAffiliation := make([]string, len(authors))
-			if err != nil {
-				if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
-					//Non ci sono affiliazioni
-					currentUrl, err := wd.CurrentURL()
-					if err != nil {
-						panic(err)
-					}
-					logger.Printf("Alla pagina %s non ci sono Affiliazioni doc  numero %i", currentUrl, pos)
-					//Imposto le affiliazioni a valori nulli ("")
-					/*for i:=0; i<len(textAffiliation); i++ {
-						textAffiliation[i]=""
-					} */
-				} else {
-					panic(err)
-				}
+				logger.Printf("Alla pagina %s non ci sono Affiliazioni doc  numero %i", currentUrl, pos)
+				//Imposto le affiliazioni a valori nulli ("")
+				/*for i:=0; i<len(textAffiliation); i++ {
+					textAffiliation[i]=""
+				} */
 			} else {
-				//Prendo il primo li di ogni ul
-				for i := 0; i < len(affiliation); i++ {
-					firstAff, err := affiliation[i].FindElement(selenium.ByXPATH,
-						"li/a[@class='button-link']")
+				panic(err)
+			}
+		} else {
+			//Prendo il primo li di ogni ul
+			for i := 0; i < len(affiliation); i++ {
+				firstAff, err := affiliation[i].FindElement(selenium.ByXPATH,
+					"li/a[@class='button-link']")
+				if err == nil {
+					textAffiliation[i], err = firstAff.GetAttribute("title")
+				} else {
+					firstAff, err = affiliation[i].FindElement(selenium.ByXPATH,
+						"li/span")
 					if err == nil {
 						textAffiliation[i], err = firstAff.GetAttribute("title")
-					}else {
-						firstAff, err = affiliation[i].FindElement(selenium.ByXPATH,
-							"li/span")
-						if err==nil {
-							textAffiliation[i], err = firstAff.GetAttribute("title")
-						}else {
-							textAffiliation[i] = ""
-						}
+					} else {
+						textAffiliation[i] = ""
 					}
-					fmt.Println("Affiliazione: ", textAffiliation[i])
-					
-				}				
+				}
+				fmt.Println("Affiliazione: ", textAffiliation[i])
+
 			}
-			//Aggiungo autori e affiliazioni al documento
-			for i := 0; i < len(authors); i++ {
-				documents[pos].Authors = append(documents[pos].Authors,
-					structures.Author{textAuthors[i], textAffiliation[i]})
-			}
-		
 		}
-		
-		//-------------------------------------------------------------------------------------------------------*/
+		//Aggiungo autori e affiliazioni al documento
+		for i := 0; i < len(authors); i++ {
+			documents[pos].Authors = append(documents[pos].Authors,
+				structures.Author{textAuthors[i], textAffiliation[i]})
+		}
+
+	}
+
+	//-------------------------------------------------------------------------------------------------------*/
 	//controllo
 	/*fmt.Println("Numero documenti: ", len(titles))
 	for _, t := range titles {
@@ -247,10 +257,10 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 		titles[count].Click()
 		//aspetto di caricare la pagina (i fields of study come riferimento)
 		wd.Wait(conditionDocumentPage)
-		
+
 		currentUrl, err := wd.CurrentURL()
 		fmt.Println("URL: ", currentUrl)
-		
+
 		//Espando tutti gli "show more": fields of study, sources
 		showMore, err := wd.FindElements(selenium.ByXPATH,
 			"//section[@class='pure-u-1 pure-u-md-1-4 entity-right detail-right']//div[@class='ulist-show-more']/a")
@@ -280,7 +290,7 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 				}
 			}
 		}
-		
+
 		//prendo i fields of study e sources
 		fieldsAndSources, err := wd.FindElements(selenium.ByXPATH,
 			"//section[@class='pure-u-1 pure-u-md-1-4 entity-right detail-right']"+
@@ -329,7 +339,7 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 			} else {
 				documents[count].Url.WWW = append(documents[count].Url.WWW, URLSource)
 			}
-		}		
+		}
 		//Prendo la data(posizione 0)
 		date, err := wd.FindElement(selenium.ByXPATH,
 			"//section[@class='paper-year']/span")
@@ -375,7 +385,7 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 			panic(err)
 		}
 		textNumCit, _ := numCit.Text()
-		
+
 		//elimino la virgola (se presente)
 		textNumCit = strings.Replace(textNumCit, ",", "", -1)
 		fmt.Println("Numero citazioni: ", textNumCit)
@@ -412,7 +422,7 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 		} else {
 			documents[count].Abstract, _ = abstractSec.Text()
 		}
-	
+
 		fmt.Println("---------------------------------------------------")
 		//Torno alla pagina dei risultati(FORSE NON E' NECESSARIO)
 		//wd.Back()
@@ -425,9 +435,9 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 //Condizione per il caricamento della pagina iniziale: aspetto che si
 //carichi la text box
 func conditionMainPage(wd selenium.WebDriver) (bool, error) {
-	elem, err := wd.FindElements(selenium.ByXPATH, 
+	elem, err := wd.FindElements(selenium.ByXPATH,
 		"//ma-queryformulation[@class='searchWrap']/div//"+
-		"input[@class='searchControl']")
+			"input[@class='searchControl']")
 
 	if err != nil {
 		panic(err)
@@ -447,16 +457,31 @@ func GetInitialDocument_MA(wd selenium.WebDriver) structures.MADocument {
 	url, _ := wd.CurrentURL()
 	fmt.Println("Url: ", url)
 
-	//Aspetto che si carichi la text box
-	wd.Wait(conditionMainPage)
-	
-	textBox, err := wd.FindElement(selenium.ByXPATH,
-		"//ma-queryformulation[@class='searchWrap']/div//"+
-		"input[@class='searchControl']")
+	fileS, _ := os.OpenFile("sorgenteInitialDoc.html", os.O_WRONLY, 0600)
+	logger = log.New(fileS, "", 0)
+	sorgente, err := wd.PageSource()
 	if err != nil {
 		panic(err)
 	}
-	if err := textBox.SendKeys(`bio`); err != nil {
+	logger.Println(sorgente)
+	//Aspetto che si carichi la text box
+	wd.Wait(conditionMainPage)
+
+	fileS, _ = os.OpenFile("sorgenteInitialDocDopoWait.html", os.O_WRONLY, 0600)
+	logger = log.New(fileS, "", 0)
+	sorgente, err = wd.PageSource()
+	if err != nil {
+		panic(err)
+	}
+	logger.Println(sorgente)
+	
+	textBox, err := wd.FindElement(selenium.ByXPATH,
+		"//ma-queryformulation[@class='searchWrap']/div//"+
+			"input[@class='searchControl']")
+	if err != nil {
+		panic(err)
+	}
+	if err := textBox.SendKeys(`cia`); err != nil {
 		panic(err)
 	}
 	searchButton, err := wd.FindElement(selenium.ByXPATH,
@@ -481,7 +506,6 @@ func GetInitialDocument_MA(wd selenium.WebDriver) structures.MADocument {
 	return docs[0]
 }
 
-
 //DA METTERE A POSTO-------------------------------------------------------
 //Dato un link alla pagina di partenza, comincio a raccogliere i documenti (8 per pagina)
 //finche' non arrivo a numDoc.
@@ -495,8 +519,8 @@ func GetCiteDocuments_MA(wd selenium.WebDriver, linkCitedBy string, numDoc uint6
 	fmt.Println("***** numDoc= " + strconv.FormatUint(numDoc, 10))
 
 	//genero la sequenza di numeri casuali
-	r:=rand.New(rand.NewSource(12))
-	
+	r := rand.New(rand.NewSource(12))
+
 	for numDoc > 0 {
 
 		newDoc, numNewDoc := GetDocumentsFromPage_MA(wd, int(numDoc))
@@ -504,8 +528,8 @@ func GetCiteDocuments_MA(wd selenium.WebDriver, linkCitedBy string, numDoc uint6
 		//tolgo il numero di documenti appena letti
 		numDoc = numDoc - numNewDoc
 		fmt.Println("***** docRead= ", numNewDoc)
-		
-		/* Scorro una pagina alla volta in sequenza 
+
+		/* Scorro una pagina alla volta in sequenza
 		//vado alla prosssima pagina, se possibile:
 		linkAvanti, err := wd.FindElement(selenium.ByXPATH, "//b[text()='Next']/..")
 		//se non trovo il link per andare avanti, mi fermo
@@ -526,7 +550,7 @@ func GetCiteDocuments_MA(wd selenium.WebDriver, linkCitedBy string, numDoc uint6
 		/* Scorro in sequenza ma aspetto un tempo che cresce in modo esponenziale */
 		waitTimeSec := time.Duration((math.Round(r.ExpFloat64())))
 		time.Sleep(waitTimeSec * time.Second)
-		
+
 		//vado alla prosssima pagina, se possibile:
 		linkAvanti, err := wd.FindElement(selenium.ByXPATH, "//div[@class='entityResultPager']/ul/li/a[@aria-label='Next']")
 		//se non trovo il link per andare avanti, mi fermo
