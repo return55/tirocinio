@@ -77,8 +77,11 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 		panic(err)
 	}
 	fmt.Println("Url attuale: ", currentUrl)
-
-	//_=wd.Refresh()
+	
+	//per non far arrabbiare MA
+	time.Sleep(6000*time.Millisecond)
+	
+	_=wd.Refresh()
 	//aspetto che gli elementi article siano caricati
 	wd.WaitWithTimeout(conditionResultPage, 5000*time.Millisecond)
 
@@ -110,6 +113,8 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 		panic(err)
 	}
 
+	
+
 	fileS, _ := os.OpenFile("sorgenteDopoTitoli.html", os.O_WRONLY, 0600)
 	logger = log.New(fileS, "", 0)
 	sorgente, err = wd.PageSource()
@@ -117,12 +122,7 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 		panic(err)
 	}
 	logger.Println(sorgente)
-
-	fmt.Println("Numero titoli: ", len(titles))
-	for i, t := range titles {
-		ti, _ := t.GetAttribute("title")
-		fmt.Println("Titolo ", i, ": ", ti)
-	}
+	
 	currentUrl, err = wd.CurrentURL()
 	if err != nil {
 		panic(err)
@@ -137,6 +137,25 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 		min = len(titles)
 	}
 	documents := make([]structures.MADocument, min)
+	URLDocuments := make([]string, min)
+	
+	//Assegno i titoli ai doc e mi savo i relativi link in una var a parte perche'
+	//una volta cambiata la pagina perdo il riferimento all'elemento con il link
+	//assegno il titolo
+	for i:=0; i<min; i++ {
+		tit, _ := titles[i].GetAttribute("title")
+		tit = strings.Replace(tit, "%!(EXTRA string=", "", 1)
+		tit = strings.TrimSuffix(tit, ")")
+		documents[i].Title = tit
+		
+		fmt.Println("Titolo ",i,": ",documents[i].Title)
+		
+		URLDoc, _ := titles[i].GetAttribute("href")
+		URLDocuments[i] = structures.URLAcademic + URLDoc
+		
+		fmt.Println("URL ",i,": ",URLDocuments[i])
+	}
+
 
 	//-----------------------------------------------------------------------
 	authorsAndAffiliations, err := wd.FindElements(selenium.ByXPATH,
@@ -246,15 +265,17 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 
 	//scorro i documenti della pagina
 	for count := 0; count < min; count++ {
-		//assegno il titolo
-		tit, _ := titles[count].GetAttribute("title")
-		//Devo rimuovere il prefisso: %!(EXTRA string= e il suffisso: )
-		//Non ho idea da dove arrivino
-		tit = strings.Replace(tit, "%!(EXTRA string=", "", 1)
-		tit = strings.TrimSuffix(tit, ")")
-		documents[count].Title = tit
+		//per non far arrabbiare MA
+		time.Sleep(4000*time.Millisecond)
+	
 		//per prendere tutte le informazioni devo andare alla pagina del documento:
-		titles[count].Click()
+		if err := wd.Get(URLDocuments[count]); err != nil {
+			panic(err)
+		}
+		
+		//per non far arrabbiare MA
+		time.Sleep(3050*time.Millisecond)
+		
 		//aspetto di caricare la pagina (i fields of study come riferimento)
 		wd.Wait(conditionDocumentPage)
 
@@ -425,7 +446,7 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 
 		fmt.Println("---------------------------------------------------")
 		//Torno alla pagina dei risultati(FORSE NON E' NECESSARIO)
-		//wd.Back()
+		wd.Back()
 	}
 
 	return documents, uint64(min)
@@ -481,7 +502,7 @@ func GetInitialDocument_MA(wd selenium.WebDriver) structures.MADocument {
 	if err != nil {
 		panic(err)
 	}
-	if err := textBox.SendKeys(`cia`); err != nil {
+	if err := textBox.SendKeys(`life`); err != nil {
 		panic(err)
 	}
 	searchButton, err := wd.FindElement(selenium.ByXPATH,

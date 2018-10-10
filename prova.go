@@ -18,7 +18,7 @@ func main() {
 
 	fmt.Println("Link alle citazioni: ",initialDoc.LinkCitations)
 	
-	citeInitialDoc, _ := webDriver.GetCiteDocuments_MA(wd, initialDoc.LinkCitations, 33)
+	citeInitialDoc, _ := webDriver.GetCiteDocuments_MA(wd, initialDoc.LinkCitations, 7)
 	
 	allDoc := append(citeInitialDoc, initialDoc)
 	allDoc[0], allDoc[len(allDoc)-1] = allDoc[len(allDoc)-1], allDoc[0]

@@ -48,7 +48,7 @@ func StartSelenium(port int) (*selenium.Service, selenium.WebDriver) {
 	selenium.SetDebug(false)
 
 	// Connect to the WebDriver instance running locally.
-	caps := selenium.Capabilities{"browserName": "chrome"}
+	caps := selenium.Capabilities{"browserName": "firefox"}
 	wd, err := selenium.NewRemote(caps, fmt.Sprintf("http://localhost:%d/wd/hub", port))
 
 	if err != nil {
