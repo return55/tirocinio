@@ -18,8 +18,10 @@ import (
 )
 
 const (
-	seleniumPath    = "webDriver/selenium-server-standalone-3.13.0.jar"
-	geckoDriverPath = "webDriver/geckodriver-v0.21.0-linux64/geckodriver"
+	seleniumPath    = "webDriver/selenium-server-standalone-3.14.0.jar"
+	geckoDriverPath = "webDriver/geckodriver-v0.23.0-linux64/geckodriver"
+	chromeDriverPath = "webDriver/chromedriver2.42"
+	chromeBinary = "/opt/google/chrome/chrome"
 	defaultPort     = 8080
 )
 
@@ -46,7 +48,7 @@ func StartSelenium(port int) (*selenium.Service, selenium.WebDriver) {
 	selenium.SetDebug(false)
 
 	// Connect to the WebDriver instance running locally.
-	caps := selenium.Capabilities{"browserName": "firefox"}
+	caps := selenium.Capabilities{"browserName": "chrome"}
 	wd, err := selenium.NewRemote(caps, fmt.Sprintf("http://localhost:%d/wd/hub", port))
 
 	if err != nil {
