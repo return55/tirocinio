@@ -330,14 +330,18 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 					panic(err)
 				}
 				logger.Printf("Alla pagina %s non ci sono Fields Of Study", currentUrl)
+				//Se non ci sono campi, lo scrivo per neo4j				
+				documents[count].FieldsOfStudy = append(documents[count].FieldsOfStudy, "No Fields")
 			} else {
 				panic(err)
 			}
+		}else{
+			for _, field := range fieldsOfStudy {
+				textField, _ := field.Text()
+				documents[count].FieldsOfStudy = append(documents[count].FieldsOfStudy, textField)
+			}
 		}
-		for _, field := range fieldsOfStudy {
-			textField, _ := field.Text()
-			documents[count].FieldsOfStudy = append(documents[count].FieldsOfStudy, textField)
-		}
+		
 		//sources
 		sources, err := fieldsAndSources[1].FindElements(selenium.ByXPATH,
 			"li/a")
@@ -351,15 +355,23 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 			} else {
 				panic(err)
 			}
-		}
-		for _, source := range sources {
-			URLSource, _ := source.GetAttribute("href")
-			//controllo se e' un PDF
-			if t, _ := regexp.MatchString(".*\\.pdf", URLSource); t {
-				documents[count].Url.PDF = append(documents[count].Url.PDF, URLSource)
-			} else {
-				documents[count].Url.WWW = append(documents[count].Url.WWW, URLSource)
+		}else{
+			for _, source := range sources {
+				URLSource, _ := source.GetAttribute("href")
+				//controllo se e' un PDF
+				if t, _ := regexp.MatchString(".*\\.pdf", URLSource); t {
+					documents[count].Url.PDF = append(documents[count].Url.PDF, URLSource)
+				} else {
+					documents[count].Url.WWW = append(documents[count].Url.WWW, URLSource)
+				}
 			}
+		}
+		//Se non ho trovato PDF o WWW, lo dico a neo4j
+		if len(documents[count].Url.PDF) == 0 {
+			documents[count].Url.PDF = append(documents[count].Url.PDF, "No Source PDF")
+		}
+		if len(documents[count].Url.WWW) == 0 {
+			documents[count].Url.WWW = append(documents[count].Url.WWW, "No Source WW")
 		}
 		//Prendo la data(posizione 0)
 		date, err := wd.FindElement(selenium.ByXPATH,
@@ -369,6 +381,10 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 		}
 		documents[count].Date, _ = date.Text()
 		fmt.Println("Data: ", documents[count].Date)
+		//Se non ho trovato la Data, lo dico a neo4j
+		/*if documents[count].Date == "" {
+			documents[count].Date = "No Date"
+		}*/
 		//Prendo le citations (0), references (1) (opz. related (2))
 		referencesAndCitations, err := wd.FindElements(selenium.ByXPATH,
 			"//div[@class='pure-u-md-4-24 pure-u-1 digit']")
@@ -502,7 +518,7 @@ func GetInitialDocument_MA(wd selenium.WebDriver) structures.MADocument {
 	if err != nil {
 		panic(err)
 	}
-	if err := textBox.SendKeys(`life`); err != nil {
+	if err := textBox.SendKeys(`cat`); err != nil {
 		panic(err)
 	}
 	searchButton, err := wd.FindElement(selenium.ByXPATH,
@@ -543,13 +559,20 @@ func GetCiteDocuments_MA(wd selenium.WebDriver, linkCitedBy string, numDoc uint6
 	r := rand.New(rand.NewSource(12))
 
 	for numDoc > 0 {
-
+		//Salvo il link alla pagina dei documenti che citano perche' vado nelle
+		//pagine dei singoli documenti che compaiono e non riesco a tornare indietro.
+		currentUrl, err := wd.CurrentURL()
+		if err != nil {
+			panic(err)
+		}
+		
 		newDoc, numNewDoc := GetDocumentsFromPage_MA(wd, int(numDoc))
 		allDoc = append(allDoc, newDoc...)
 		//tolgo il numero di documenti appena letti
 		numDoc = numDoc - numNewDoc
 		fmt.Println("***** docRead= ", numNewDoc)
-
+		fmt.Println("***** numDoc= ", numDoc)
+		
 		/* Scorro una pagina alla volta in sequenza
 		//vado alla prosssima pagina, se possibile:
 		linkAvanti, err := wd.FindElement(selenium.ByXPATH, "//b[text()='Next']/..")
@@ -568,6 +591,10 @@ func GetCiteDocuments_MA(wd selenium.WebDriver, linkCitedBy string, numDoc uint6
 		}
 		///////////////////////////////////*/
 
+		//Torno alla pagina con i rusultati
+		if err := wd.Get(currentUrl); err != nil {
+			panic(err)
+		}
 		/* Scorro in sequenza ma aspetto un tempo che cresce in modo esponenziale */
 		waitTimeSec := time.Duration((math.Round(r.ExpFloat64())))
 		time.Sleep(waitTimeSec * time.Second)
@@ -577,6 +604,7 @@ func GetCiteDocuments_MA(wd selenium.WebDriver, linkCitedBy string, numDoc uint6
 		//se non trovo il link per andare avanti, mi fermo
 		if err != nil {
 			if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
+				fmt.Println("\n\nSono uscito perche' non ho trovato Avanti\n")
 				return allDoc, initialNumDoc - numDoc
 			} else {
 				panic(err)
@@ -592,5 +620,6 @@ func GetCiteDocuments_MA(wd selenium.WebDriver, linkCitedBy string, numDoc uint6
 			panic(err)
 		}*/
 	}
+	fmt.Println("\n\nSono uscito perche' ho raggiunto numDoc, numDoc = ", numDoc, "\n")
 	return allDoc, initialNumDoc - numDoc
 }

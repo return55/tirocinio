@@ -24,14 +24,16 @@ func AddDocument_MA(conn bolt.Conn, document structures.MADocument, titleStartDo
 	//tramite delle stringhe (i nomi dei campi)
 	doc := reflect.ValueOf(document)
 
-	for _, field := range structures.FieldsName {
-		if field != "Authors" {
+	for _, field := range structures.FieldsNameMA {
+		if field != "Authors" && field != "Url" {
+			//pe capire qualce campo e' vuoto
+			fmt.Println("Campo: ", field)
 			fieldsMap[field] = doc.FieldByName(field).Interface()
 		}
 	}
 	//aggiungo il documento
 	result, err := conn.ExecNeo("CREATE (doc:MADocument {title: {Title},"+
-		" sourceWWW: {Url.WWW}, sourcePDF: {Url.PDF}, numCitations: {NumCitations},"+
+		/*" sourceWWW: {Url.WWW}, sourcePDF: {Url.PDF},*/" numCitations: {NumCitations},"+
 		" linkCitations: {LinkCitations}, numReferences: {NumReferences}, abstract: {Abstract},"+
 		" date: {Date}, fieldsOfStudy: {FieldsOfStudy}})", fieldsMap)
 	if err != nil {

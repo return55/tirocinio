@@ -23701,3 +23701,166 @@ org.neo4j.bolt.v1.packstream.PackOutputClosedException: Network channel towards 
 2018-10-10 07:40:04.073+0000 INFO [o.n.k.i.DiagnosticsManager] --- STARTED diagnostics for KernelDiagnostics:StoreFiles END ---
 2018-10-10 07:40:11.910+0000 INFO [o.n.k.i.DiagnosticsManager] --- SERVER STARTED START ---
 2018-10-10 07:40:17.044+0000 INFO [o.n.k.i.DiagnosticsManager] --- SERVER STARTED END ---
+2018-10-10 11:09:38.196+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 1579ms.
+2018-10-10 14:06:25.998+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Check Pointing triggered by scheduler for time threshold [3052]:  Starting check pointing...
+2018-10-10 14:06:25.999+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Check Pointing triggered by scheduler for time threshold [3052]:  Starting store flush...
+2018-10-10 14:07:20.575+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 488ms.
+2018-10-10 14:08:01.436+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 255ms.
+2018-10-10 14:16:26.131+0000 ERROR [o.n.k.i.t.l.c.CheckPointerImpl] Error performing check point Failed to rotate logs. Expected version: 3052, actual version: 2466, wait timeout (ms): 600074
+org.neo4j.kernel.impl.store.kvstore.RotationTimeoutException: Failed to rotate logs. Expected version: 3052, actual version: 2466, wait timeout (ms): 600074
+	at org.neo4j.kernel.impl.store.kvstore.RotationState$Rotation.rotate(RotationState.java:79)
+	at org.neo4j.kernel.impl.store.kvstore.RotationState$Rotation.rotate(RotationState.java:52)
+	at org.neo4j.kernel.impl.store.kvstore.AbstractKeyValueStore$RotationTask.rotate(AbstractKeyValueStore.java:309)
+	at org.neo4j.kernel.impl.store.kvstore.AbstractKeyValueStore$RotationTask.rotate(AbstractKeyValueStore.java:286)
+	at org.neo4j.kernel.impl.store.counts.CountsTracker.rotate(CountsTracker.java:127)
+	at org.neo4j.kernel.impl.store.NeoStores.flush(NeoStores.java:246)
+	at org.neo4j.kernel.impl.storageengine.impl.recordstorage.RecordStorageEngine.flushAndForce(RecordStorageEngine.java:468)
+	at org.neo4j.kernel.impl.transaction.log.checkpoint.CheckPointerImpl.doCheckPoint(CheckPointerImpl.java:160)
+	at org.neo4j.kernel.impl.transaction.log.checkpoint.CheckPointerImpl.checkPointIfNeeded(CheckPointerImpl.java:134)
+	at org.neo4j.kernel.impl.transaction.log.checkpoint.CheckPointScheduler$1.run(CheckPointScheduler.java:64)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+	at org.neo4j.helpers.NamedThreadFactory$2.run(NamedThreadFactory.java:109)
+2018-10-10 14:16:36.137+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Check Pointing triggered by scheduler for time threshold [3142]:  Starting check pointing...
+2018-10-10 14:16:36.137+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Check Pointing triggered by scheduler for time threshold [3142]:  Starting store flush...
+2018-10-10 14:20:43.184+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 1951ms.
+2018-10-10 15:41:45.909+0000 ERROR [o.n.k.i.t.l.c.CheckPointerImpl] Error performing check point Failed to rotate logs. Expected version: 3142, actual version: 2466, wait timeout (ms): 600031
+org.neo4j.kernel.impl.store.kvstore.RotationTimeoutException: Failed to rotate logs. Expected version: 3142, actual version: 2466, wait timeout (ms): 600031
+	at org.neo4j.kernel.impl.store.kvstore.RotationState$Rotation.rotate(RotationState.java:79)
+	at org.neo4j.kernel.impl.store.kvstore.RotationState$Rotation.rotate(RotationState.java:52)
+	at org.neo4j.kernel.impl.store.kvstore.AbstractKeyValueStore$RotationTask.rotate(AbstractKeyValueStore.java:309)
+	at org.neo4j.kernel.impl.store.kvstore.AbstractKeyValueStore$RotationTask.rotate(AbstractKeyValueStore.java:286)
+	at org.neo4j.kernel.impl.store.counts.CountsTracker.rotate(CountsTracker.java:127)
+	at org.neo4j.kernel.impl.store.NeoStores.flush(NeoStores.java:246)
+	at org.neo4j.kernel.impl.storageengine.impl.recordstorage.RecordStorageEngine.flushAndForce(RecordStorageEngine.java:468)
+	at org.neo4j.kernel.impl.transaction.log.checkpoint.CheckPointerImpl.doCheckPoint(CheckPointerImpl.java:160)
+	at org.neo4j.kernel.impl.transaction.log.checkpoint.CheckPointerImpl.checkPointIfNeeded(CheckPointerImpl.java:134)
+	at org.neo4j.kernel.impl.transaction.log.checkpoint.CheckPointScheduler$1.run(CheckPointScheduler.java:64)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+	at org.neo4j.helpers.NamedThreadFactory$2.run(NamedThreadFactory.java:109)
+2018-10-10 15:41:55.912+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Check Pointing triggered by scheduler for time threshold [3142]:  Starting check pointing...
+2018-10-10 15:41:55.913+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Check Pointing triggered by scheduler for time threshold [3142]:  Starting store flush...
+2018-10-10 15:51:55.986+0000 ERROR [o.n.k.i.t.l.c.CheckPointerImpl] Error performing check point Failed to rotate logs. Expected version: 3142, actual version: 2466, wait timeout (ms): 600060
+org.neo4j.kernel.impl.store.kvstore.RotationTimeoutException: Failed to rotate logs. Expected version: 3142, actual version: 2466, wait timeout (ms): 600060
+	at org.neo4j.kernel.impl.store.kvstore.RotationState$Rotation.rotate(RotationState.java:79)
+	at org.neo4j.kernel.impl.store.kvstore.RotationState$Rotation.rotate(RotationState.java:52)
+	at org.neo4j.kernel.impl.store.kvstore.AbstractKeyValueStore$RotationTask.rotate(AbstractKeyValueStore.java:309)
+	at org.neo4j.kernel.impl.store.kvstore.AbstractKeyValueStore$RotationTask.rotate(AbstractKeyValueStore.java:286)
+	at org.neo4j.kernel.impl.store.counts.CountsTracker.rotate(CountsTracker.java:127)
+	at org.neo4j.kernel.impl.store.NeoStores.flush(NeoStores.java:246)
+	at org.neo4j.kernel.impl.storageengine.impl.recordstorage.RecordStorageEngine.flushAndForce(RecordStorageEngine.java:468)
+	at org.neo4j.kernel.impl.transaction.log.checkpoint.CheckPointerImpl.doCheckPoint(CheckPointerImpl.java:160)
+	at org.neo4j.kernel.impl.transaction.log.checkpoint.CheckPointerImpl.checkPointIfNeeded(CheckPointerImpl.java:134)
+	at org.neo4j.kernel.impl.transaction.log.checkpoint.CheckPointScheduler$1.run(CheckPointScheduler.java:64)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+	at org.neo4j.helpers.NamedThreadFactory$2.run(NamedThreadFactory.java:109)
+2018-10-10 15:52:05.995+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Check Pointing triggered by scheduler for time threshold [3142]:  Starting check pointing...
+2018-10-10 15:52:05.995+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Check Pointing triggered by scheduler for time threshold [3142]:  Starting store flush...
+2018-10-10 16:02:06.071+0000 ERROR [o.n.k.i.t.l.c.CheckPointerImpl] Error performing check point Failed to rotate logs. Expected version: 3142, actual version: 2466, wait timeout (ms): 600058
+org.neo4j.kernel.impl.store.kvstore.RotationTimeoutException: Failed to rotate logs. Expected version: 3142, actual version: 2466, wait timeout (ms): 600058
+	at org.neo4j.kernel.impl.store.kvstore.RotationState$Rotation.rotate(RotationState.java:79)
+	at org.neo4j.kernel.impl.store.kvstore.RotationState$Rotation.rotate(RotationState.java:52)
+	at org.neo4j.kernel.impl.store.kvstore.AbstractKeyValueStore$RotationTask.rotate(AbstractKeyValueStore.java:309)
+	at org.neo4j.kernel.impl.store.kvstore.AbstractKeyValueStore$RotationTask.rotate(AbstractKeyValueStore.java:286)
+	at org.neo4j.kernel.impl.store.counts.CountsTracker.rotate(CountsTracker.java:127)
+	at org.neo4j.kernel.impl.store.NeoStores.flush(NeoStores.java:246)
+	at org.neo4j.kernel.impl.storageengine.impl.recordstorage.RecordStorageEngine.flushAndForce(RecordStorageEngine.java:468)
+	at org.neo4j.kernel.impl.transaction.log.checkpoint.CheckPointerImpl.doCheckPoint(CheckPointerImpl.java:160)
+	at org.neo4j.kernel.impl.transaction.log.checkpoint.CheckPointerImpl.checkPointIfNeeded(CheckPointerImpl.java:134)
+	at org.neo4j.kernel.impl.transaction.log.checkpoint.CheckPointScheduler$1.run(CheckPointScheduler.java:64)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+	at org.neo4j.helpers.NamedThreadFactory$2.run(NamedThreadFactory.java:109)
+2018-10-10 16:02:16.080+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Check Pointing triggered by scheduler for time threshold [3142]:  Starting check pointing...
+2018-10-10 16:02:16.080+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Check Pointing triggered by scheduler for time threshold [3142]:  Starting store flush...
+2018-10-10 16:12:16.173+0000 ERROR [o.n.k.i.t.l.c.CheckPointerImpl] Error performing check point Failed to rotate logs. Expected version: 3142, actual version: 2466, wait timeout (ms): 600077
+org.neo4j.kernel.impl.store.kvstore.RotationTimeoutException: Failed to rotate logs. Expected version: 3142, actual version: 2466, wait timeout (ms): 600077
+	at org.neo4j.kernel.impl.store.kvstore.RotationState$Rotation.rotate(RotationState.java:79)
+	at org.neo4j.kernel.impl.store.kvstore.RotationState$Rotation.rotate(RotationState.java:52)
+	at org.neo4j.kernel.impl.store.kvstore.AbstractKeyValueStore$RotationTask.rotate(AbstractKeyValueStore.java:309)
+	at org.neo4j.kernel.impl.store.kvstore.AbstractKeyValueStore$RotationTask.rotate(AbstractKeyValueStore.java:286)
+	at org.neo4j.kernel.impl.store.counts.CountsTracker.rotate(CountsTracker.java:127)
+	at org.neo4j.kernel.impl.store.NeoStores.flush(NeoStores.java:246)
+	at org.neo4j.kernel.impl.storageengine.impl.recordstorage.RecordStorageEngine.flushAndForce(RecordStorageEngine.java:468)
+	at org.neo4j.kernel.impl.transaction.log.checkpoint.CheckPointerImpl.doCheckPoint(CheckPointerImpl.java:160)
+	at org.neo4j.kernel.impl.transaction.log.checkpoint.CheckPointerImpl.checkPointIfNeeded(CheckPointerImpl.java:134)
+	at org.neo4j.kernel.impl.transaction.log.checkpoint.CheckPointScheduler$1.run(CheckPointScheduler.java:64)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+	at org.neo4j.helpers.NamedThreadFactory$2.run(NamedThreadFactory.java:109)
+2018-10-10 16:12:26.177+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Check Pointing triggered by scheduler for time threshold [3142]:  Starting check pointing...
+2018-10-10 16:12:26.177+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Check Pointing triggered by scheduler for time threshold [3142]:  Starting store flush...
+2018-10-10 16:19:39.361+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 229ms.
+2018-10-10 16:19:43.236+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 223ms.
+2018-10-10 16:22:26.218+0000 ERROR [o.n.k.i.t.l.c.CheckPointerImpl] Error performing check point Failed to rotate logs. Expected version: 3142, actual version: 2466, wait timeout (ms): 600031
+org.neo4j.kernel.impl.store.kvstore.RotationTimeoutException: Failed to rotate logs. Expected version: 3142, actual version: 2466, wait timeout (ms): 600031
+	at org.neo4j.kernel.impl.store.kvstore.RotationState$Rotation.rotate(RotationState.java:79)
+	at org.neo4j.kernel.impl.store.kvstore.RotationState$Rotation.rotate(RotationState.java:52)
+	at org.neo4j.kernel.impl.store.kvstore.AbstractKeyValueStore$RotationTask.rotate(AbstractKeyValueStore.java:309)
+	at org.neo4j.kernel.impl.store.kvstore.AbstractKeyValueStore$RotationTask.rotate(AbstractKeyValueStore.java:286)
+	at org.neo4j.kernel.impl.store.counts.CountsTracker.rotate(CountsTracker.java:127)
+	at org.neo4j.kernel.impl.store.NeoStores.flush(NeoStores.java:246)
+	at org.neo4j.kernel.impl.storageengine.impl.recordstorage.RecordStorageEngine.flushAndForce(RecordStorageEngine.java:468)
+	at org.neo4j.kernel.impl.transaction.log.checkpoint.CheckPointerImpl.doCheckPoint(CheckPointerImpl.java:160)
+	at org.neo4j.kernel.impl.transaction.log.checkpoint.CheckPointerImpl.checkPointIfNeeded(CheckPointerImpl.java:134)
+	at org.neo4j.kernel.impl.transaction.log.checkpoint.CheckPointScheduler$1.run(CheckPointScheduler.java:64)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+	at org.neo4j.helpers.NamedThreadFactory$2.run(NamedThreadFactory.java:109)
+2018-10-10 16:22:36.223+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Check Pointing triggered by scheduler for time threshold [3274]:  Starting check pointing...
+2018-10-10 16:22:36.223+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Check Pointing triggered by scheduler for time threshold [3274]:  Starting store flush...
+2018-10-10 16:23:18.909+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 354ms.
+2018-10-10 16:32:36.325+0000 ERROR [o.n.k.i.t.l.c.CheckPointerImpl] Error performing check point Failed to rotate logs. Expected version: 3274, actual version: 2466, wait timeout (ms): 600089
+org.neo4j.kernel.impl.store.kvstore.RotationTimeoutException: Failed to rotate logs. Expected version: 3274, actual version: 2466, wait timeout (ms): 600089
+	at org.neo4j.kernel.impl.store.kvstore.RotationState$Rotation.rotate(RotationState.java:79)
+	at org.neo4j.kernel.impl.store.kvstore.RotationState$Rotation.rotate(RotationState.java:52)
+	at org.neo4j.kernel.impl.store.kvstore.AbstractKeyValueStore$RotationTask.rotate(AbstractKeyValueStore.java:309)
+	at org.neo4j.kernel.impl.store.kvstore.AbstractKeyValueStore$RotationTask.rotate(AbstractKeyValueStore.java:286)
+	at org.neo4j.kernel.impl.store.counts.CountsTracker.rotate(CountsTracker.java:127)
+	at org.neo4j.kernel.impl.store.NeoStores.flush(NeoStores.java:246)
+	at org.neo4j.kernel.impl.storageengine.impl.recordstorage.RecordStorageEngine.flushAndForce(RecordStorageEngine.java:468)
+	at org.neo4j.kernel.impl.transaction.log.checkpoint.CheckPointerImpl.doCheckPoint(CheckPointerImpl.java:160)
+	at org.neo4j.kernel.impl.transaction.log.checkpoint.CheckPointerImpl.checkPointIfNeeded(CheckPointerImpl.java:134)
+	at org.neo4j.kernel.impl.transaction.log.checkpoint.CheckPointScheduler$1.run(CheckPointScheduler.java:64)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+	at org.neo4j.helpers.NamedThreadFactory$2.run(NamedThreadFactory.java:109)
+2018-10-10 16:32:46.328+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Check Pointing triggered by scheduler for time threshold [3274]:  Starting check pointing...
+2018-10-10 16:32:46.328+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Check Pointing triggered by scheduler for time threshold [3274]:  Starting store flush...

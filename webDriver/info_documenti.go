@@ -296,7 +296,7 @@ func PrintDocuments(allDoc []structures.Document) {
 }
 
 //salvo i documenti su un file
-func SaveDocuments(allDoc []structures.Document) {
+func SaveDocuments(allDoc []structures.MADocument) {
 	file, err := os.Create(structures.SaveFilePath)
 	if err != nil {
 		panic(err)
