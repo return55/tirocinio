@@ -77,11 +77,11 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 		panic(err)
 	}
 	fmt.Println("Url attuale: ", currentUrl)
-	
+
 	//per non far arrabbiare MA
-	time.Sleep(6000*time.Millisecond)
-	
-	_=wd.Refresh()
+	time.Sleep(6000 * time.Millisecond)
+
+	_ = wd.Refresh()
 	//aspetto che gli elementi article siano caricati
 	wd.WaitWithTimeout(conditionResultPage, 5000*time.Millisecond)
 
@@ -113,8 +113,6 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 		panic(err)
 	}
 
-	
-
 	fileS, _ := os.OpenFile("sorgenteDopoTitoli.html", os.O_WRONLY, 0600)
 	logger = log.New(fileS, "", 0)
 	sorgente, err = wd.PageSource()
@@ -122,7 +120,7 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 		panic(err)
 	}
 	logger.Println(sorgente)
-	
+
 	currentUrl, err = wd.CurrentURL()
 	if err != nil {
 		panic(err)
@@ -138,24 +136,23 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 	}
 	documents := make([]structures.MADocument, min)
 	URLDocuments := make([]string, min)
-	
+
 	//Assegno i titoli ai doc e mi savo i relativi link in una var a parte perche'
 	//una volta cambiata la pagina perdo il riferimento all'elemento con il link
 	//assegno il titolo
-	for i:=0; i<min; i++ {
+	for i := 0; i < min; i++ {
 		tit, _ := titles[i].GetAttribute("title")
 		tit = strings.Replace(tit, "%!(EXTRA string=", "", 1)
 		tit = strings.TrimSuffix(tit, ")")
 		documents[i].Title = tit
-		
-		fmt.Println("Titolo ",i,": ",documents[i].Title)
-		
+
+		fmt.Println("Titolo ", i, ": ", documents[i].Title)
+
 		URLDoc, _ := titles[i].GetAttribute("href")
 		URLDocuments[i] = structures.URLAcademic + URLDoc
-		
-		fmt.Println("URL ",i,": ",URLDocuments[i])
-	}
 
+		fmt.Println("URL ", i, ": ", URLDocuments[i])
+	}
 
 	//-----------------------------------------------------------------------
 	authorsAndAffiliations, err := wd.FindElements(selenium.ByXPATH,
@@ -266,16 +263,16 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 	//scorro i documenti della pagina
 	for count := 0; count < min; count++ {
 		//per non far arrabbiare MA
-		time.Sleep(4000*time.Millisecond)
-	
+		time.Sleep(4000 * time.Millisecond)
+
 		//per prendere tutte le informazioni devo andare alla pagina del documento:
 		if err := wd.Get(URLDocuments[count]); err != nil {
 			panic(err)
 		}
-		
+
 		//per non far arrabbiare MA
-		time.Sleep(3050*time.Millisecond)
-		
+		time.Sleep(3050 * time.Millisecond)
+
 		//aspetto di caricare la pagina (i fields of study come riferimento)
 		wd.Wait(conditionDocumentPage)
 
@@ -330,18 +327,18 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 					panic(err)
 				}
 				logger.Printf("Alla pagina %s non ci sono Fields Of Study", currentUrl)
-				//Se non ci sono campi, lo scrivo per neo4j				
+				//Se non ci sono campi, lo scrivo per neo4j
 				documents[count].FieldsOfStudy = append(documents[count].FieldsOfStudy, "No Fields")
 			} else {
 				panic(err)
 			}
-		}else{
+		} else {
 			for _, field := range fieldsOfStudy {
 				textField, _ := field.Text()
 				documents[count].FieldsOfStudy = append(documents[count].FieldsOfStudy, textField)
 			}
 		}
-		
+
 		//sources
 		sources, err := fieldsAndSources[1].FindElements(selenium.ByXPATH,
 			"li/a")
@@ -355,7 +352,7 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 			} else {
 				panic(err)
 			}
-		}else{
+		} else {
 			for _, source := range sources {
 				URLSource, _ := source.GetAttribute("href")
 				//controllo se e' un PDF
@@ -461,7 +458,7 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 		}
 
 		fmt.Println("---------------------------------------------------")
-		//Torno alla pagina dei risultati(FORSE NON E' NECESSARIO)
+		//Torno alla pagina dei risultati(E' NECESSARIO)
 		wd.Back()
 	}
 
@@ -511,14 +508,14 @@ func GetInitialDocument_MA(wd selenium.WebDriver) structures.MADocument {
 		panic(err)
 	}
 	logger.Println(sorgente)
-	
+
 	textBox, err := wd.FindElement(selenium.ByXPATH,
 		"//ma-queryformulation[@class='searchWrap']/div//"+
 			"input[@class='searchControl']")
 	if err != nil {
 		panic(err)
 	}
-	if err := textBox.SendKeys(`cat`); err != nil {
+	if err := textBox.SendKeys(`video`); err != nil {
 		panic(err)
 	}
 	searchButton, err := wd.FindElement(selenium.ByXPATH,
@@ -543,7 +540,21 @@ func GetInitialDocument_MA(wd selenium.WebDriver) structures.MADocument {
 	return docs[0]
 }
 
-//DA METTERE A POSTO-------------------------------------------------------
+//Aspetto che la sezione in basso con i numeri delle pagine dei
+//risultati si carichino (dove e' presente il link alla prossima pagina)
+func conditionNextLink(wd selenium.WebDriver) (bool, error) {
+	elem, err := wd.FindElements(selenium.ByXPATH, "//div[@class='entityResultPager']")
+
+	if err != nil {
+		panic(err)
+	}
+	if len(elem) == 0 {
+		fmt.Println("Aspetto che si carichino i link alle pagine successive dei rusultati")
+		return false, err
+	}
+	return true, err
+}
+
 //Dato un link alla pagina di partenza, comincio a raccogliere i documenti (8 per pagina)
 //finche' non arrivo a numDoc.
 func GetCiteDocuments_MA(wd selenium.WebDriver, linkCitedBy string, numDoc uint64) ([]structures.MADocument, uint64) {
@@ -565,14 +576,14 @@ func GetCiteDocuments_MA(wd selenium.WebDriver, linkCitedBy string, numDoc uint6
 		if err != nil {
 			panic(err)
 		}
-		
+
 		newDoc, numNewDoc := GetDocumentsFromPage_MA(wd, int(numDoc))
 		allDoc = append(allDoc, newDoc...)
 		//tolgo il numero di documenti appena letti
 		numDoc = numDoc - numNewDoc
 		fmt.Println("***** docRead= ", numNewDoc)
 		fmt.Println("***** numDoc= ", numDoc)
-		
+
 		/* Scorro una pagina alla volta in sequenza
 		//vado alla prosssima pagina, se possibile:
 		linkAvanti, err := wd.FindElement(selenium.ByXPATH, "//b[text()='Next']/..")
@@ -595,6 +606,10 @@ func GetCiteDocuments_MA(wd selenium.WebDriver, linkCitedBy string, numDoc uint6
 		if err := wd.Get(currentUrl); err != nil {
 			panic(err)
 		}
+		//Aspetto che si carichi entityResultPager dove sono presenti i link alle
+		//varie pagine dei risultati.
+		wd.WaitWithTimeout(conditionNextLink, 5000*time.Millisecond)
+
 		/* Scorro in sequenza ma aspetto un tempo che cresce in modo esponenziale */
 		waitTimeSec := time.Duration((math.Round(r.ExpFloat64())))
 		time.Sleep(waitTimeSec * time.Second)
@@ -622,4 +637,83 @@ func GetCiteDocuments_MA(wd selenium.WebDriver, linkCitedBy string, numDoc uint6
 	}
 	fmt.Println("\n\nSono uscito perche' ho raggiunto numDoc, numDoc = ", numDoc, "\n")
 	return allDoc, initialNumDoc - numDoc
+}
+
+//Raccolgie i documenti in base a una soglia, serve per creare l'albero
+func GetCiteDocumentsByThreshold_MA(wd selenium.WebDriver, linkCitedBy string, threshold int) ([]structures.MADocument, int) {
+	if err := wd.Get(linkCitedBy); err != nil {
+		panic(err)
+	}
+	var allDoc []structures.MADocument
+
+	//genero la sequenza di numeri casuali
+	r := rand.New(rand.NewSource(12))
+
+	for numDoc > 0 {
+		//Salvo il link alla pagina dei documenti che citano perche' vado nelle
+		//pagine dei singoli documenti che compaiono e non riesco a tornare indietro.
+		currentUrl, err := wd.CurrentURL()
+		if err != nil {
+			panic(err)
+		}
+
+		newDoc, numNewDoc := GetDocumentsFromPage_MA(wd, int(numDoc))
+		allDoc = append(allDoc, newDoc...)
+		//tolgo il numero di documenti appena letti
+		numDoc = numDoc - numNewDoc
+		fmt.Println("***** docRead= ", numNewDoc)
+		fmt.Println("***** numDoc= ", numDoc)
+
+		/* Scorro una pagina alla volta in sequenza
+		//vado alla prosssima pagina, se possibile:
+		linkAvanti, err := wd.FindElement(selenium.ByXPATH, "//b[text()='Next']/..")
+		//se non trovo il link per andare avanti, mi fermo
+		if err != nil {
+			if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
+				return allDoc, docRead
+			} else {
+				panic(err)
+			}
+		}
+
+		url, err := linkAvanti.GetAttribute("href")
+		if err != nil {
+			panic(err)
+		}
+		///////////////////////////////////*/
+
+		//Torno alla pagina con i rusultati
+		if err := wd.Get(currentUrl); err != nil {
+			panic(err)
+		}
+		//Aspetto che si carichi entityResultPager dove sono presenti i link alle
+		//varie pagine dei risultati.
+		wd.WaitWithTimeout(conditionNextLink, 5000*time.Millisecond)
+
+		/* Scorro in sequenza ma aspetto un tempo che cresce in modo esponenziale */
+		waitTimeSec := time.Duration((math.Round(r.ExpFloat64())))
+		time.Sleep(waitTimeSec * time.Second)
+
+		//vado alla prosssima pagina, se possibile:
+		linkAvanti, err := wd.FindElement(selenium.ByXPATH, "//div[@class='entityResultPager']/ul/li/a[@aria-label='Next']")
+		//se non trovo il link per andare avanti, mi fermo
+		if err != nil {
+			if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
+				fmt.Println("\n\nSono uscito perche' non ho trovato Avanti\n")
+				return allDoc, initialNumDoc - numDoc
+			} else {
+				panic(err)
+			}
+		}
+
+		err = linkAvanti.Click()
+		if err != nil {
+			panic(err)
+		}
+		//////////////////////////////////////////////
+		/*if err := wd.Get(structures.URLScholar + url); err != nil {
+			panic(err)
+		}*/
+	}
+
 }
