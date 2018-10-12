@@ -92,7 +92,7 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 	logger.Println(sorgente)
 
 	//controllo quanti documenti hanno num citazioni >= soglia
-	
+
 	//prendo i titoli dei documenti  (titles.GetAttribute("title"))
 	titles, err := wd.FindElements(selenium.ByXPATH,
 		"//article/section[@class='paper-title']/h2/a[@class='blue-title']")
@@ -100,19 +100,19 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 		panic(err)
 	}
 	/*
-	fileS, _ := os.OpenFile("sorgenteDopoTitoli.html", os.O_WRONLY, 0600)
-	logger = log.New(fileS, "", 0)
-	sorgente, err = wd.PageSource()
-	if err != nil {
-		panic(err)
-	}
-	logger.Println(sorgente)
+		fileS, _ := os.OpenFile("sorgenteDopoTitoli.html", os.O_WRONLY, 0600)
+		logger = log.New(fileS, "", 0)
+		sorgente, err = wd.PageSource()
+		if err != nil {
+			panic(err)
+		}
+		logger.Println(sorgente)
 
-	currentUrl, err = wd.CurrentURL()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println("Url attuale dopo titoli: ", currentUrl)*/
+		currentUrl, err = wd.CurrentURL()
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("Url attuale dopo titoli: ", currentUrl)*/
 
 	//creo array di documenti pari al minimo(numDocs, numResults)
 	var min int
@@ -455,7 +455,7 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 
 //Uso sempre un a soglia come criterio per raccogliere le informazioni ma mi
 //limito a raccogliere: titolo, LinkCitations e numCitations.
-//Molto piu' veloce della versione completa. 
+//Molto piu' veloce della versione completa.
 func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, threshold int) ([]structures.MADocument, int) {
 	currentUrl, err := wd.CurrentURL()
 	if err != nil {
@@ -475,17 +475,17 @@ func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, threshold int) ([]struc
 		panic(err)
 	}
 	logger.Println(sorgente)
-	
+
 	//prendo tutti gli articoli
 	articles, err := wd.FindElements(selenium.ByXPATH,
 		"//article[@class='paper paper-mode-2 card']")
-	if err!=nil {
+	if err != nil {
 		panic(err)
 	}
-	
-	var docs []structures.MADocuments
+
+	var docs []structures.MADocument
 	//controllo quanti documenti hanno num citazioni >= soglia e li
-	//aggiungo alla collezione	
+	//aggiungo alla collezione
 	for _, article := range articles {
 		//il numero di citazioni sta nel primo elemento della lista
 		numCitations, err := article.FindElement(selenium.ByXPATH,
@@ -495,7 +495,7 @@ func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, threshold int) ([]struc
 				//controllo se e' presente la scritta "Not cited"
 				notCited, err := article.FindElement(selenium.ByXPATH,
 					"section[@class='paper-actions']/ul/li/span")
-				if err!=nil {
+				if err != nil {
 					panic(err)
 				}
 				textNotCited, _ := notCited.Text()
@@ -507,14 +507,16 @@ func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, threshold int) ([]struc
 				panic(err)
 			}
 		}
-		//se arrivo qui, ho un numero di citazioni e li devo controllare
+		//se arrivo qui, ho un numero di citazioni e lo devo controllare
 		textNumCitations, _ := numCitations.Text()
 		//estraggo i numeri: formato del .Text() -> "Citations (n)"
-		//----------------------------------------------------------DA FARE
+		textNumCitations = strings.Fields(textNumCitations)[1]
+		textNumCitations = strings.Replace(textNumCitations, "(", "", -1)
+		textNumCitations = strings.Replace(textNumCitations, ")", "", -1)
 		//elimino la virgola (se presente)
-		textNumCitations = strings.Replace(textNumCit, ",", "", -1)		
+		textNumCitations = strings.Replace(textNumCitations, ",", "", -1)
 		intNumCitations, err := strconv.ParseInt(textNumCitations, 10, 0)
-		if intNumCitations >= threshold {
+		if int(intNumCitations) >= threshold {
 			//raccolgo le info sul documento
 			var newDoc structures.MADocument
 			newDoc.NumCitations = intNumCitations
@@ -528,22 +530,22 @@ func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, threshold int) ([]struc
 			//link citations
 			linkCitations, err := article.FindElement(selenium.ByXPATH,
 				"section[@class='paper-actions']/ul/li/a[@class='c-count']")
-			if err!=nil {
+			if err != nil {
 				panic(err)
 			}
 			textLinkCitations, err := linkCitations.GetAttribute("href")
-			if err!=nil {
+			if err != nil {
 				panic(err)
 			}
-			newDoc.LinkCitations = structures.URLAcademic + textLinkCitations			
-		}else{
+			newDoc.LinkCitations = structures.URLAcademic + textLinkCitations
+			//aggiungo il nuovo documento alla lista
+			docs = append(docs, newDoc)
+		} else {
 			break
 		}
-		//aggiungo il nuovo documento alla lista
-		docs = append(docs, newDoc)	
 	}
-	
-	return docs, len(docs)	
+
+	return docs, len(docs)
 }
 
 //Condizione per il caricamento della pagina iniziale: aspetto che si
@@ -637,7 +639,8 @@ func conditionNextLink(wd selenium.WebDriver) (bool, error) {
 
 //Dato un link alla pagina di partenza, comincio a raccogliere i documenti (8 per pagina)
 //finche' non arrivo a numDoc.
-func GetCiteDocuments_MA(wd selenium.WebDriver, linkCitedBy string, numDoc uint64) ([]structures.MADocument, uint64) {
+//Anche qui ho bisogno del numero delle pagine in cui sono distribuiti i doc che citano.
+func GetCiteDocuments_MA(wd selenium.WebDriver, linkCitedBy string, numDoc uint64, numPages int) ([]structures.MADocument, uint64) {
 	if err := wd.Get(linkCitedBy); err != nil {
 		panic(err)
 	}
@@ -649,92 +652,11 @@ func GetCiteDocuments_MA(wd selenium.WebDriver, linkCitedBy string, numDoc uint6
 	//genero la sequenza di numeri casuali
 	r := rand.New(rand.NewSource(12))
 
-	for numDoc > 0 {
-		//Salvo il link alla pagina dei documenti che citano perche' vado nelle
-		//pagine dei singoli documenti che compaiono e non riesco a tornare indietro.
-		currentUrl, err := wd.CurrentURL()
-		if err != nil {
-			panic(err)
-		}
+	for pageNumber := 1; pageNumber <= numPages; pageNumber++ {
 
-		newDoc, numNewDoc := GetDocumentsFromPage_MA(wd, int(numDoc))
-		allDoc = append(allDoc, newDoc...)
-		//tolgo il numero di documenti appena letti
-		numDoc = numDoc - numNewDoc
-		fmt.Println("***** docRead= ", numNewDoc)
-		fmt.Println("***** numDoc= ", numDoc)
-
-		/* Scorro una pagina alla volta in sequenza
-		//vado alla prosssima pagina, se possibile:
-		linkAvanti, err := wd.FindElement(selenium.ByXPATH, "//b[text()='Next']/..")
-		//se non trovo il link per andare avanti, mi fermo
-		if err != nil {
-			if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
-				return allDoc, docRead
-			} else {
-				panic(err)
-			}
-		}
-
-		url, err := linkAvanti.GetAttribute("href")
-		if err != nil {
-			panic(err)
-		}
-		///////////////////////////////////*/
-
-		//Torno alla pagina con i rusultati
-		if err := wd.Get(currentUrl); err != nil {
-			panic(err)
-		}
-		//Aspetto che si carichi entityResultPager dove sono presenti i link alle
-		//varie pagine dei risultati.
-		wd.WaitWithTimeout(conditionNextLink, 5000*time.Millisecond)
-
-		/* Scorro in sequenza ma aspetto un tempo che cresce in modo esponenziale */
-		waitTimeSec := time.Duration((math.Round(r.ExpFloat64())))
-		time.Sleep(waitTimeSec * time.Second)
-
-		//vado alla prosssima pagina, se possibile:
-		linkAvanti, err := wd.FindElement(selenium.ByXPATH, "//div[@class='entityResultPager']/ul/li/a[@aria-label='Next']")
-		//se non trovo il link per andare avanti, mi fermo
-		if err != nil {
-			if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
-				fmt.Println("\n\nSono uscito perche' non ho trovato Avanti\n")
-				return allDoc, initialNumDoc - numDoc
-			} else {
-				panic(err)
-			}
-		}
-
-		err = linkAvanti.Click()
-		if err != nil {
-			panic(err)
-		}
-		//////////////////////////////////////////////
-		/*if err := wd.Get(structures.URLScholar + url); err != nil {
-			panic(err)
-		}*/
-	}
-	fmt.Println("\n\nSono uscito perche' ho raggiunto numDoc, numDoc = ", numDoc, "\n")
-	return allDoc, initialNumDoc - numDoc
-}
-
-//Raccolgie i documenti in base a una soglia, serve per creare l'albero
-func GetCiteDocumentsByThreshold_MA(wd selenium.WebDriver, linkCitedBy string, numPages int, threshold int) ([]structures.MADocument, int) {
-	if err := wd.Get(linkCitedBy); err != nil {
-		panic(err)
-	}
-	var allDoc []structures.MADocument
-	numDoc := 0
-
-	//genero la sequenza di numeri casuali
-	r := rand.New(rand.NewSource(12))
-	
-	for pageNumber:=1; pageNumber <= numPages; pageNumber++ {
-		
 		if pageNumber != 1 {
 			//vado alla pagina successiva
-			linkNextPage, err := wd.FindElement(selenium.ByXPATH, 
+			linkNextPage, err := wd.FindElement(selenium.ByXPATH,
 				"//div[@class='entityResultPager']/ul/li/a[contains(text(),strconv.Itoa(pageNumber))]")
 			//se non trovo il link per andare avanti, mi fermo
 			if err != nil {
@@ -749,8 +671,7 @@ func GetCiteDocumentsByThreshold_MA(wd selenium.WebDriver, linkCitedBy string, n
 			if err != nil {
 				panic(err)
 			}
-		} 
-	
+		}
 		//Salvo il link alla pagina dei documenti che citano perche' vado nelle
 		//pagine dei singoli documenti che compaiono e non riesco a tornare indietro.
 		currentUrl, err := wd.CurrentURL()
@@ -758,7 +679,92 @@ func GetCiteDocumentsByThreshold_MA(wd selenium.WebDriver, linkCitedBy string, n
 			panic(err)
 		}
 
-		newDoc, numNewDoc := GetDocumentsFromPageByThreshold_MA(wd, threshold)
+		newDoc, numNewDoc := GetDocumentsFromPage_MA(wd, int(numDoc))
+		allDoc = append(allDoc, newDoc...)
+		//tolgo il numero di documenti appena letti
+		numDoc = numDoc - numNewDoc
+		fmt.Println("***** docRead= ", numNewDoc)
+		fmt.Println("***** numDoc= ", numDoc)
+
+		if numDoc <= 0 {
+			if numDoc == 0 {
+				//tutto ok!
+				return allDoc, initialNumDoc
+			} else {
+				//Qualcosa non va
+				fmt.Println("\nGetCiteDocuments_MA(): Ho raccolto piu' documenti di quelli che mi servivano!!")
+				return allDoc, initialNumDoc
+			}
+		}
+
+		//Torno alla pagina con i rusultati
+		if err := wd.Get(currentUrl); err != nil {
+			panic(err)
+		}
+		//Aspetto che si carichi entityResultPager dove sono presenti i link alle
+		//varie pagine dei risultati.
+		wd.WaitWithTimeout(conditionNextLink, 5000*time.Millisecond)
+
+		/* Scorro in sequenza ma aspetto un tempo che cresce in modo esponenziale */
+		waitTimeSec := time.Duration((math.Round(r.ExpFloat64())))
+		time.Sleep(waitTimeSec * time.Second)
+	}
+	return allDoc, initialNumDoc - numDoc
+}
+
+//Raccolgie i documenti in base a una soglia, serve per creare l'albero
+func GetCiteDocumentsByThreshold_MA(wd selenium.WebDriver, linkCitedBy string, numPages int, threshold int) ([]structures.MADocument, int) {
+	if err := wd.Get(linkCitedBy); err != nil {
+		panic(err)
+	}
+	var allDoc []structures.MADocument
+	numDoc := 0
+
+	//genero la sequenza di numeri casuali
+	r := rand.New(rand.NewSource(12))
+
+	//ordino i risultati per numero di citazioni decrescente, cosi' non appena
+	//trovo un articolo sotto la soglia mi fermo.
+	mostCitations, err := wd.FindElement(selenium.ByXPATH,
+		"//*[@id='isrcWrapper']/div[4]/article[1]/div[2]/div/section[4]/select/option[4]")
+	if err != nil {
+		fmt.Println("Non sono riuscito ad ordinare i risultati!!!")
+	} else {
+		err = mostCitations.Click()
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	for pageNumber := 1; pageNumber <= numPages; pageNumber++ {
+
+		if pageNumber != 1 {
+			//vado alla pagina successiva
+			linkNextPage, err := wd.FindElement(selenium.ByXPATH,
+				"//div[@class='entityResultPager']/ul/li/a[contains(text(),'"+strconv.Itoa(pageNumber)+"')]")
+			//se non trovo il link per andare avanti, mi fermo
+			if err != nil {
+				if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
+					fmt.Println("\n\nSono uscito perche' non ho trovato il link alla prossima pagina\n")
+					return allDoc, numDoc
+				} else {
+					panic(err)
+				}
+			}
+			err = linkNextPage.Click()
+			if err != nil {
+				panic(err)
+			}
+		}
+
+		//Salvo il link alla pagina dei documenti che citano perche' vado nelle
+		//pagine dei singoli documenti che compaiono e non riesco a tornare indietro.
+		currentUrl, err := wd.CurrentURL()
+		if err != nil {
+			panic(err)
+		}
+
+		newDoc, numNewDoc := GetDocumentsFromPageBasic_MA(wd, threshold)
 		allDoc = append(allDoc, newDoc...)
 		//tolgo il numero di documenti appena letti
 		numDoc = numDoc + numNewDoc
@@ -776,11 +782,11 @@ func GetCiteDocumentsByThreshold_MA(wd selenium.WebDriver, linkCitedBy string, n
 		/* Scorro in sequenza ma aspetto un tempo che cresce in modo esponenziale */
 		waitTimeSec := time.Duration((math.Round(r.ExpFloat64())))
 		time.Sleep(waitTimeSec * time.Second)
-		
+
 		//Torno alla pagina con i rusultati
 		if err := wd.Get(currentUrl); err != nil {
 			panic(err)
 		}
 	}
-
+	return allDoc, numDoc
 }

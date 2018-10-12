@@ -39,12 +39,14 @@ type Author struct {
 
 var FieldsName = []string{"Url", "Authors", "NumCitedBy", "LinkCitedBy"}
 
-var FieldsNameMA = []string{"Title", "Url", "Authors", "NumCitations", "LinkCitations", "NumReferences", 
-							"LinkReferences", "Abstract", "Date", "FieldsOfStudy"}
+var FieldsNameMA = []string{"Title", "Url", "Authors", "NumCitations", "LinkCitations", "NumReferences",
+	"LinkReferences", "Abstract", "Date", "FieldsOfStudy"}
 
 const URLScholar = "https://scholar.google.com/"
 
 const URLAcademic = "https://academic.microsoft.com/"
+
+const NumArticlePerPageMA = 8
 
 const SaveFilePath = "DocumentiSerialize.txt"
 

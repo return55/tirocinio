@@ -476,3 +476,17 @@ nohup: input ignorato
 2018-10-10 07:39:58.088+0000 INFO  Bolt enabled on 0.0.0.0:7687.
 2018-10-10 07:40:11.910+0000 INFO  Started.
 2018-10-10 07:40:17.038+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-10-12 13:43:26.419+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-10-12 13:43:26.542+0000 INFO  Starting...
+2018-10-12 13:43:28.547+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-10-12 13:43:35.798+0000 INFO  Started.
+2018-10-12 13:43:37.957+0000 INFO  Remote interface available at http://localhost:7474/
+2018-10-12 13:46:21.869+0000 INFO  Neo4j Server shutdown initiated by request
+2018-10-12 13:46:21.937+0000 INFO  Stopping...
+nohup: input ignorato
+2018-10-12 13:55:24.159+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-10-12 13:55:24.240+0000 INFO  Starting...
+2018-10-12 13:55:25.958+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-10-12 13:55:32.433+0000 INFO  Started.
+2018-10-12 13:55:34.368+0000 INFO  Remote interface available at http://localhost:7474/

@@ -21,8 +21,8 @@ func mainProva() {
 
 	fmt.Println("Link alle citazioni: ", initialDoc.LinkCitations)
 
-	citeInitialDoc, _ := webDriver.GetCiteDocuments_MA(wd, initialDoc.LinkCitations, 22)
-
+	//citeInitialDoc, _ := webDriver.GetCiteDocuments_MA(wd, initialDoc.LinkCitations, 22)
+	var citeInitialDoc []structures.MADocument
 	allDoc := append(citeInitialDoc, initialDoc)
 	allDoc[0], allDoc[len(allDoc)-1] = allDoc[len(allDoc)-1], allDoc[0]
 
