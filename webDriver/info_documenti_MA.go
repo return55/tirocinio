@@ -207,7 +207,7 @@ func expandShowMore(wd selenium.WebDriver) {
 }
 
 //Imposto i fields of study e sources(www e pdf) per un singolo doc
-func setFieldsOfStudyAndSources(wd selenium.WebDriver, document structures.MADocument) {
+func setFieldsOfStudyAndSources(wd selenium.WebDriver, document *structures.MADocument) {
 	fieldsAndSources, err := wd.FindElements(selenium.ByXPATH,
 		"//section[@class='pure-u-1 pure-u-md-1-4 entity-right detail-right']"+
 			"/ma-ulist/div/div[@class='ulist-body']/ul[@class='ulist-content']")
@@ -271,7 +271,7 @@ func setFieldsOfStudyAndSources(wd selenium.WebDriver, document structures.MADoc
 }
 
 //Imposto la data per un singolo doc
-func setDate(wd selenium.WebDriver, document structures.MADocument) {
+func setDate(wd selenium.WebDriver, document *structures.MADocument) {
 	date, err := wd.FindElement(selenium.ByXPATH,
 		"//section[@class='paper-year']/span")
 	if err != nil {
@@ -286,7 +286,7 @@ func setDate(wd selenium.WebDriver, document structures.MADocument) {
 }
 
 //Imposto le citazioni(numero e link) e le refernces(numero e link)
-func setCitationsAndReferences(wd selenium.WebDriver, document structures.MADocument) {
+func setCitationsAndReferences(wd selenium.WebDriver, document *structures.MADocument) {
 	referencesAndCitations, err := wd.FindElements(selenium.ByXPATH,
 		"//div[@class='pure-u-md-4-24 pure-u-1 digit']")
 	if err != nil {
@@ -341,12 +341,13 @@ func setCitationsAndReferences(wd selenium.WebDriver, document structures.MADocu
 			panic(err)
 		}
 		textURLCit, _ := URLCit.GetAttribute("href")
+		fmt.Println("Link citazioni: ", textURLCit)
 		document.LinkCitations = structures.URLAcademic + textURLCit
 	}
 }
 
 //Imposto l'abstract del doc
-func setAbstract(wd selenium.WebDriver, document structures.MADocument) {
+func setAbstract(wd selenium.WebDriver, document *structures.MADocument) {
 	abstractSec, err := wd.FindElement(selenium.ByXPATH,
 		"//section[@class='paper-abstract']/p")
 	if err != nil {
@@ -459,16 +460,16 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 		expandShowMore(wd)
 
 		//prendo i fields of study e sources
-		setFieldsOfStudyAndSources(wd, documents[count])
+		setFieldsOfStudyAndSources(wd, &documents[count])
 
 		//Prendo la data(posizione 0)    NON FUNZIONA
-		setDate(wd, documents[count])
+		setDate(wd, &documents[count])
 
 		//Prendo le citations (0), references (1) (opz. related (2))
-		setCitationsAndReferences(wd, documents[count])
+		setCitationsAndReferences(wd, &documents[count])
 
 		//Abstract (0)
-		setAbstract(wd, documents[count])
+		setAbstract(wd, &documents[count])
 
 		fmt.Println("---------------------------------------------------")
 		//Torno alla pagina dei risultati(E' NECESSARIO -- NON NE SONO SICURO (FAI UNA PROVA))
@@ -623,7 +624,7 @@ func GetInitialDocument_MA(wd selenium.WebDriver) structures.MADocument {
 	if err != nil {
 		panic(err)
 	}
-	if err := textBox.SendKeys(`www`); err != nil {
+	if err := textBox.SendKeys(`browser`); err != nil {
 		panic(err)
 	}
 	searchButton, err := wd.FindElement(selenium.ByXPATH,

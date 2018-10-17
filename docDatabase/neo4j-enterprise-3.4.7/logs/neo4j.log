@@ -1,0 +1,27 @@
+nohup: input ignorato
+2018-10-17 14:30:57.514+0000 INFO  ======== Neo4j 3.4.7 ========
+2018-10-17 14:30:57.753+0000 INFO  Starting...
+2018-10-17 14:31:05.368+0000 INFO  Initiating metrics...
+2018-10-17 14:31:10.760+0000 INFO  Sending metrics to CSV file at /home/paoloc/Documenti/neo4j-enterprise-3.4.7/metrics
+2018-10-17 14:31:12.624+0000 INFO  Bolt enabled on 127.0.0.1:7687.
+2018-10-17 14:31:14.083+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.all)
+2018-10-17 14:31:14.089+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.idle)
+2018-10-17 14:31:39.499+0000 INFO  Started.
+2018-10-17 14:31:40.181+0000 INFO  Mounted REST API at: /db/manage
+2018-10-17 14:31:40.608+0000 INFO  Server thread metrics has been registered successfully
+2018-10-17 14:31:45.796+0000 INFO  Remote interface available at http://localhost:7474/
+2018-10-17 14:33:02.319+0000 INFO  Neo4j Server shutdown initiated by request
+2018-10-17 14:33:02.430+0000 INFO  Stopping...
+2018-10-17 14:33:02.788+0000 INFO  Stopped.
+nohup: input ignorato
+2018-10-17 14:33:10.308+0000 INFO  ======== Neo4j 3.4.7 ========
+2018-10-17 14:33:10.443+0000 INFO  Starting...
+2018-10-17 14:33:14.456+0000 INFO  Initiating metrics...
+2018-10-17 14:33:17.138+0000 INFO  Sending metrics to CSV file at /home/paoloc/Documenti/neo4j-enterprise-3.4.7/metrics
+2018-10-17 14:33:19.041+0000 INFO  Bolt enabled on 127.0.0.1:7687.
+2018-10-17 14:33:20.401+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.all)
+2018-10-17 14:33:20.406+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.idle)
+2018-10-17 14:33:29.525+0000 INFO  Started.
+2018-10-17 14:33:30.169+0000 INFO  Mounted REST API at: /db/manage
+2018-10-17 14:33:30.470+0000 INFO  Server thread metrics has been registered successfully
+2018-10-17 14:33:34.976+0000 INFO  Remote interface available at http://localhost:7474/

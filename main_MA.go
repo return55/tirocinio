@@ -38,7 +38,7 @@ func creaAlberoCitazioni_MA(wd selenium.WebDriver) bool {
 		var allDoc []structures.MADocument
 		initialDoc := webDriver.GetInitialDocument_MA(wd)
 		allDoc = append(allDoc, initialDoc)
-
+		fmt.Println("Doc: ", initialDoc)
 		if initialDoc.LinkCitations == "" {
 			fmt.Println("\n\nIL DOCUMENTO DI PARTENZA NON E' CITATO DA NESSUNO\n")
 			return false
