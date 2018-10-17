@@ -8,9 +8,9 @@ import (
 	"strconv"
 	"strings"
 
+	"math"
 	"math/rand"
 	"time"
-	"math"
 
 	"github.com/return55/tirocinio/structures"
 
@@ -18,11 +18,11 @@ import (
 )
 
 const (
-	seleniumPath    = "webDriver/selenium-server-standalone-3.14.0.jar"
-	geckoDriverPath = "webDriver/geckodriver-v0.23.0-linux64/geckodriver"
+	seleniumPath     = "webDriver/selenium-server-standalone-3.14.0.jar"
+	geckoDriverPath  = "webDriver/geckodriver-v0.23.0-linux64/geckodriver"
 	chromeDriverPath = "webDriver/chromedriver2.42"
-	chromeBinary = "/opt/google/chrome/chrome"
-	defaultPort     = 8080
+	chromeBinary     = "/opt/google/chrome/chrome"
+	defaultPort      = 8080
 )
 
 //Restituisco service solo per potrelo chiudere in main.go, non lo uso mai
@@ -216,8 +216,8 @@ func GetCiteDocuments(wd selenium.WebDriver, linkCitedBy string, numDoc uint64) 
 	fmt.Println("***** numDoc= " + strconv.FormatUint(numDoc, 10))
 
 	//genero la sequenza di numeri casuali
-	r:=rand.New(rand.NewSource(12))
-	
+	r := rand.New(rand.NewSource(12))
+
 	for numDoc > docRead {
 
 		newDoc, numNewDoc := GetDocumentsFromPage(wd, numDoc-docRead)
@@ -225,8 +225,8 @@ func GetCiteDocuments(wd selenium.WebDriver, linkCitedBy string, numDoc uint64) 
 		//incremento il numero dei documenti letti
 		docRead = docRead + uint64(numNewDoc)
 		fmt.Println("***** docRead= " + strconv.FormatUint(docRead, 10))
-		
-		/* Scorro una pagina alla volta in sequenza 
+
+		/* Scorro una pagina alla volta in sequenza
 		//vado alla prosssima pagina, se possibile:
 		linkAvanti, err := wd.FindElement(selenium.ByXPATH, "//b[text()='Next']/..")
 		//se non trovo il link per andare avanti, mi fermo
@@ -247,7 +247,7 @@ func GetCiteDocuments(wd selenium.WebDriver, linkCitedBy string, numDoc uint64) 
 		/* Scorro in sequenza ma aspetto un tempo che cresce in modo esponenziale */
 		waitTimeSec := time.Duration((math.Round(r.ExpFloat64())))
 		time.Sleep(waitTimeSec * time.Second)
-		
+
 		//vado alla prosssima pagina, se possibile:
 		linkAvanti, err := wd.FindElement(selenium.ByXPATH, "//b[text()='Next']/..")
 		//se non trovo il link per andare avanti, mi fermo

@@ -5,12 +5,21 @@ import (
 	"os"
 	"strconv"
 
+	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
 	"github.com/return55/tirocinio/docDatabase"
 	"github.com/return55/tirocinio/structures"
 	"github.com/return55/tirocinio/webDriver"
-
-	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
 )
+
+func main3() {
+	//Apro connessione neo4j
+	conn := docDatabase.StartNeo4j()
+	defer conn.Close()
+
+	t := docDatabase.AlreadyExplored(conn, "Pyrolysis of Wood/Biomass for Bio-oil: A Critical Review")
+
+	fmt.Println(t)
+}
 
 func mainProva() {
 	service, wd := webDriver.StartSelenium(-1)
@@ -26,7 +35,7 @@ func mainProva() {
 	allDoc := append(citeInitialDoc, initialDoc)
 	allDoc[0], allDoc[len(allDoc)-1] = allDoc[len(allDoc)-1], allDoc[0]
 
-	saveDoc_MA(allDoc)
+	SaveDoc_MA(allDoc)
 	webDriver.SaveDocuments(allDoc)
 
 	//Apro connessione neo4j
@@ -48,8 +57,12 @@ func mainProva() {
 
 }
 
+func test(conn bolt.Conn) {
+	_, _ = conn.ExecNeo("MATCH (n) RETURN n", nil)
+}
+
 //Salvo i documenti in formato Human Readable
-func saveDoc_MA(docs []structures.MADocument) {
+func SaveDoc_MA(docs []structures.MADocument) {
 	file, err := os.Create("Documenti.txt")
 	if err != nil {
 		panic(err)
@@ -82,12 +95,4 @@ func saveDoc_MA(docs []structures.MADocument) {
 			file.WriteString(f + "\n")
 		}
 	}
-}
-
-/*
-iconv per convertire da terminale nei vari formati ascii
-(iconv -t utf-32 file)
-*/
-func test(conn bolt.Conn) {
-	_, _ = conn.ExecNeo("MATCH (n) RETURN n", nil)
 }

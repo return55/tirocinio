@@ -490,3 +490,156 @@ nohup: input ignorato
 2018-10-12 13:55:25.958+0000 INFO  Bolt enabled on 0.0.0.0:7687.
 2018-10-12 13:55:32.433+0000 INFO  Started.
 2018-10-12 13:55:34.368+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-10-12 17:36:25.984+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-10-12 17:36:26.132+0000 INFO  Starting...
+2018-10-12 17:36:28.291+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-10-12 17:36:35.614+0000 INFO  Started.
+2018-10-12 17:36:39.924+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-10-12 20:47:07.124+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-10-12 20:47:07.221+0000 INFO  Starting...
+2018-10-12 20:47:09.267+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-10-12 20:47:21.882+0000 INFO  Started.
+2018-10-12 20:47:24.249+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-10-12 20:50:47.658+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-10-12 20:50:47.776+0000 INFO  Starting...
+2018-10-12 20:50:49.552+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-10-12 20:50:56.558+0000 INFO  Started.
+2018-10-12 20:50:58.365+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-10-13 07:15:01.482+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-10-13 07:15:01.595+0000 INFO  Starting...
+2018-10-13 07:15:03.820+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-10-13 07:15:12.063+0000 INFO  Started.
+2018-10-13 07:15:14.372+0000 INFO  Remote interface available at http://localhost:7474/
+2018-10-13 09:40:12.956+0000 ERROR Client triggered an unexpected error [TransactionStartFailed]: The database has encountered a critical error, and needs to be restarted. Please see database logs for more details., reference dfb3772c-f679-421f-832a-d125da750064.
+2018-10-13 09:41:03.116+0000 INFO  Neo4j Server shutdown initiated by request
+2018-10-13 09:41:03.222+0000 INFO  Stopping...
+2018-10-13 09:41:03.463+0000 INFO  Stopped.
+nohup: input ignorato
+2018-10-13 09:41:15.150+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-10-13 09:41:15.270+0000 INFO  Starting...
+2018-10-13 09:41:17.431+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-10-13 09:41:25.699+0000 INFO  Started.
+2018-10-13 09:41:27.731+0000 INFO  Remote interface available at http://localhost:7474/
+2018-10-13 10:01:37.529+0000 INFO  Neo4j Server shutdown initiated by request
+2018-10-13 10:01:37.601+0000 INFO  Stopping...
+nohup: input ignorato
+2018-10-13 10:03:09.714+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-10-13 10:03:09.829+0000 INFO  Starting...
+2018-10-13 10:03:11.616+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-10-13 10:03:18.970+0000 INFO  Started.
+2018-10-13 10:03:22.343+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-10-13 10:19:27.725+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-10-13 10:19:27.835+0000 INFO  Starting...
+2018-10-13 10:19:30.207+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-10-13 10:19:39.112+0000 INFO  Started.
+2018-10-13 10:19:43.627+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-10-14 10:11:09.302+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-10-14 10:11:09.395+0000 INFO  Starting...
+2018-10-14 10:11:11.319+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-10-14 10:11:19.109+0000 INFO  Started.
+2018-10-14 10:11:21.395+0000 INFO  Remote interface available at http://localhost:7474/
+2018-10-14 12:28:24.536+0000 ERROR Client triggered an unexpected error [TransactionStartFailed]: The database has encountered a critical error, and needs to be restarted. Please see database logs for more details., reference 83d35d41-6527-48fd-bd62-a5b928a191ec.
+2018-10-14 12:56:20.780+0000 ERROR Client triggered an unexpected error [TransactionStartFailed]: The database has encountered a critical error, and needs to be restarted. Please see database logs for more details., reference cfd1123f-0811-42c2-a5bd-a11ee5a4e930.
+2018-10-14 13:01:39.324+0000 ERROR Client triggered an unexpected error [TransactionStartFailed]: The database has encountered a critical error, and needs to be restarted. Please see database logs for more details., reference 952359f8-5d30-4794-b338-02f6cce71883.
+2018-10-14 13:02:17.995+0000 INFO  Neo4j Server shutdown initiated by request
+2018-10-14 13:02:18.094+0000 INFO  Stopping...
+2018-10-14 13:02:18.324+0000 INFO  Stopped.
+nohup: input ignorato
+2018-10-14 13:02:26.110+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-10-14 13:02:26.206+0000 INFO  Starting...
+2018-10-14 13:02:29.273+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-10-14 13:02:41.237+0000 INFO  Started.
+2018-10-14 13:02:43.411+0000 INFO  Remote interface available at http://localhost:7474/
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "neo4j.PauseMonitor"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "neo4j.BoltNetworkIO-3"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "neo4j.Pooled-11"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "neo4j.Pooled-16"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "neo4j.Pooled-10"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "neo4j.Pooled-2"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "neo4j.Pooled-7"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "neo4j.Pooled-12"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "neo4j.BoltNetworkIO-2"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "qtp1192166967-38"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "neo4j.Pooled-15"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "neo4j.Pooled-17"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "neo4j.Pooled-5"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "neo4j.Pooled-13"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "neo4j.Pooled-9"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "neo4j.Pooled-3"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "neo4j.Pooled-8"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "neo4j.Pooled-4"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "neo4j.Scheduled-2"
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "neo4j.Scheduled-1"
+2018-10-14 13:47:42.834+0000 INFO  Neo4j Server shutdown initiated by request
+2018-10-14 13:47:42.915+0000 WARN  {} Couldn't stop {}
+2018-10-14 13:47:42.942+0000 INFO  Stopping...
+nohup: input ignorato
+2018-10-14 13:49:34.210+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-10-14 13:49:34.326+0000 INFO  Starting...
+2018-10-14 13:49:36.543+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-10-14 13:49:43.383+0000 INFO  Started.
+2018-10-14 13:49:45.314+0000 INFO  Remote interface available at http://localhost:7474/
+2018-10-14 17:28:47.724+0000 INFO  Neo4j Server shutdown initiated by request
+2018-10-14 17:28:47.888+0000 INFO  Stopping...
+2018-10-14 17:28:48.180+0000 INFO  Stopped.
+nohup: input ignorato
+2018-10-14 17:28:56.659+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-10-14 17:28:56.749+0000 INFO  Starting...
+2018-10-14 17:28:59.120+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-10-14 17:29:08.815+0000 INFO  Started.
+2018-10-14 17:29:13.106+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-10-15 14:39:28.363+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-10-15 14:39:28.471+0000 INFO  Starting...
+2018-10-15 14:39:30.478+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-10-15 14:39:36.959+0000 INFO  Started.
+2018-10-15 14:39:39.952+0000 INFO  Remote interface available at http://localhost:7474/
+2018-10-15 17:07:07.599+0000 INFO  Neo4j Server shutdown initiated by request
+2018-10-15 17:07:07.752+0000 INFO  Stopping...
+2018-10-15 17:07:07.982+0000 INFO  Stopped.
+nohup: input ignorato
+2018-10-15 17:07:21.451+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-10-15 17:07:21.553+0000 INFO  Starting...
+2018-10-15 17:07:23.658+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-10-15 17:07:31.048+0000 INFO  Started.
+2018-10-15 17:07:35.287+0000 INFO  Remote interface available at http://localhost:7474/
+2018-10-15 17:09:19.090+0000 ERROR Client triggered an unexpected error [UnknownError]: Access to record Node[-1,used=false,rel=-1,prop=-1,labels=Inline(0x0:[]),light,secondaryUnitId=-1] went out of bounds of the page. The record size is 15 bytes, and the access was at offset -15 bytes into page 0, and the pages have a capacity of 8190 bytes. The mapped store file in question is /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-community-3.3.5/data/databases/graph.db/neostore.nodestore.db, reference 86d72a3a-01cd-4d8c-a296-827204fc6643.
+2018-10-15 17:09:27.995+0000 ERROR Client triggered an unexpected error [UnknownError]: Access to record Node[-1,used=false,rel=-1,prop=-1,labels=Inline(0x0:[]),light,secondaryUnitId=-1] went out of bounds of the page. The record size is 15 bytes, and the access was at offset -15 bytes into page 0, and the pages have a capacity of 8190 bytes. The mapped store file in question is /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-community-3.3.5/data/databases/graph.db/neostore.nodestore.db, reference 6eb2d6a6-1a85-4efa-8321-2e913e9b98bb.
+nohup: input ignorato
+2018-10-15 17:23:23.554+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-10-15 17:23:23.628+0000 INFO  Starting...
+2018-10-15 17:23:25.603+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-10-15 17:23:32.498+0000 INFO  Started.
+2018-10-15 17:23:36.260+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-10-17 06:05:47.834+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-10-17 06:05:47.959+0000 INFO  Starting...
+2018-10-17 06:05:50.505+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2018-10-17 06:05:58.455+0000 INFO  Started.
+2018-10-17 06:06:01.328+0000 INFO  Remote interface available at http://localhost:7474/

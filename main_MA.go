@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"strconv"
 
@@ -14,54 +15,25 @@ import (
 	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
 )
 
-//Partendo dal classico documento iniziale vado alla pagina di scholar con
-//i documenti che lo citano e prendo il primo in alto.
-//Ripeto il processo per il nuovo documento e vado avanti cosi' per n volte,
-//dove n e' il primo parametro passato da riga di comando.
-func GetEverFirst_MA(wd selenium.WebDriver) bool {
-	if len(os.Args) > 1 {
-		repeatFor, err := strconv.ParseUint(os.Args[2], 10, 64)
-		if err != nil {
-			return false
-		}
-		fmt.Println("Numero iterazioni: ", repeatFor)
-		allDoc := make([]structures.MADocument, repeatFor+1)
-		initialDoc := webDriver.GetInitialDocument_MA(wd)
-		allDoc[0] = initialDoc
-
-		var firstDoc structures.MADocument
-		var i uint64
-		for i = 0; i < repeatFor; i++ {
-			//firstDoc = webDriver.GetFirstDocumentOfPage_MA(wd, allDoc[i].LinkCitations)
-			allDoc[i+1] = firstDoc
-		}
-
-		//fase neo4j
-		conn := docDatabase.StartNeo4j()
-		defer conn.Close()
-		//pulisco il db
-		docDatabase.CleanAll(conn)
-		//aggiungo il documento iniziale
-		docDatabase.AddDocument_MA(conn, allDoc[0], "")
-		for docIndex := 1; docIndex < len(allDoc); docIndex++ {
-			docDatabase.AddDocument_MA(conn, allDoc[docIndex], allDoc[0].Title)
-		}
-		return true
-	}
-	return false
-}
-
 //Costruisce l'albero delle citazioni a partire dal documento iniziale,
 //posso decidere il numero dei livelli da input, per ora la soglia la decido io.
 //NOTA:
 //Non conoscero' i documenti che citano le foglie del mio albero
+//"go run main_MA.go NUM_LIVELLI SOGLIA"
 func creaAlberoCitazioni_MA(wd selenium.WebDriver) bool {
-	if len(os.Args) > 1 {
+	if len(os.Args) > 2 {
 		numLevels, err := strconv.ParseUint(os.Args[1], 10, 64)
 		if err != nil {
+			fmt.Println("Inserisci un numero quando chiami il main !!!!!")
+			return false
+		}
+		threshold, err := strconv.ParseUint(os.Args[2], 10, 64)
+		if err != nil {
+			fmt.Println("Inserisci un numero quando chiami il main !!!!!")
 			return false
 		}
 		fmt.Println("Numero livelli: ", numLevels)
+		fmt.Println("Soglia: ", threshold)
 
 		var allDoc []structures.MADocument
 		initialDoc := webDriver.GetInitialDocument_MA(wd)
@@ -73,7 +45,7 @@ func creaAlberoCitazioni_MA(wd selenium.WebDriver) bool {
 		}
 		//il numero delle pagine in cui sono distribuiti i risultati
 		numPages := int((initialDoc.NumCitations / structures.NumArticlePerPageMA) + 1)
-		citeInitialDoc, _ := webDriver.GetCiteDocumentsByThreshold_MA(wd, initialDoc.LinkCitations, numPages, 200)
+		citeInitialDoc, _ := webDriver.GetCiteDocumentsByThreshold_MA(wd, initialDoc.LinkCitations, numPages, int(threshold))
 		allDoc = append(allDoc, citeInitialDoc...)
 
 		//fase neo4j
@@ -81,21 +53,30 @@ func creaAlberoCitazioni_MA(wd selenium.WebDriver) bool {
 		defer conn.Close()
 		//pulisco il db
 		docDatabase.CleanAll(conn)
+
 		//aggiungo il documento iniziale
-		docDatabase.AddDocument_MA(conn, allDoc[0], "")
+		docDatabase.AddDocumentBasic_MA(conn, allDoc[0], "")
 		for docIndex := 1; docIndex < len(allDoc); docIndex++ {
 			docDatabase.AddDocumentBasic_MA(conn, allDoc[docIndex], allDoc[0].Title)
 		}
 
+		//mi serve per tenere traccia dei livelli
+		fileMA, _ := os.OpenFile("Quali_livelli_ho_fatto", os.O_WRONLY, 0600)
+		logger := log.New(fileMA, "", 0)
+
 		//sono i documenti ancora da esplorare ovvero i figli appena creati
 		parentDocs := allDoc[1:]
 		var childDocs []structures.MADocument
-		for ; numLevels > 0; numLevels-- {
+		for livelli := numLevels; numLevels > 0 && parentDocs != nil; numLevels-- {
 			for _, doc := range parentDocs {
-				childDocs = append(childDocs, getFirstsNDoc_MA(wd, doc, conn, 200)...)
+				//prima di esplorare un doc controllo se l'ho gia' esplorato
+				if !docDatabase.AlreadyExplored(conn, doc.Title) {
+					childDocs = append(childDocs, getFirstsNDoc_MA(wd, doc, conn, int(threshold))...)
+				}
 			}
 			parentDocs = childDocs
 			childDocs = nil
+			logger.Println("Ho finito il livello: ", livelli-numLevels+1)
 		}
 		return true
 	}
@@ -110,7 +91,7 @@ func getFirstsNDoc_MA(wd selenium.WebDriver, initialDoc structures.MADocument, c
 	numPages := int((initialDoc.NumCitations / structures.NumArticlePerPageMA) + 1)
 	citeInitialDoc, numFigli := webDriver.GetCiteDocumentsByThreshold_MA(wd, initialDoc.LinkCitations, numPages, threshold)
 
-	for docIndex := 1; docIndex < len(citeInitialDoc); docIndex++ {
+	for docIndex := 0; docIndex < len(citeInitialDoc); docIndex++ {
 		docDatabase.AddDocumentBasic_MA(conn, citeInitialDoc[docIndex], initialDoc.Title)
 	}
 	fmt.Println("Titolo: ", initialDoc.Title, " -- num figli: ", numFigli)
@@ -118,10 +99,6 @@ func getFirstsNDoc_MA(wd selenium.WebDriver, initialDoc structures.MADocument, c
 }
 
 func main() {
-	/*if len(os.Args) < 3 {
-		fmt.Println("I parametri da passare al main possono essere: (everFirst | firstN | thread) num1 num2")
-		return
-	}*/
 
 	service, wd := webDriver.StartSelenium(-1)
 
@@ -130,37 +107,8 @@ func main() {
 
 	if t := creaAlberoCitazioni_MA(wd); t {
 		fmt.Println("TUTTO OK")
+	} else {
+		fmt.Println("Inserisci 2 numeri!!!!")
 	}
 
-	/*
-		switch os.Args[1] {
-		//Classico: docIniziale + primi n che lo citano
-		case "everFirst":
-			if GetEverFirst(wd) {
-				fmt.Println("Tutto ok")
-			} else {
-				fmt.Println("Parametri da passare: 'everFirst' numDocCheCitano")
-			}
-		//Sempre Il Primo: docIniziale + n volte sempre il primo della classifica
-		case "firstN":
-			if GetFirstsNDoc(wd) {
-				fmt.Println("Tutto ok")
-			} else {
-				fmt.Println("Parametri da passare: 'firstN' numDoc")
-			}
-		case "thread":
-			if Concurrency(wd) {
-				fmt.Println("Tutto ok")
-			} else {
-				fmt.Println("Parametri da passare: 'thread' numThreads docPerLink lenLinkList")
-			}
-		default:
-			fmt.Println("I parametri da passare al main possono essere: (everFirst | firstN | thread) num1 num2 ...")
-		}*/
-
-	/*	//Metodi utili
-		webDriver.SaveDocuments(nil)
-		webDriver.LoadDocuments(allDoc)
-		webDriver.PrintDocuments(allDoc)
-	*/
 }

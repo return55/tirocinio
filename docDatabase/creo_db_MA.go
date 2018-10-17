@@ -2,6 +2,7 @@ package docDatabase
 
 import (
 	"fmt"
+	"io"
 	"reflect"
 
 	"github.com/return55/tirocinio/structures"
@@ -85,26 +86,53 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleSt
 	//tramite delle stringhe (i nomi dei campi)
 	doc := reflect.ValueOf(document)
 
-	fieldsMap["Titolo"] = doc.FieldByName("Titolo").Interface()
+	fieldsMap["Title"] = doc.FieldByName("Title").Interface()
 	fieldsMap["NumCitations"] = doc.FieldByName("NumCitations").Interface()
 	fieldsMap["LinkCitations"] = doc.FieldByName("LinkCitations").Interface()
 
-	//aggiungo il documento
-	result, err := conn.ExecNeo("CREATE (doc:MADocumentBasic {title: {Title},"+
-		" numCitations: {NumCitations}, linkCitations: {LinkCitations}", fieldsMap)
+	//aggiungo il documento se non e' presente
+	result, err := conn.ExecNeo("MERGE (doc:MADocumentBasic {title: {Title}, "+
+		"numCitations: {NumCitations}, linkCitations: {LinkCitations}})", fieldsMap)
 	if err != nil {
 		panic(err)
 	}
+	numResult, _ := result.RowsAffected()
+	fmt.Printf("CREATED DOCUMENT: %d\n", numResult)
+
 	//aggiungo la relazione tra document e il documento che cita
 	if titleStartDoc != "" {
-		_, err := conn.ExecNeo("MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}})"+
+		_, err := conn.ExecNeo("MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) "+
 			"CREATE (newDoc)-[:CITE]->(citedDoc)",
 			map[string]interface{}{"Title": document.Title, "TitleStartDoc": titleStartDoc})
 		if err != nil {
 			panic(err)
 		}
 	}
-	numResult, _ := result.RowsAffected()
-	fmt.Printf("CREATED DOCUMENT: %d\n", numResult) // CREATED ROWS: 1
+
+}
+
+//Controllo se il documento e' gia stato esplorato:
+//ha gia' dei doc che lo citano.
+//NOTA:
+//Non e' proprio vero perche' un doc potrebbe non avere figli che
+//soddisfano la soglia minima, ma a me va benem cosi'
+func AlreadyExplored(conn bolt.Conn, title string) bool {
+	rows, err := conn.QueryNeo("MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) "+
+		"WHERE (otherDoc)-[:CITE]->(doc) "+
+		"RETURN COUNT(otherDoc)", map[string]interface{}{"Title": title})
+	if err != nil {
+		panic(err)
+	}
+
+	numDocInterface, _, err := rows.NextNeo()
+	_ = rows.Close()
+	if err != nil {
+		if err == io.EOF {
+			return false
+		}
+		panic(err)
+	}
+
+	return reflect.ValueOf(numDocInterface[0]).Int() > 0
 
 }
