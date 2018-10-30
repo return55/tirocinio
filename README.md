@@ -15,8 +15,8 @@ go get github.com/return55/tirocinio
 ```
 ## Utilizzo
 Al momento per usare il progetto e' necessario andare nella directory del preogetto (dovrebbe essere "go/src/github.com/return55/tirocinio"):
-* avvia Neo4j: ./docDatabase/neo4j-community-3.3.5/bin/neo4j start  (stop per fermare)
-* lanciare "go run main.go n" con n=numero intero >0 per creare un database con n documenti che citano un documento preimpostato
+* avvia Neo4j: ./docDatabase/neo4j-enterprise-3.4.7/bin/neo4j start  (stop per fermare)
+* lanciare "go run main_MA.go num_livelli soglia"
 
 ## Note
 ### Neo4j
