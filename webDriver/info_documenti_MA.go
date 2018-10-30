@@ -25,12 +25,12 @@ import (
 // *NumReferences  uint16
 // *LinkReferences string //Link alla pagina di Academy con i documenti che cita
 // *Abstract       string
-// *Date           per ora string//time.Time //Data pubblicazione
+// Date           per ora string//time.Time //Data pubblicazione
 // *FieldsOfStudy  []string
 
 var (
 	//creo il logger per la ricerca in Microsoft Academic
-	fileMA, _ = os.OpenFile("sorgentePrimaTitoli.html", os.O_WRONLY, 0600)
+	fileMA, _ = os.OpenFile("robaMA.LOG", os.O_WRONLY, 0600)
 	logger    = log.New(fileMA, "", 0)
 )
 
@@ -49,7 +49,7 @@ func conditionResultPage(wd selenium.WebDriver) (bool, error) {
 	return true, err
 }
 
-//Condizione per il caricamento della pagina del singolo documento (aspetto i fields of study)
+//Condizione per il caricamento della pagina del singolo documento (aspetto i aspetto i fields of study)
 func conditionDocumentPage(wd selenium.WebDriver) (bool, error) {
 	elem, err := wd.FindElements(selenium.ByXPATH,
 		"//section[@class='pure-u-1 pure-u-md-1-4 entity-right detail-right']"+
@@ -59,14 +59,41 @@ func conditionDocumentPage(wd selenium.WebDriver) (bool, error) {
 		panic(err)
 	}
 	if len(elem) == 0 {
-		fmt.Println("Condizione caricamento pagina documento")
+		fmt.Println("Condizione caricamento pagina documento: fields")
 		return false, err
 	}
 	fmt.Println("************* ", elem)
+	currentUrl, err := wd.CurrentURL()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(currentUrl)
+	return true, err
+}
+
+//Condizione per il caricamento della pagina del singolo documento (aspetto gli showmore)
+func conditionDocumentPage2(wd selenium.WebDriver) (bool, error) {
+	elem, err := wd.FindElements(selenium.ByXPATH,
+		"//section[@class='pure-u-1 pure-u-md-1-4 entity-right detail-right']//div[@class='ulist-show-more']/a")
+
+	if err != nil {
+		panic(err)
+	}
+	if len(elem) == 0 {
+		fmt.Println("Condizione caricamento pagina documento: show more")
+		return false, err
+	}
+	fmt.Println("************* ", elem)
+	currentUrl, err := wd.CurrentURL()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(currentUrl)
 	return true, err
 }
 
 //Mette a posto i titoli e si salva i link ai vari documenti
+//Usa la dimensione di URLDocuments per scorrere titles e document
 func setTitlesAndGetURLs(titles []selenium.WebElement, documents []structures.MADocument, URLDocuments []string) {
 	for i := 0; i < len(URLDocuments); i++ {
 		tit, _ := titles[i].GetAttribute("title")
@@ -241,7 +268,13 @@ func setFieldsOfStudyAndSources(wd selenium.WebDriver, document *structures.MADo
 	sources, err := fieldsAndSources[1].FindElements(selenium.ByXPATH,
 		"li/a")
 	if err != nil {
-		if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
+		if t, _ := regexp.MatchString(".*index out of range*", err.Error()); t {
+			currentUrl, err := wd.CurrentURL()
+			if err != nil {
+				panic(err)
+			}
+			logger.Printf("Alla pagina %s non ci sono Sources", currentUrl)
+		} else if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
 			currentUrl, err := wd.CurrentURL()
 			if err != nil {
 				panic(err)
@@ -379,7 +412,7 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 	fmt.Println("Url attuale: ", currentUrl)
 
 	//per non far arrabbiare MA
-	time.Sleep(4000 * time.Millisecond)
+	//time.Sleep(4000 * time.Millisecond)
 
 	_ = wd.Refresh()
 	//aspetto che gli elementi article siano caricati
@@ -437,7 +470,7 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 	//scorro i documenti della pagina
 	for count := 0; count < min; count++ {
 		//per non far arrabbiare MA
-		time.Sleep(2000 * time.Millisecond)
+		//time.Sleep(2000 * time.Millisecond)
 
 		//per prendere tutte le informazioni devo andare alla pagina del documento:
 		if err := wd.Get(URLDocuments[count]); err != nil {
@@ -445,10 +478,10 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 		}
 
 		//per non far arrabbiare MA
-		time.Sleep(1050 * time.Millisecond)
+		//time.Sleep(1050 * time.Millisecond)
 
 		//aspetto di caricare la pagina (i fields of study come riferimento)
-		wd.Wait(conditionDocumentPage)
+		wd.WaitWithTimeout(conditionDocumentPage, 60*time.Second)
 
 		currentUrl, err := wd.CurrentURL()
 		if err != nil {
@@ -473,7 +506,7 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 
 		fmt.Println("---------------------------------------------------")
 		//Torno alla pagina dei risultati(E' NECESSARIO -- NON NE SONO SICURO (FAI UNA PROVA))
-		wd.Back()
+		//wd.Back()
 	}
 
 	return documents, uint64(min)
@@ -481,7 +514,8 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 }
 
 //Uso sempre un a soglia come criterio per raccogliere le informazioni ma mi
-//limito a raccogliere: titolo, LinkCitations e numCitations.
+//limito a raccogliere: titolo, LinkCitations, numCitations, fields of study.
+//Devo anche raccogliere i fields of study (keyword) -> devo visitare la pagina di ogni articolo
 //Molto piu' veloce della versione completa.
 func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, threshold int) ([]structures.MADocument, int) {
 	currentUrl, err := wd.CurrentURL()
@@ -491,29 +525,40 @@ func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, threshold int) ([]struc
 	fmt.Println("Url attuale: ", currentUrl)
 
 	//per non far arrabbiare MA
-	time.Sleep(4000 * time.Millisecond)
+	//time.Sleep(3000 * time.Millisecond)
 
-	_ = wd.Refresh()
+	//_ = wd.Refresh()
 	//aspetto che gli elementi article siano caricati
-	wd.WaitWithTimeout(conditionResultPage, 3000*time.Millisecond)
+	wd.WaitWithTimeout(conditionResultPage, 10000*time.Millisecond)
 
-	sorgente, err := wd.PageSource()
+	//sorgente, err := wd.PageSource()  |  va insieme all'else
+	_, err = wd.PageSource()
+	if err != nil {
+		logger.Println(err)
+	} else {
+		//logger.Println(sorgente)
+	}
+
+	//prendo i titoli degli articoli, mi serviranno per scorrere
+	//le pagine
+	titles, err := wd.FindElements(selenium.ByXPATH,
+		"//article/section[@class='paper-title']/h2/a[@class='blue-title']")
 	if err != nil {
 		panic(err)
 	}
-	logger.Println(sorgente)
-
 	//prendo tutti gli articoli
 	articles, err := wd.FindElements(selenium.ByXPATH,
 		"//article[@class='paper paper-mode-2 card']")
 	if err != nil {
 		panic(err)
 	}
-
-	var docs []structures.MADocument
-	//controllo quanti documenti hanno num citazioni >= soglia e li
-	//aggiungo alla collezione
-	for _, article := range articles {
+	//prendo il numero di citazioni di ogni articolo e conto
+	//quanti di questi superano la soglia (howMany).
+	//Quando scendo sotto la soglia: ridimensiono titles e creo
+	//la variabile che conterra i documenti e quella con gli URL.
+	howMany := len(articles)
+	numsCitations := make([]int64, len(articles))
+	for i, article := range articles {
 		//il numero di citazioni sta nel primo elemento della lista
 		numCitations, err := article.FindElement(selenium.ByXPATH,
 			"section[@class='paper-actions']/ul/li/a[@class='c-count']/span")
@@ -542,36 +587,51 @@ func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, threshold int) ([]struc
 		textNumCitations = strings.Replace(textNumCitations, ")", "", -1)
 		//elimino la virgola (se presente)
 		textNumCitations = strings.Replace(textNumCitations, ",", "", -1)
-		intNumCitations, err := strconv.ParseInt(textNumCitations, 10, 0)
-		if int(intNumCitations) >= threshold {
-			//raccolgo le info sul documento
-			var newDoc structures.MADocument
-			newDoc.NumCitations = intNumCitations
-			//titolo
-			title, err := article.FindElement(selenium.ByXPATH,
-				"section[@class='paper-title']/h2/a[@class='blue-title']")
-			if err != nil {
-				panic(err)
-			}
-			newDoc.Title, _ = title.Text()
-			//link citations
-			linkCitations, err := article.FindElement(selenium.ByXPATH,
-				"section[@class='paper-actions']/ul/li/a[@class='c-count']")
-			if err != nil {
-				panic(err)
-			}
-			textLinkCitations, err := linkCitations.GetAttribute("href")
-			if err != nil {
-				panic(err)
-			}
-			newDoc.LinkCitations = structures.URLAcademic + textLinkCitations
-			//aggiungo il nuovo documento alla lista
-			docs = append(docs, newDoc)
-		} else {
+		numsCitations[i], err = strconv.ParseInt(textNumCitations, 10, 0)
+		if int(numsCitations[i]) < threshold {
+			howMany = i
 			break
 		}
 	}
+	//ridimensiono e creo array per documenti e url
+	titles = titles[:howMany]
+	numsCitations = numsCitations[:howMany]
+	docs := make([]structures.MADocument, howMany)
+	URLDocuments := make([]string, howMany)
 
+	//Assegno i titoli ai doc e mi savo i relativi link in una var a parte perche'
+	//una volta cambiata la pagina perdo il riferimento all'elemento con il link
+	//assegno il titolo
+	setTitlesAndGetURLs(titles, docs, URLDocuments)
+
+	//raccolgo i fields of study e creo i documenti
+	for i := 0; i < howMany; i++ {
+		docs[i].NumCitations = numsCitations[i]
+		//link alle citazioni
+		linkCitations, err := articles[i].FindElement(selenium.ByXPATH,
+			"section[@class='paper-actions']/ul/li/a[@class='c-count']")
+		if err != nil {
+			panic(err)
+		}
+		textLinkCitations, err := linkCitations.GetAttribute("href")
+		if err != nil {
+			panic(err)
+		}
+		docs[i].LinkCitations = structures.URLAcademic + textLinkCitations
+		//raccolgo i fields of study
+		//per prendere tutte le informazioni devo andare alla pagina del documento:
+		if err := wd.Get(URLDocuments[i]); err != nil {
+			panic(err)
+		}
+		//aspetto di caricare la pagina (show more)
+		wd.Wait(conditionDocumentPage2)
+		//Espando gli "show more" di fields of study e sources
+		expandShowMore(wd)
+		//aspetto di caricare la pagina (i fields of study come riferimento)
+		wd.Wait(conditionDocumentPage)
+		//prendo i fields of study e sources
+		setFieldsOfStudyAndSources(wd, &docs[i])
+	}
 	return docs, len(docs)
 }
 
@@ -624,7 +684,7 @@ func GetInitialDocument_MA(wd selenium.WebDriver) structures.MADocument {
 	if err != nil {
 		panic(err)
 	}
-	if err := textBox.SendKeys(`browser`); err != nil {
+	if err := textBox.SendKeys(`case`); err != nil {
 		panic(err)
 	}
 	searchButton, err := wd.FindElement(selenium.ByXPATH,
@@ -755,7 +815,8 @@ func conditionSortBy(wd selenium.WebDriver) (bool, error) {
 	return true, err
 }
 
-//Raccolgie i documenti in base a una soglia, serve per creare l'albero
+//Raccolgie i documenti in base a una soglia sul numero di citazioni.
+//Serve per creare l'albero
 func GetCiteDocumentsByThreshold_MA(wd selenium.WebDriver, linkCitedBy string, numPages int, threshold int) ([]structures.MADocument, int) {
 	if err := wd.Get(linkCitedBy); err != nil {
 		panic(err)
@@ -784,6 +845,7 @@ func GetCiteDocumentsByThreshold_MA(wd selenium.WebDriver, linkCitedBy string, n
 		//aspetto che si carichi la pagina, specialmente nel caso abbia
 		//appena ordinato i risultati.
 		waitTimeSec := time.Duration((math.Round(r.ExpFloat64())))
+		fmt.Println("Aspetto ", waitTimeSec, " secondi.")
 		time.Sleep(waitTimeSec * time.Second)
 
 		if pageNumber != 1 {

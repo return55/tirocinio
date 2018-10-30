@@ -89,10 +89,12 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleSt
 	fieldsMap["Title"] = doc.FieldByName("Title").Interface()
 	fieldsMap["NumCitations"] = doc.FieldByName("NumCitations").Interface()
 	fieldsMap["LinkCitations"] = doc.FieldByName("LinkCitations").Interface()
+	fieldsMap["FieldsOfStudy"] = doc.FieldByName("FieldsOfStudy").Interface()
 
 	//aggiungo il documento se non e' presente
 	result, err := conn.ExecNeo("MERGE (doc:MADocumentBasic {title: {Title}, "+
-		"numCitations: {NumCitations}, linkCitations: {LinkCitations}})", fieldsMap)
+		"numCitations: {NumCitations}, linkCitations: {LinkCitations}, "+
+		"fieldsOfStudy: {FieldsOfStudy}})", fieldsMap)
 	if err != nil {
 		panic(err)
 	}
@@ -100,10 +102,18 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleSt
 	fmt.Printf("CREATED DOCUMENT: %d\n", numResult)
 
 	//aggiungo la relazione tra document e il documento che cita
+	//e dico che non e' la radice (isRoot = false)
 	if titleStartDoc != "" {
 		_, err := conn.ExecNeo("MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) "+
-			"CREATE (newDoc)-[:CITE]->(citedDoc)",
+			"CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false",
 			map[string]interface{}{"Title": document.Title, "TitleStartDoc": titleStartDoc})
+		if err != nil {
+			panic(err)
+		}
+	} else {
+		//dico che il doc iniziale e' la radice dell'albero
+		_, err := conn.ExecNeo("MATCH (initialDoc:MADocumentBasic {title: {Title}}) SET initialDoc.isRoot = true",
+			map[string]interface{}{"Title": document.Title})
 		if err != nil {
 			panic(err)
 		}
