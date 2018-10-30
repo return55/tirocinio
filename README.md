@@ -1,5 +1,3 @@
-# Document Collector
-!! Questo codice e' stato sviluppato e testato solo su Debian 9 !!
 ## Prerequisiti:
 Sulla macchina devono essere presenti: la jre 8 e il pacchetto "xvfb" per permettere al web driver (Selenium) di funzionare.
 ### Firefox
@@ -35,4 +33,9 @@ impostazioni di sicurezza ma anche facendolo non ho notato cambiamenti nelle pre
 Alcune delle funzionalita' di base sono nei rispettivi file senza sigla (es creo_db.go - creo_db_MA.go)
 ### Main
 * main.go (solo per Scholar) ha le seguenti funzionalita':
+    firstN <n> : Prendo i primi n articoli che citano quello iniziale.
+    everFirst <n> : Prendo per n volte il primo tra gli articoli che citano quello precedente.
+    thread <numThreads> <docPerLink> <lenLinkList> : guarda la funzione concurrency() per piu' dettagli.
+* main_MA.go (solo per Academic):
+    <num_livelli> <soglia> : quanti livelli avra' (al massimo) l'albero delle citazioni e numero di citazioni minime che un documento         deve avere per essere preso.
 
