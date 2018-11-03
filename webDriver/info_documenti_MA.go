@@ -510,11 +510,17 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 
 }
 
-//Uso sempre un a soglia come criterio per raccogliere le informazioni ma mi
+//Uso sempre una soglia come criterio per raccogliere le informazioni ma mi
 //limito a raccogliere: titolo, LinkCitations, numCitations, fields of study.
 //Devo anche raccogliere i fields of study (keyword) -> devo visitare la pagina di ogni articolo
-//Molto piu' veloce della versione completa.
-func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, threshold int) ([]structures.MADocument, int) {
+//Puo' avere 2 comportamenti, threshold puo' essere:
+//- il numero minimo di citazioni di un documento
+//- il massimo numero di citazioni tra i documenti che citano (il primo della prima pagina dei risultati),
+//	prendo quelli che hanno almeno un numero di citazioni pari a una percentuale di threshold.
+//	Se threshold = -1 -> sono al primo giro
+//
+//Ritorno: documenti, quanti ne ho presi e la nuova soglia (che cambia solo al primo giro)
+func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, threshold int) ([]structures.MADocument, int, int) {
 	currentUrl, err := wd.CurrentURL()
 	if err != nil {
 		panic(err)
@@ -585,7 +591,15 @@ func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, threshold int) ([]struc
 		//elimino la virgola (se presente)
 		textNumCitations = strings.Replace(textNumCitations, ",", "", -1)
 		numsCitations[i], err = strconv.ParseInt(textNumCitations, 10, 0)
-		if int(numsCitations[i]) < threshold {
+
+		//se e' il primo risulatato della pagina e non ho ancora un valore valido di threshold
+		if i == 0 && threshold == -1 {
+			threshold = int(numsCitations[i])
+		}
+		/*Condozione banale sulla soglia
+		if int(numsCitations[i]) < threshold {*/
+		/*Condizione superiore a una percentuale di threshold*/
+		if numsCitations[i] < 800 || float32(numsCitations[i]) < float32(threshold)*0.8 {
 			howMany = i
 			break
 		}
@@ -629,7 +643,7 @@ func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, threshold int) ([]struc
 		//prendo i fields of study e sources
 		setFieldsOfStudyAndSources(wd, &docs[i])
 	}
-	return docs, len(docs)
+	return docs, len(docs), threshold
 }
 
 //Condizione per il caricamento della pagina iniziale: aspetto che si
@@ -704,6 +718,42 @@ func GetInitialDocument_MA(wd selenium.WebDriver) structures.MADocument {
 	}
 
 	return docs[0]
+}
+
+func GetInitialDocumentByURL_MA(wd selenium.WebDriver, startURL string) structures.MADocument {
+	if err := wd.Get(startURL); err != nil {
+		panic(err)
+	}
+	//stampo url
+	url, _ := wd.CurrentURL()
+	fmt.Println("Url: ", url)
+
+	var initialDoc structures.MADocument
+
+	//aspetto gli showmore
+	wd.Wait(conditionDocumentPage2)
+
+	//prendo il titolo
+	title, err := wd.FindElement(selenium.ByXPATH,
+		"//h1[@class='grey-title ma-sem-paper']/span[@data-bind='text: data.title']")
+	if err != nil {
+		panic(err)
+	}
+	initialDoc.Title, _ = title.Text()
+
+	//Espando gli "show more" di fields of study e sources
+	expandShowMore(wd)
+
+	//aspetto di caricare la pagina (i fields of study come riferimento)
+	wd.Wait(conditionDocumentPage)
+
+	//prendo i fields of study e sources
+	setFieldsOfStudyAndSources(wd, &initialDoc)
+
+	//Prendo le citations (0), references (1) (opz. related (2))
+	setCitationsAndReferences(wd, &initialDoc)
+
+	return initialDoc
 }
 
 //Aspetto che la sezione in basso con i numeri delle pagine dei
@@ -822,9 +872,9 @@ func GetCiteDocumentsByThreshold_MA(wd selenium.WebDriver, linkCitedBy string, n
 	numDoc := 0
 
 	//genero la sequenza di numeri casuali
-	r := rand.New(rand.NewSource(12))
+	//r := rand.New(rand.NewSource(12))
 
-	wd.WaitWithTimeout(conditionSortBy, 10000*time.Millisecond)
+	wd.WaitWithTimeout(conditionSortBy, 30*time.Second)
 	//ordino i risultati per numero di citazioni decrescente, cosi' non appena
 	//trovo un articolo sotto la soglia mi fermo.
 	mostCitations, err := wd.FindElement(selenium.ByXPATH,
@@ -838,12 +888,15 @@ func GetCiteDocumentsByThreshold_MA(wd selenium.WebDriver, linkCitedBy string, n
 		}
 	}
 
+	//Modifica per usare una percentuale sulla soglia !!!!!!!!!!!!!
+	threshold = -1
+
 	for pageNumber := 1; pageNumber <= numPages; pageNumber++ {
 		//aspetto che si carichi la pagina, specialmente nel caso abbia
 		//appena ordinato i risultati.
-		waitTimeSec := time.Duration((math.Round(r.ExpFloat64())))
+		/*waitTimeSec := time.Duration((math.Round(r.ExpFloat64())))
 		fmt.Println("Aspetto ", waitTimeSec, " secondi.")
-		time.Sleep(waitTimeSec * time.Second)
+		time.Sleep(waitTimeSec * time.Second)*/
 
 		if pageNumber != 1 {
 			//vado alla pagina successiva
@@ -871,12 +924,16 @@ func GetCiteDocumentsByThreshold_MA(wd selenium.WebDriver, linkCitedBy string, n
 			panic(err)
 		}
 
-		newDoc, numNewDoc := GetDocumentsFromPageBasic_MA(wd, threshold)
+		//se non considero la percentuale:
+		//newDoc, numNewDoc, _ := GetDocumentsFromPageBasic_MA(wd, threshold)
+		//e modificare la condizione nella funzione GetDocumentsFromPageBasic_MA
+		newDoc, numNewDoc, threshold := GetDocumentsFromPageBasic_MA(wd, threshold)
 		allDoc = append(allDoc, newDoc...)
 		//tolgo il numero di documenti appena letti
 		numDoc = numDoc + numNewDoc
 		fmt.Println("***** docRead= ", numNewDoc)
 		fmt.Println("***** numDoc= ", numDoc)
+		fmt.Println("***** soglia_max= ", threshold)
 
 		//se ho preso meno di 8 doc, significa che sono sceso sotto la soglia
 		//e mi fermo

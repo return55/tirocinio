@@ -19,24 +19,35 @@ import (
 //posso decidere il numero dei livelli da input, per ora la soglia la decido io.
 //NOTA:
 //Non conoscero' i documenti che citano le foglie del mio albero
-//"go run main_MA.go NUM_LIVELLI SOGLIA"
 func creaAlberoCitazioni_MA(wd selenium.WebDriver) bool {
+	//il quarto elemento e' lurl del primo doc
+	startURL := ""
+	if len(os.Args) == 4 {
+		startURL = os.Args[3]
+	}
 	if len(os.Args) > 2 {
 		numLevels, err := strconv.ParseUint(os.Args[1], 10, 64)
 		if err != nil {
-			fmt.Println("Inserisci un numero quando chiami il main !!!!!")
+			fmt.Println("I parametri del main sono sbagliati !!!!!")
 			return false
 		}
 		threshold, err := strconv.ParseUint(os.Args[2], 10, 64)
 		if err != nil {
-			fmt.Println("Inserisci un numero quando chiami il main !!!!!")
+			fmt.Println("I parametri del main sono sbagliati !!!!!")
 			return false
 		}
 		fmt.Println("Numero livelli: ", numLevels)
 		fmt.Println("Soglia: ", threshold)
 
 		var allDoc []structures.MADocument
-		initialDoc := webDriver.GetInitialDocument_MA(wd)
+		var initialDoc structures.MADocument
+		if startURL == "" {
+			initialDoc = webDriver.GetInitialDocument_MA(wd)
+		} else {
+			initialDoc = webDriver.GetInitialDocumentByURL_MA(wd, startURL)
+			fmt.Println("URL partenza: ", startURL)
+		}
+
 		allDoc = append(allDoc, initialDoc)
 		fmt.Println("Doc: ", initialDoc)
 		if initialDoc.LinkCitations == "" {
@@ -86,6 +97,7 @@ func creaAlberoCitazioni_MA(wd selenium.WebDriver) bool {
 //Solo di supporto: le passo il doc di partenza e vado alla pagina di scholar con
 //i documenti che lo citano e prendo quelli con numero citazioni > soglia, infine
 //li aggiungo al database.
+//"go run main_MA.go NUM_LIVELLI SOGLIA <URL_PRIMO_DOC>"
 func getFirstsNDoc_MA(wd selenium.WebDriver, initialDoc structures.MADocument, conn bolt.Conn, threshold int) []structures.MADocument {
 
 	numPages := int((initialDoc.NumCitations / structures.NumArticlePerPageMA) + 1)
@@ -102,6 +114,9 @@ func getFirstsNDoc_MA(wd selenium.WebDriver, initialDoc structures.MADocument, c
 Il documento iniziale lo prendo da info_documenti_MA/GetInitialDocument_MA() facendo una ricerca nella home
 di Microsoft Academic e prendendo il primo documento tra quelli restituiti.
 Per cambiare il documento si puo' cambiare la parola da cercare nella funzione textBox.SendKeys() (riga 688)
+
+Oppure se al main viene passato un terzo argomento, questo viene considerato l'URL della pagina di Academic del
+primo documento.
 */
 func main() {
 

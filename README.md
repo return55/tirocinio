@@ -14,10 +14,11 @@ go get github.com/return55/tirocinio
 ## Utilizzo
 Al momento per usare il progetto e' necessario andare nella directory del preogetto (dovrebbe essere "go/src/github.com/return55/tirocinio"):
 * avvia Neo4j: ./docDatabase/neo4j-enterprise-3.4.7/bin/neo4j start  (stop per fermare)
-* lancia "go run main_MA.go num_livelli soglia" con:
+* lancia "go run main_MA.go num_livelli soglia <opz. url_primo_doc>" con:
     num_livelli = quanti livelli avra' (al massimo) l'albero delle citazioni
     soglia = numero di citazioni minime che un documento deve avere per essere preso
     (fai riferimento al file "main_MA.go" per piu' dettagli)
+    !! A ogni esecuzione il database precedente viene cancellato, per evitarlo commenta riga 65 main_MA !!
 
 ## Note
 ### Neo4j
