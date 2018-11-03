@@ -36,6 +36,6 @@ Alcune delle funzionalita' di base sono nei rispettivi file senza sigla (es creo
     firstN <n> : Prendo i primi n articoli che citano quello iniziale.
     everFirst <n> : Prendo per n volte il primo tra gli articoli che citano quello precedente.
     thread <numThreads> <docPerLink> <lenLinkList> : guarda la funzione concurrency() per piu' dettagli.
-* main_MA.go (solo per Academic): <num_livelli> <soglia> <url_doc_iniziale> : quanti livelli avra' (al massimo) l'albero delle citazioni e numero di citazioni minime     che un documento deve avere per essere preso e l'indirizo alla pagina del primo documento.
+* main_MA.go (solo per Academic): num_livelli soglia url_doc_iniziale : quanti livelli avra' (al massimo) l'albero delle citazioni e numero di citazioni minime     che un documento deve avere per essere preso e l'indirizo alla pagina del primo documento.
 ** !! Al momento la soglia non ha importanza ma va comunque passata come parametro !!
 
