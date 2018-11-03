@@ -6427,3 +6427,980 @@ MATCH ()-[]->() RETURN { name:'relationships', data: count(*)} AS result
 2018-10-29 20:40:34.058+0000 INFO [o.n.k.i.s.c.CountsTracker] Rotated counts store at transaction 518 to [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.a], from [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.b].
 2018-10-29 20:40:34.161+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 518 checkpoint completed in 178ms
 2018-10-29 20:40:34.161+0000 INFO [o.n.k.i.t.l.p.LogPruningImpl] No log version pruned, last checkpoint was made in version 0
+2018-10-30 16:43:59.480+0000 WARN [o.n.i.p.PageCache] The dbms.memory.pagecache.size setting has not been configured. It is recommended that this setting is always explicitly configured, to ensure the system has a balanced configuration. Until then, a computed heuristic value of 514027520 bytes will be used instead. Run `neo4j-admin memrec` for memory configuration suggestions.
+2018-10-30 16:44:00.544+0000 INFO [o.n.k.i.f.CommunityEditionModule] No locking implementation specified, defaulting to 'forseti'
+2018-10-30 16:44:00.564+0000 INFO [o.n.k.i.f.StatementLocksFactorySelector] No services implementing StatementLocksFactory found. Using SimpleStatementLocksFactory
+2018-10-30 16:44:01.147+0000 INFO [o.n.k.AvailabilityGuard] Requirement makes database unavailable: Database available
+2018-10-30 16:44:01.189+0000 INFO [o.n.k.i.DiagnosticsManager] --- INITIALIZED diagnostics START ---
+2018-10-30 16:44:01.189+0000 INFO [o.n.k.i.DiagnosticsManager] Neo4j Kernel properties:
+2018-10-30 16:44:01.189+0000 INFO [o.n.k.i.DiagnosticsManager] dbms.connector.http.enabled=true
+2018-10-30 16:44:01.189+0000 INFO [o.n.k.i.DiagnosticsManager] dbms.security.auth_enabled=false
+2018-10-30 16:44:01.189+0000 INFO [o.n.k.i.DiagnosticsManager] dbms.windows_service_name=neo4j
+2018-10-30 16:44:01.190+0000 INFO [o.n.k.i.DiagnosticsManager] unsupported.dbms.directories.neo4j_home=/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7
+2018-10-30 16:44:01.190+0000 INFO [o.n.k.i.DiagnosticsManager] apoc.import.file.enabled=true
+2018-10-30 16:44:01.190+0000 INFO [o.n.k.i.DiagnosticsManager] dbms.directories.import=import
+2018-10-30 16:44:01.190+0000 INFO [o.n.k.i.DiagnosticsManager] unsupported.dbms.edition=enterprise
+2018-10-30 16:44:01.190+0000 INFO [o.n.k.i.DiagnosticsManager] ha.pull_interval=10
+2018-10-30 16:44:01.191+0000 INFO [o.n.k.i.DiagnosticsManager] dbms.connector.bolt.enabled=true
+2018-10-30 16:44:01.191+0000 INFO [o.n.k.i.DiagnosticsManager] dbms.connector.https.enabled=true
+2018-10-30 16:44:01.191+0000 INFO [o.n.k.i.DiagnosticsManager] dbms.jvm.additional=-Dunsupported.dbms.udc.source=tarball
+2018-10-30 16:44:01.192+0000 INFO [o.n.k.i.DiagnosticsManager] dbms.memory.heap.max_size=1024m
+2018-10-30 16:44:01.194+0000 INFO [o.n.k.i.DiagnosticsManager] dbms.security.procedures.unrestricted=apoc.trigger.*,apoc.meta.*
+2018-10-30 16:44:01.194+0000 INFO [o.n.k.i.DiagnosticsManager] Diagnostics providers:
+2018-10-30 16:44:01.194+0000 INFO [o.n.k.i.DiagnosticsManager] org.neo4j.kernel.configuration.Config
+2018-10-30 16:44:01.194+0000 INFO [o.n.k.i.DiagnosticsManager] org.neo4j.kernel.info.DiagnosticsManager
+2018-10-30 16:44:01.195+0000 INFO [o.n.k.i.DiagnosticsManager] SYSTEM_MEMORY
+2018-10-30 16:44:01.195+0000 INFO [o.n.k.i.DiagnosticsManager] JAVA_MEMORY
+2018-10-30 16:44:01.195+0000 INFO [o.n.k.i.DiagnosticsManager] OPERATING_SYSTEM
+2018-10-30 16:44:01.195+0000 INFO [o.n.k.i.DiagnosticsManager] JAVA_VIRTUAL_MACHINE
+2018-10-30 16:44:01.195+0000 INFO [o.n.k.i.DiagnosticsManager] CLASSPATH
+2018-10-30 16:44:01.195+0000 INFO [o.n.k.i.DiagnosticsManager] LIBRARY_PATH
+2018-10-30 16:44:01.198+0000 INFO [o.n.k.i.DiagnosticsManager] SYSTEM_PROPERTIES
+2018-10-30 16:44:01.198+0000 INFO [o.n.k.i.DiagnosticsManager] TIMEZONE_DATABASE
+2018-10-30 16:44:01.198+0000 INFO [o.n.k.i.DiagnosticsManager] LINUX_SCHEDULERS
+2018-10-30 16:44:01.198+0000 INFO [o.n.k.i.DiagnosticsManager] NETWORK
+2018-10-30 16:44:01.198+0000 INFO [o.n.k.i.DiagnosticsManager] System memory information:
+2018-10-30 16:44:01.204+0000 INFO [o.n.k.i.DiagnosticsManager] Total Physical memory: 1.96 GB
+2018-10-30 16:44:01.205+0000 INFO [o.n.k.i.DiagnosticsManager] Free Physical memory: 222.82 MB
+2018-10-30 16:44:01.206+0000 INFO [o.n.k.i.DiagnosticsManager] Committed virtual memory: 2.92 GB
+2018-10-30 16:44:01.207+0000 INFO [o.n.k.i.DiagnosticsManager] Total swap space: 3.00 GB
+2018-10-30 16:44:01.207+0000 INFO [o.n.k.i.DiagnosticsManager] Free swap space: 3.00 GB
+2018-10-30 16:44:01.207+0000 INFO [o.n.k.i.DiagnosticsManager] JVM memory information:
+2018-10-30 16:44:01.209+0000 INFO [o.n.k.i.DiagnosticsManager] Free  memory: 14.50 MB
+2018-10-30 16:44:01.209+0000 INFO [o.n.k.i.DiagnosticsManager] Total memory: 32.00 MB
+2018-10-30 16:44:01.211+0000 INFO [o.n.k.i.DiagnosticsManager] Max   memory: 1.00 GB
+2018-10-30 16:44:01.223+0000 INFO [o.n.k.i.DiagnosticsManager] Garbage Collector: G1 Young Generation: [G1 Eden Space, G1 Survivor Space]
+2018-10-30 16:44:01.223+0000 INFO [o.n.k.i.DiagnosticsManager] Garbage Collector: G1 Old Generation: [G1 Eden Space, G1 Survivor Space, G1 Old Gen]
+2018-10-30 16:44:01.223+0000 INFO [o.n.k.i.DiagnosticsManager] Memory Pool: Code Cache (Non-heap memory): committed=5.94 MB, used=5.89 MB, max=240.00 MB, threshold=0.00 B
+2018-10-30 16:44:01.224+0000 INFO [o.n.k.i.DiagnosticsManager] Memory Pool: Metaspace (Non-heap memory): committed=16.25 MB, used=15.18 MB, max=-1.00 B, threshold=0.00 B
+2018-10-30 16:44:01.225+0000 INFO [o.n.k.i.DiagnosticsManager] Memory Pool: Compressed Class Space (Non-heap memory): committed=2.25 MB, used=1.97 MB, max=1.00 GB, threshold=0.00 B
+2018-10-30 16:44:01.227+0000 INFO [o.n.k.i.DiagnosticsManager] Memory Pool: G1 Eden Space (Heap memory): committed=14.00 MB, used=5.00 MB, max=-1.00 B, threshold=?
+2018-10-30 16:44:01.227+0000 INFO [o.n.k.i.DiagnosticsManager] Memory Pool: G1 Survivor Space (Heap memory): committed=2.00 MB, used=2.00 MB, max=-1.00 B, threshold=?
+2018-10-30 16:44:01.227+0000 INFO [o.n.k.i.DiagnosticsManager] Memory Pool: G1 Old Gen (Heap memory): committed=16.00 MB, used=10.50 MB, max=1.00 GB, threshold=0.00 B
+2018-10-30 16:44:01.228+0000 INFO [o.n.k.i.DiagnosticsManager] Operating system information:
+2018-10-30 16:44:01.229+0000 INFO [o.n.k.i.DiagnosticsManager] Operating System: Linux; version: 4.9.0-8-amd64; arch: amd64; cpus: 1
+2018-10-30 16:44:01.229+0000 INFO [o.n.k.i.DiagnosticsManager] Max number of file descriptors: 40000
+2018-10-30 16:44:01.229+0000 INFO [o.n.k.i.DiagnosticsManager] Number of open file descriptors: 172
+2018-10-30 16:44:01.231+0000 INFO [o.n.k.i.DiagnosticsManager] Process id: 2548@debian
+2018-10-30 16:44:01.231+0000 INFO [o.n.k.i.DiagnosticsManager] Byte order: LITTLE_ENDIAN
+2018-10-30 16:44:01.237+0000 INFO [o.n.k.i.DiagnosticsManager] Local timezone: Europe/Rome
+2018-10-30 16:44:01.237+0000 INFO [o.n.k.i.DiagnosticsManager] JVM information:
+2018-10-30 16:44:01.237+0000 INFO [o.n.k.i.DiagnosticsManager] VM Name: OpenJDK 64-Bit Server VM
+2018-10-30 16:44:01.237+0000 INFO [o.n.k.i.DiagnosticsManager] VM Vendor: Oracle Corporation
+2018-10-30 16:44:01.238+0000 INFO [o.n.k.i.DiagnosticsManager] VM Version: 25.181-b13
+2018-10-30 16:44:01.238+0000 INFO [o.n.k.i.DiagnosticsManager] JIT compiler: HotSpot 64-Bit Tiered Compilers
+2018-10-30 16:44:01.240+0000 INFO [o.n.k.i.DiagnosticsManager] VM Arguments: [-Xmx1024m, -XX:+UseG1GC, -XX:-OmitStackTraceInFastThrow, -XX:+AlwaysPreTouch, -XX:+UnlockExperimentalVMOptions, -XX:+TrustFinalNonStaticFields, -XX:+DisableExplicitGC, -Djdk.tls.ephemeralDHKeySize=2048, -Djdk.tls.rejectClientInitiatedRenegotiation=true, -Dunsupported.dbms.udc.source=tarball, -Dfile.encoding=UTF-8]
+2018-10-30 16:44:01.240+0000 INFO [o.n.k.i.DiagnosticsManager] Java classpath:
+2018-10-30 16:44:01.248+0000 INFO [o.n.k.i.DiagnosticsManager]  [bootstrap] /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/jce.jar
+2018-10-30 16:44:01.248+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-shell-3.4.7.jar
+2018-10-30 16:44:01.248+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-security-enterprise-3.4.7.jar
+2018-10-30 16:44:01.248+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/mapdb-0.9.3.jar
+2018-10-30 16:44:01.248+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/rhino-1.7.9.jar
+2018-10-30 16:44:01.248+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-server-commercial-3.4.7.jar
+2018-10-30 16:44:01.248+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-cypher-frontend-3.3-3.3.6.jar
+2018-10-30 16:44:01.248+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/commons-io-2.6.jar
+2018-10-30 16:44:01.252+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-udc-3.4.7.jar
+2018-10-30 16:44:01.253+0000 INFO [o.n.k.i.DiagnosticsManager]  [loader.1] file:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/nashorn.jar
+2018-10-30 16:44:01.254+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-consistency-check-3.4.7.jar
+2018-10-30 16:44:01.254+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-ssl-3.4.7.jar
+2018-10-30 16:44:01.254+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/parboiled-scala_2.11-1.1.7.jar
+2018-10-30 16:44:01.254+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-resource-3.4.7.jar
+2018-10-30 16:44:01.254+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/import-tools-3.0.1.jar
+2018-10-30 16:44:01.254+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/server-api-3.4.7.jar
+2018-10-30 16:44:01.254+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/jetty-util-9.4.11.v20180605.jar
+2018-10-30 16:44:01.254+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-cypher-ir-3.3-3.3.6.jar
+2018-10-30 16:44:01.254+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/shiro-config-ogdl-1.4.0.jar
+2018-10-30 16:44:01.254+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/concurrentlinkedhashmap-lru-1.4.2.jar
+2018-10-30 16:44:01.254+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-kernel-commercial-3.4.7.jar
+2018-10-30 16:44:01.254+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-codegen-3.4.7.jar
+2018-10-30 16:44:01.254+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-cypher-logical-plans-3.4-3.4.7.jar
+2018-10-30 16:44:01.254+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/jersey-servlet-1.19.3.jar
+2018-10-30 16:44:01.254+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/simpleclient_common-0.1.0.jar
+2018-10-30 16:44:01.254+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/commons-text-1.3.jar
+2018-10-30 16:44:01.254+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/jProcesses-1.6.4.jar
+2018-10-30 16:44:01.254+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/jersey-server-1.19.3.jar
+2018-10-30 16:44:01.254+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-graph-algo-3.4.7.jar
+2018-10-30 16:44:01.254+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-query-logging-3.4.7.jar
+2018-10-30 16:44:01.254+0000 INFO [o.n.k.i.DiagnosticsManager]  [bootstrap] /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/jsse.jar
+2018-10-30 16:44:01.254+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-backup-3.4.7.jar
+2018-10-30 16:44:01.255+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-logging-3.4.7.jar
+2018-10-30 16:44:01.255+0000 INFO [o.n.k.i.DiagnosticsManager]  [loader.1] file:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/localedata.jar
+2018-10-30 16:44:01.255+0000 INFO [o.n.k.i.DiagnosticsManager]  [loader.1] file:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/libatk-wrapper.so
+2018-10-30 16:44:01.255+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-com-3.4.7.jar
+2018-10-30 16:44:01.255+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-bolt-3.4.7.jar
+2018-10-30 16:44:01.255+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/commons-compress-1.16.1.jar
+2018-10-30 16:44:01.255+0000 INFO [o.n.k.i.DiagnosticsManager]  [loader.1] file:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/cldrdata.jar
+2018-10-30 16:44:01.257+0000 INFO [o.n.k.i.DiagnosticsManager]  [bootstrap] /usr/lib/jvm/java-8-openjdk-amd64/jre/classes
+2018-10-30 16:44:01.257+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/slf4j-nop-1.7.25.jar
+2018-10-30 16:44:01.257+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/jackson-core-asl-1.9.13.jar
+2018-10-30 16:44:01.257+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-cypher-morsel-runtime-3.4.7.jar
+2018-10-30 16:44:01.257+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/caffeine-2.6.2.jar
+2018-10-30 16:44:01.257+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-unsafe-3.4.7.jar
+2018-10-30 16:44:01.257+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/kiama_2.11-2.1.0.jar
+2018-10-30 16:44:01.257+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/commons-lang-2.6.jar
+2018-10-30 16:44:01.257+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/lucene-queryparser-5.5.5.jar
+2018-10-30 16:44:01.257+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/shiro-crypto-core-1.4.0.jar
+2018-10-30 16:44:01.257+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/slf4j-api-1.7.25.jar
+2018-10-30 16:44:01.257+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/commons-logging-1.1.1.jar
+2018-10-30 16:44:01.258+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-cypher-planner-spi-3.4-3.4.7.jar
+2018-10-30 16:44:01.258+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/simpleclient_dropwizard-0.1.0.jar
+2018-10-30 16:44:01.258+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/jline-2.12.jar
+2018-10-30 16:44:01.259+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-security-3.4.7.jar
+2018-10-30 16:44:01.259+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-management-3.4.7.jar
+2018-10-30 16:44:01.259+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-enterprise-kernel-3.4.7.jar
+2018-10-30 16:44:01.259+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/commons-beanutils-1.9.3.jar
+2018-10-30 16:44:01.259+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/WMI4Java-1.6.1.jar
+2018-10-30 16:44:01.259+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-io-3.4.7.jar
+2018-10-30 16:44:01.259+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-cluster-3.4.7.jar
+2018-10-30 16:44:01.259+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-collections-3.4.7.jar
+2018-10-30 16:44:01.259+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/jsr311-api-1.1.2.r612.jar
+2018-10-30 16:44:01.259+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-cypher-frontend-3.1-3.1.9.jar
+2018-10-30 16:44:01.259+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/shiro-cache-1.4.0.jar
+2018-10-30 16:44:01.259+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-kernel-3.4.7.jar
+2018-10-30 16:44:01.259+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/asm-util-6.2.jar
+2018-10-30 16:44:01.259+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-cypher-physical-planning-3.4.7.jar
+2018-10-30 16:44:01.259+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-values-3.4.7.jar
+2018-10-30 16:44:01.259+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/scallop_2.11-2.1.1.jar
+2018-10-30 16:44:01.259+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/opencsv-2.3.jar
+2018-10-30 16:44:01.259+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-ha-3.4.7.jar
+2018-10-30 16:44:01.259+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/asm-analysis-6.2.jar
+2018-10-30 16:44:01.259+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/bcprov-jdk15on-1.59.jar
+2018-10-30 16:44:01.259+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-common-3.4.7.jar
+2018-10-30 16:44:01.259+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/shiro-lang-1.4.0.jar
+2018-10-30 16:44:01.260+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/asm-tree-6.2.jar
+2018-10-30 16:44:01.260+0000 INFO [o.n.k.i.DiagnosticsManager]  [loader.1] file:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/java-atk-wrapper.jar
+2018-10-30 16:44:01.260+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-dbms-3.4.7.jar
+2018-10-30 16:44:01.260+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/jackson-mapper-asl-1.9.13.jar
+2018-10-30 16:44:01.260+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/openCypher-frontend-1-3.4.7.jar
+2018-10-30 16:44:01.260+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/shiro-crypto-cipher-1.4.0.jar
+2018-10-30 16:44:01.260+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-graphdb-api-3.4.7.jar
+2018-10-30 16:44:01.260+0000 INFO [o.n.k.i.DiagnosticsManager]  [loader.1] file:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/icedtea-sound.jar
+2018-10-30 16:44:01.260+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-graph-matching-3.1.9.jar
+2018-10-30 16:44:01.260+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-cypher-util-3.4-3.4.7.jar
+2018-10-30 16:44:01.260+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-cypher-slotted-runtime-3.4.7.jar
+2018-10-30 16:44:01.260+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/scala-reflect-2.11.12.jar
+2018-10-30 16:44:01.260+0000 INFO [o.n.k.i.DiagnosticsManager]  [loader.1] file:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/sunjce_provider.jar
+2018-10-30 16:44:01.260+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/jetty-webapp-9.4.11.v20180605.jar
+2018-10-30 16:44:01.260+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/jPowerShell-1.9.jar
+2018-10-30 16:44:01.268+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-procedure-api-3.4.7.jar
+2018-10-30 16:44:01.268+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/shiro-crypto-hash-1.4.0.jar
+2018-10-30 16:44:01.268+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-cypher-runtime-util-3.4.7.jar
+2018-10-30 16:44:01.268+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/shiro-core-1.4.0.jar
+2018-10-30 16:44:01.268+0000 INFO [o.n.k.i.DiagnosticsManager]  [bootstrap] /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/sunrsasign.jar
+2018-10-30 16:44:01.268+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-kernel-api-3.4.7.jar
+2018-10-30 16:44:01.268+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-cypher-logical-plans-3.3-3.3.6.jar
+2018-10-30 16:44:01.268+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/netty-3.9.9.Final.jar
+2018-10-30 16:44:01.268+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/jetty-http-9.4.11.v20180605.jar
+2018-10-30 16:44:01.268+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-cypher-expression-3.4-3.4.7.jar
+2018-10-30 16:44:01.268+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/metrics-graphite-4.0.2.jar
+2018-10-30 16:44:01.269+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-metrics-3.4.7.jar
+2018-10-30 16:44:01.269+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/bcpkix-jdk15on-1.59.jar
+2018-10-30 16:44:01.269+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/scala-library-2.11.12.jar
+2018-10-30 16:44:01.269+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-browser-3.2.5.jar
+2018-10-30 16:44:01.269+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-command-line-3.4.7.jar
+2018-10-30 16:44:01.269+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-csv-3.4.7.jar
+2018-10-30 16:44:01.269+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-cypher-frontend-2.3-2.3.12.jar
+2018-10-30 16:44:01.269+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/hazelcast-all-3.7.5.jar
+2018-10-30 16:44:01.269+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-spatial-index-3.4.7.jar
+2018-10-30 16:44:01.269+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-cypher-interpreted-runtime-3.4.7.jar
+2018-10-30 16:44:01.269+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/geoff-0.5.0.jar
+2018-10-30 16:44:01.269+0000 INFO [o.n.k.i.DiagnosticsManager]  [loader.1] file:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/jaccess.jar
+2018-10-30 16:44:01.269+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/simpleclient-0.1.0.jar
+2018-10-30 16:44:01.269+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/shiro-config-core-1.4.0.jar
+2018-10-30 16:44:01.269+0000 INFO [o.n.k.i.DiagnosticsManager]  [loader.1] file:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/sunpkcs11.jar
+2018-10-30 16:44:01.269+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/lz4-1.3.0.jar
+2018-10-30 16:44:01.270+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-causal-clustering-3.4.7.jar
+2018-10-30 16:44:01.270+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/lucene-core-5.5.5.jar
+2018-10-30 16:44:01.270+0000 INFO [o.n.k.i.DiagnosticsManager]  [loader.1] file:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/sunec.jar
+2018-10-30 16:44:01.270+0000 INFO [o.n.k.i.DiagnosticsManager]  [bootstrap] /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/jfr.jar
+2018-10-30 16:44:01.270+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/lucene-analyzers-common-5.5.5.jar
+2018-10-30 16:44:01.270+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/metrics-core-4.0.2.jar
+2018-10-30 16:44:01.270+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/jersey-core-1.19.3.jar
+2018-10-30 16:44:01.270+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-cypher-ir-3.4-3.4.7.jar
+2018-10-30 16:44:01.270+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-cypher-compiler-3.1-3.1.9.jar
+2018-10-30 16:44:01.270+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/jetty-servlet-9.4.11.v20180605.jar
+2018-10-30 16:44:01.270+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-lucene-index-3.4.7.jar
+2018-10-30 16:44:01.270+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-jmx-3.4.7.jar
+2018-10-30 16:44:01.270+0000 INFO [o.n.k.i.DiagnosticsManager]  [loader.1] file:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/zipfs.jar
+2018-10-30 16:44:01.270+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-lucene-upgrade-3.4.7.jar
+2018-10-30 16:44:01.270+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar
+2018-10-30 16:44:01.276+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-cypher-compiler-3.3-3.3.6.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [bootstrap] /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/resources.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/commons-configuration-1.10.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-primitive-collections-3.4.7.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-auth-plugin-api-3.4.7.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/lucene-codecs-5.5.5.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/simpleclient_httpserver-0.1.0.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/jackson-jaxrs-1.9.13.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/netty-all-4.1.24.Final.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-server-enterprise-3.4.7.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-cypher-compiler-2.3-2.3.12.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/shiro-event-1.4.0.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-enterprise-cypher-3.4.7.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-server-3.4.7.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/conf/
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/parboiled-core-1.1.7.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [loader.1] file:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/dnsns.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-cypher-3.4.7.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-index-3.4.7.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/jetty-security-9.4.11.v20180605.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/javax.servlet-api-3.1.0.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-cypher-planner-3.4-3.4.7.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/jetty-xml-9.4.11.v20180605.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-import-tool-3.4.7.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [bootstrap] /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/charsets.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/commons-lang3-3.7.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-configuration-3.4.7.jar
+2018-10-30 16:44:01.277+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/jetty-io-9.4.11.v20180605.jar
+2018-10-30 16:44:01.278+0000 INFO [o.n.k.i.DiagnosticsManager]  [bootstrap] /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar
+2018-10-30 16:44:01.278+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/jetty-server-9.4.11.v20180605.jar
+2018-10-30 16:44:01.278+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/commons-collections-3.2.2.jar
+2018-10-30 16:44:01.278+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/neo4j-causal-clustering-commercial-3.4.7.jar
+2018-10-30 16:44:01.278+0000 INFO [o.n.k.i.DiagnosticsManager]  [classpath + loader.0] file:/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/lib/asm-6.2.jar
+2018-10-30 16:44:01.278+0000 INFO [o.n.k.i.DiagnosticsManager] Library path:
+2018-10-30 16:44:01.278+0000 INFO [o.n.k.i.DiagnosticsManager] /usr/java/packages/lib/amd64
+2018-10-30 16:44:01.278+0000 INFO [o.n.k.i.DiagnosticsManager] /usr/lib/x86_64-linux-gnu/jni
+2018-10-30 16:44:01.278+0000 INFO [o.n.k.i.DiagnosticsManager] /lib/x86_64-linux-gnu
+2018-10-30 16:44:01.278+0000 INFO [o.n.k.i.DiagnosticsManager] /usr/lib/x86_64-linux-gnu
+2018-10-30 16:44:01.278+0000 INFO [o.n.k.i.DiagnosticsManager] /usr/lib/jni
+2018-10-30 16:44:01.278+0000 INFO [o.n.k.i.DiagnosticsManager] /lib
+2018-10-30 16:44:01.278+0000 INFO [o.n.k.i.DiagnosticsManager] /usr/lib
+2018-10-30 16:44:01.278+0000 INFO [o.n.k.i.DiagnosticsManager] System.properties:
+2018-10-30 16:44:01.283+0000 INFO [o.n.k.i.DiagnosticsManager] sun.boot.library.path = /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64
+2018-10-30 16:44:01.283+0000 INFO [o.n.k.i.DiagnosticsManager] jdk.tls.rejectClientInitiatedRenegotiation = true
+2018-10-30 16:44:01.283+0000 INFO [o.n.k.i.DiagnosticsManager] path.separator = :
+2018-10-30 16:44:01.283+0000 INFO [o.n.k.i.DiagnosticsManager] file.encoding.pkg = sun.io
+2018-10-30 16:44:01.283+0000 INFO [o.n.k.i.DiagnosticsManager] user.country = IT
+2018-10-30 16:44:01.284+0000 INFO [o.n.k.i.DiagnosticsManager] sun.java.launcher = SUN_STANDARD
+2018-10-30 16:44:01.284+0000 INFO [o.n.k.i.DiagnosticsManager] sun.os.patch.level = unknown
+2018-10-30 16:44:01.284+0000 INFO [o.n.k.i.DiagnosticsManager] user.dir = /home/paoloc/go/src/github.com/return55/tirocinio
+2018-10-30 16:44:01.284+0000 INFO [o.n.k.i.DiagnosticsManager] sun.jnu.encoding = UTF-8
+2018-10-30 16:44:01.284+0000 INFO [o.n.k.i.DiagnosticsManager] unsupported.dbms.udc.source = tarball
+2018-10-30 16:44:01.284+0000 INFO [o.n.k.i.DiagnosticsManager] sun.management.compiler = HotSpot 64-Bit Tiered Compilers
+2018-10-30 16:44:01.284+0000 INFO [o.n.k.i.DiagnosticsManager] user.home = /home/paoloc
+2018-10-30 16:44:01.284+0000 INFO [o.n.k.i.DiagnosticsManager] user.timezone = Europe/Rome
+2018-10-30 16:44:01.284+0000 INFO [o.n.k.i.DiagnosticsManager] file.encoding = UTF-8
+2018-10-30 16:44:01.284+0000 INFO [o.n.k.i.DiagnosticsManager] user.name = paoloc
+2018-10-30 16:44:01.284+0000 INFO [o.n.k.i.DiagnosticsManager] sun.java.command = com.neo4j.server.enterprise.CommercialEntryPoint --home-dir=/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7 --config-dir=/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/conf
+2018-10-30 16:44:01.284+0000 INFO [o.n.k.i.DiagnosticsManager] sun.arch.data.model = 64
+2018-10-30 16:44:01.284+0000 INFO [o.n.k.i.DiagnosticsManager] user.language = it
+2018-10-30 16:44:01.284+0000 INFO [o.n.k.i.DiagnosticsManager] awt.toolkit = sun.awt.X11.XToolkit
+2018-10-30 16:44:01.284+0000 INFO [o.n.k.i.DiagnosticsManager] jdk.tls.ephemeralDHKeySize = 2048
+2018-10-30 16:44:01.284+0000 INFO [o.n.k.i.DiagnosticsManager] file.separator = /
+2018-10-30 16:44:01.285+0000 INFO [o.n.k.i.DiagnosticsManager] sun.io.unicode.encoding = UnicodeLittle
+2018-10-30 16:44:01.285+0000 INFO [o.n.k.i.DiagnosticsManager] sun.cpu.endian = little
+2018-10-30 16:44:01.285+0000 INFO [o.n.k.i.DiagnosticsManager] sun.cpu.isalist = 
+2018-10-30 16:44:01.285+0000 INFO [o.n.k.i.DiagnosticsManager] (IANA) TimeZone Database Version:
+2018-10-30 16:44:01.351+0000 INFO [o.n.k.i.DiagnosticsManager]   TimeZone version: 2018e (available for 599 zone identifiers)
+2018-10-30 16:44:01.351+0000 INFO [o.n.k.i.DiagnosticsManager] Linux scheduler information:
+2018-10-30 16:44:01.377+0000 INFO [o.n.k.i.DiagnosticsManager] noop deadline [cfq] 
+2018-10-30 16:44:01.377+0000 INFO [o.n.k.i.DiagnosticsManager] noop deadline [cfq] 
+2018-10-30 16:44:01.377+0000 INFO [o.n.k.i.DiagnosticsManager] Network information:
+2018-10-30 16:44:01.380+0000 INFO [o.n.k.i.DiagnosticsManager] Interface enp0s3:
+2018-10-30 16:44:01.381+0000 INFO [o.n.k.i.DiagnosticsManager]     address: fe80:0:0:0:f2db:ed0f:5966:f46e%enp0s3
+2018-10-30 16:44:01.381+0000 INFO [o.n.k.i.DiagnosticsManager]     address: 10.0.2.15
+2018-10-30 16:44:01.381+0000 INFO [o.n.k.i.DiagnosticsManager] Interface lo:
+2018-10-30 16:44:01.381+0000 INFO [o.n.k.i.DiagnosticsManager]     address: 0:0:0:0:0:0:0:1%lo
+2018-10-30 16:44:01.381+0000 INFO [o.n.k.i.DiagnosticsManager]     address: 127.0.0.1
+2018-10-30 16:44:01.382+0000 INFO [o.n.k.i.DiagnosticsManager] --- INITIALIZED diagnostics END ---
+2018-10-30 16:44:02.226+0000 INFO [o.n.b.BoltKernelExtension] Bolt Server extension loaded.
+2018-10-30 16:44:02.643+0000 INFO [o.n.m.MetricsExtension] Initiating metrics...
+2018-10-30 16:44:03.342+0000 INFO [o.n.k.i.s.f.RecordFormatSelector] Selected RecordFormat:StandardV3_4[v0.A.9] record format from store /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db
+2018-10-30 16:44:03.433+0000 INFO [o.n.k.i.s.f.RecordFormatSelector] Selected RecordFormat:StandardV3_4[v0.A.9] record format from store /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db
+2018-10-30 16:44:03.436+0000 INFO [o.n.k.i.s.f.RecordFormatSelector] Format not configured. Selected format from the store: RecordFormat:StandardV3_4[v0.A.9]
+2018-10-30 16:44:04.223+0000 INFO [o.n.k.i.i.l.NativeLabelScanStore] Label index cleanup job registered
+2018-10-30 16:44:04.226+0000 INFO [o.n.k.NeoStoreDataSource] No commits found after last check point (which is at LogPosition{logVersion=0, byteOffset=602757})
+2018-10-30 16:44:04.233+0000 INFO [o.n.k.i.i.l.NativeLabelScanStore] Label index cleanup job started
+2018-10-30 16:44:04.240+0000 INFO [o.n.k.i.s.DynamicArrayStore] Rebuilding id generator for[/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.nodestore.db.labels] ...
+2018-10-30 16:44:04.256+0000 INFO [o.n.k.i.i.l.NativeLabelScanStore] Label index cleanup job finished: Number of pages visited: 3, Number of cleaned crashed pointers: 0, Time spent: 19ms
+2018-10-30 16:44:04.256+0000 INFO [o.n.k.i.i.l.NativeLabelScanStore] Label index cleanup job closed
+2018-10-30 16:44:04.276+0000 INFO [o.n.k.i.s.DynamicArrayStore] [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.nodestore.db.labels] high id=1 (defragged=0)
+2018-10-30 16:44:04.277+0000 INFO [o.n.k.i.s.DynamicArrayStore] /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.nodestore.db.labels rebuild id generator, highId=1 defragged count=0
+2018-10-30 16:44:04.277+0000 INFO [o.n.k.i.s.NodeStore] Rebuilding id generator for[/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.nodestore.db] ...
+2018-10-30 16:44:04.291+0000 INFO [o.n.k.i.s.NodeStore] [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.nodestore.db] high id=105 (defragged=0)
+2018-10-30 16:44:04.291+0000 INFO [o.n.k.i.s.NodeStore] /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.nodestore.db rebuild id generator, highId=105 defragged count=0
+2018-10-30 16:44:04.291+0000 INFO [o.n.k.i.s.DynamicStringStore] Rebuilding id generator for[/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.propertystore.db.index.keys] ...
+2018-10-30 16:44:04.294+0000 INFO [o.n.k.i.s.DynamicStringStore] [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.propertystore.db.index.keys] high id=7 (defragged=0)
+2018-10-30 16:44:04.295+0000 INFO [o.n.k.i.s.DynamicStringStore] /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.propertystore.db.index.keys rebuild id generator, highId=7 defragged count=0
+2018-10-30 16:44:04.295+0000 INFO [o.n.k.i.s.PropertyKeyTokenStore] Rebuilding id generator for[/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.propertystore.db.index] ...
+2018-10-30 16:44:04.299+0000 INFO [o.n.k.i.s.PropertyKeyTokenStore] [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.propertystore.db.index] high id=6 (defragged=0)
+2018-10-30 16:44:04.299+0000 INFO [o.n.k.i.s.PropertyKeyTokenStore] /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.propertystore.db.index rebuild id generator, highId=6 defragged count=0
+2018-10-30 16:44:04.301+0000 INFO [o.n.k.i.s.DynamicStringStore] Rebuilding id generator for[/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.propertystore.db.strings] ...
+2018-10-30 16:44:04.304+0000 INFO [o.n.k.i.s.DynamicStringStore] [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.propertystore.db.strings] high id=209 (defragged=0)
+2018-10-30 16:44:04.304+0000 INFO [o.n.k.i.s.DynamicStringStore] /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.propertystore.db.strings rebuild id generator, highId=209 defragged count=0
+2018-10-30 16:44:04.304+0000 INFO [o.n.k.i.s.DynamicArrayStore] Rebuilding id generator for[/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.propertystore.db.arrays] ...
+2018-10-30 16:44:04.307+0000 INFO [o.n.k.i.s.DynamicArrayStore] [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.propertystore.db.arrays] high id=137 (defragged=0)
+2018-10-30 16:44:04.307+0000 INFO [o.n.k.i.s.DynamicArrayStore] /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.propertystore.db.arrays rebuild id generator, highId=137 defragged count=0
+2018-10-30 16:44:04.307+0000 INFO [o.n.k.i.s.PropertyStore] Rebuilding id generator for[/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.propertystore.db] ...
+2018-10-30 16:44:04.310+0000 INFO [o.n.k.i.s.PropertyStore] [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.propertystore.db] high id=126 (defragged=0)
+2018-10-30 16:44:04.310+0000 INFO [o.n.k.i.s.PropertyStore] /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.propertystore.db rebuild id generator, highId=126 defragged count=0
+2018-10-30 16:44:04.310+0000 INFO [o.n.k.i.s.RelationshipStore] Rebuilding id generator for[/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.relationshipstore.db] ...
+2018-10-30 16:44:04.313+0000 INFO [o.n.k.i.s.RelationshipStore] [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.relationshipstore.db] high id=0 (defragged=0)
+2018-10-30 16:44:04.313+0000 INFO [o.n.k.i.s.RelationshipStore] /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.relationshipstore.db rebuild id generator, highId=0 defragged count=0
+2018-10-30 16:44:04.313+0000 INFO [o.n.k.i.s.DynamicStringStore] Rebuilding id generator for[/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.relationshiptypestore.db.names] ...
+2018-10-30 16:44:04.316+0000 INFO [o.n.k.i.s.DynamicStringStore] [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.relationshiptypestore.db.names] high id=3 (defragged=0)
+2018-10-30 16:44:04.316+0000 INFO [o.n.k.i.s.DynamicStringStore] /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.relationshiptypestore.db.names rebuild id generator, highId=3 defragged count=0
+2018-10-30 16:44:04.316+0000 INFO [o.n.k.i.s.RelationshipTypeTokenStore] Rebuilding id generator for[/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.relationshiptypestore.db] ...
+2018-10-30 16:44:04.319+0000 INFO [o.n.k.i.s.RelationshipTypeTokenStore] [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.relationshiptypestore.db] high id=2 (defragged=0)
+2018-10-30 16:44:04.319+0000 INFO [o.n.k.i.s.RelationshipTypeTokenStore] /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.relationshiptypestore.db rebuild id generator, highId=2 defragged count=0
+2018-10-30 16:44:04.322+0000 INFO [o.n.k.i.s.DynamicStringStore] Rebuilding id generator for[/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.labeltokenstore.db.names] ...
+2018-10-30 16:44:04.325+0000 INFO [o.n.k.i.s.DynamicStringStore] [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.labeltokenstore.db.names] high id=2 (defragged=0)
+2018-10-30 16:44:04.325+0000 INFO [o.n.k.i.s.DynamicStringStore] /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.labeltokenstore.db.names rebuild id generator, highId=2 defragged count=0
+2018-10-30 16:44:04.325+0000 INFO [o.n.k.i.s.LabelTokenStore] Rebuilding id generator for[/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.labeltokenstore.db] ...
+2018-10-30 16:44:04.328+0000 INFO [o.n.k.i.s.LabelTokenStore] [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.labeltokenstore.db] high id=1 (defragged=0)
+2018-10-30 16:44:04.328+0000 INFO [o.n.k.i.s.LabelTokenStore] /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.labeltokenstore.db rebuild id generator, highId=1 defragged count=0
+2018-10-30 16:44:04.330+0000 INFO [o.n.k.i.s.SchemaStore] Rebuilding id generator for[/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.schemastore.db] ...
+2018-10-30 16:44:04.332+0000 INFO [o.n.k.i.s.SchemaStore] [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.schemastore.db] high id=1 (defragged=0)
+2018-10-30 16:44:04.332+0000 INFO [o.n.k.i.s.SchemaStore] /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.schemastore.db rebuild id generator, highId=1 defragged count=0
+2018-10-30 16:44:04.332+0000 INFO [o.n.k.i.s.RelationshipGroupStore] Rebuilding id generator for[/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.relationshipgroupstore.db] ...
+2018-10-30 16:44:04.335+0000 INFO [o.n.k.i.s.RelationshipGroupStore] [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.relationshipgroupstore.db] high id=1 (defragged=0)
+2018-10-30 16:44:04.335+0000 INFO [o.n.k.i.s.RelationshipGroupStore] /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.relationshipgroupstore.db rebuild id generator, highId=1 defragged count=0
+2018-10-30 16:44:04.335+0000 INFO [o.n.k.i.s.MetaDataStore] Rebuilding id generator for[/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore] ...
+2018-10-30 16:44:04.338+0000 INFO [o.n.k.i.s.MetaDataStore] [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore] high id=15 (defragged=0)
+2018-10-30 16:44:04.338+0000 INFO [o.n.k.i.s.MetaDataStore] /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore rebuild id generator, highId=15 defragged count=0
+2018-10-30 16:44:04.389+0000 INFO [o.n.k.i.DatabaseHealth] Database health set to OK
+2018-10-30 16:44:05.158+0000 INFO [o.n.m.MetricsExtension] Sending metrics to CSV file at /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/metrics
+2018-10-30 16:44:05.459+0000 INFO [o.n.b.i.BackupServer] BackupServer communication server started and bound to /127.0.0.1:6362
+2018-10-30 16:44:05.842+0000 INFO [o.n.b.BoltKernelExtension] Bolt enabled on 127.0.0.1:7687.
+2018-10-30 16:44:05.930+0000 WARN [o.n.k.i.p.Procedures] apoc.cluster.graph is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.018+0000 WARN [o.n.k.i.p.Procedures] apoc.static.get is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.020+0000 WARN [o.n.k.i.p.Procedures] apoc.static.list is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.022+0000 WARN [o.n.k.i.p.Procedures] apoc.static.set is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.024+0000 WARN [o.n.k.i.p.Procedures] apoc.static.getAll is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.032+0000 WARN [o.n.k.i.p.Procedures] Failed to load `apoc.util.s3.S3URLConnection` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: com/amazonaws/ClientConfiguration
+2018-10-30 16:44:06.034+0000 WARN [o.n.k.i.p.Procedures] Failed to load `apoc.util.s3.S3Aws` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: com/amazonaws/auth/AWSCredentials
+2018-10-30 16:44:06.036+0000 WARN [o.n.k.i.p.Procedures] Failed to load `apoc.util.s3.S3Aws$1` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: com/amazonaws/services/s3/model/S3ObjectInputStream
+2018-10-30 16:44:06.056+0000 WARN [o.n.k.i.p.Procedures] Failed to load `apoc.util.hdfs.HDFSUtils$1` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: org/apache/hadoop/fs/FSDataInputStream
+2018-10-30 16:44:06.067+0000 WARN [o.n.k.i.p.Procedures] Failed to load `apoc.util.hdfs.HDFSUtils` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: org/apache/hadoop/fs/FSDataOutputStream
+2018-10-30 16:44:06.179+0000 WARN [o.n.k.i.p.Procedures] apoc.nodes.link is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.181+0000 WARN [o.n.k.i.p.Procedures] apoc.nodes.get is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.183+0000 WARN [o.n.k.i.p.Procedures] apoc.nodes.delete is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.186+0000 WARN [o.n.k.i.p.Procedures] apoc.nodes.rels is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.190+0000 WARN [o.n.k.i.p.Procedures] apoc.any.properties is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.195+0000 WARN [o.n.k.i.p.Procedures] apoc.nodes.connected is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.199+0000 WARN [o.n.k.i.p.Procedures] apoc.node.labels is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.202+0000 WARN [o.n.k.i.p.Procedures] apoc.rel.type is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.204+0000 WARN [o.n.k.i.p.Procedures] apoc.node.id is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.205+0000 WARN [o.n.k.i.p.Procedures] apoc.node.relationship.types is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.209+0000 WARN [o.n.k.i.p.Procedures] apoc.any.property is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.212+0000 WARN [o.n.k.i.p.Procedures] apoc.node.relationship.exists is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.215+0000 WARN [o.n.k.i.p.Procedures] apoc.rel.id is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.217+0000 WARN [o.n.k.i.p.Procedures] apoc.nodes.isDense is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.219+0000 WARN [o.n.k.i.p.Procedures] apoc.node.degree.in is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.219+0000 WARN [o.n.k.i.p.Procedures] apoc.node.degree.out is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.224+0000 WARN [o.n.k.i.p.Procedures] apoc.node.degree is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.385+0000 WARN [o.n.k.i.p.Procedures] apoc.algo.betweenness is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.392+0000 WARN [o.n.k.i.p.Procedures] apoc.algo.betweennessCypher is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.395+0000 WARN [o.n.k.i.p.Procedures] apoc.algo.closeness is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.445+0000 WARN [o.n.k.i.p.Procedures] apoc.algo.pageRankWithConfig is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.447+0000 WARN [o.n.k.i.p.Procedures] apoc.algo.pageRankWithCypher is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.448+0000 WARN [o.n.k.i.p.Procedures] apoc.algo.pageRank is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.451+0000 WARN [o.n.k.i.p.Procedures] apoc.algo.pageRankStats is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.558+0000 WARN [o.n.k.i.p.Procedures] Failed to load `apoc.mongodb.MongoDBColl` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: org/bson/conversions/Bson
+2018-10-30 16:44:06.643+0000 WARN [o.n.k.i.p.Procedures] apoc.schema.nodes is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.648+0000 WARN [o.n.k.i.p.Procedures] apoc.schema.relationships is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.651+0000 WARN [o.n.k.i.p.Procedures] apoc.schema.assert is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.661+0000 WARN [o.n.k.i.p.Procedures] apoc.schema.node.indexExists is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.666+0000 WARN [o.n.k.i.p.Procedures] apoc.schema.node.constraintExists is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.670+0000 WARN [o.n.k.i.p.Procedures] apoc.schema.relationship.constraintExists is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:06.994+0000 WARN [o.n.k.i.p.Procedures] Failed to load `apoc.load.LoadXls` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: org/apache/poi/ss/usermodel/Cell
+2018-10-30 16:44:07.247+0000 WARN [o.n.k.i.p.Procedures] apoc.schema.properties.distinct is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:07.254+0000 WARN [o.n.k.i.p.Procedures] apoc.index.orderedRange is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:07.270+0000 WARN [o.n.k.i.p.Procedures] apoc.index.orderedByText is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:07.272+0000 WARN [o.n.k.i.p.Procedures] apoc.schema.properties.distinctCount is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:07.283+0000 WARN [o.n.k.i.p.Procedures] apoc.index.related is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:07.351+0000 WARN [o.n.k.i.p.Procedures] apoc.index.search is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:07.352+0000 WARN [o.n.k.i.p.Procedures] apoc.index.addAllNodesExtended is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:07.361+0000 WARN [o.n.k.i.p.Procedures] apoc.index.addAllNodes is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:07.709+0000 WARN [o.n.k.i.p.Procedures] apoc.custom.asProcedure is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:07.712+0000 WARN [o.n.k.i.p.Procedures] apoc.custom.asFunction is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:07.738+0000 WARN [o.n.k.i.p.Procedures] Failed to load `apoc.data.email.ExtractEmail` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: javax/mail/internet/AddressException
+2018-10-30 16:44:07.798+0000 WARN [o.n.k.i.p.Procedures] apoc.warmup.run is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:07.813+0000 WARN [o.n.k.i.p.Procedures] apoc.stats.degrees is unavailable because it is sandboxed and has dependencies outside of the sandbox. Sandboxing is controlled by the dbms.security.procedures.unrestricted setting. Only unrestrict procedures you can trust with access to database internals.
+2018-10-30 16:44:07.962+0000 WARN [o.n.k.i.p.Procedures] Failed to load `apoc.couchbase.CouchbaseManager` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: com/couchbase/client/java/env/CouchbaseEnvironment
+2018-10-30 16:44:07.968+0000 WARN [o.n.k.i.p.Procedures] Failed to load `apoc.couchbase.CouchbaseConnection` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: com/couchbase/client/java/env/CouchbaseEnvironment
+2018-10-30 16:44:07.977+0000 WARN [o.n.k.i.p.Procedures] Failed to load `apoc.couchbase.document.CouchbaseUtils` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: com/couchbase/client/core/message/kv/MutationToken
+2018-10-30 16:44:08.309+0000 WARN [o.n.m.s.s.ServerMetrics] Server thread metrics not available (missing neo4j.server.threads.jetty.all)
+2018-10-30 16:44:08.309+0000 WARN [o.n.m.s.s.ServerMetrics] Server thread metrics not available (missing neo4j.server.threads.jetty.idle)
+2018-10-30 16:44:08.814+0000 WARN [o.n.k.i.p.Procedures] Failed to load `com.jayway.jsonpath.spi.json.GsonJsonProvider` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: com/google/gson/JsonElement
+2018-10-30 16:44:08.833+0000 WARN [o.n.k.i.p.Procedures] Failed to load `com.jayway.jsonpath.spi.json.JsonOrgJsonProvider` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: org/json/JSONException
+2018-10-30 16:44:08.846+0000 WARN [o.n.k.i.p.Procedures] Failed to load `com.jayway.jsonpath.spi.mapper.GsonMappingProvider$1` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: com/google/gson/Gson
+2018-10-30 16:44:08.849+0000 WARN [o.n.k.i.p.Procedures] Failed to load `com.jayway.jsonpath.spi.mapper.GsonMappingProvider$2` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: com/google/gson/Gson
+2018-10-30 16:44:09.663+0000 WARN [o.n.k.i.p.Procedures] Failed to load `com.novell.ldap.DsmlConnection` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: org/apache/commons/httpclient/HttpException
+2018-10-30 16:44:09.953+0000 WARN [o.n.k.i.p.Procedures] Failed to load `com.novell.ldap.LDAPSecureSocketFactory` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: com/novell/service/security/net/SecureSocket
+2018-10-30 16:44:10.008+0000 WARN [o.n.k.i.p.Procedures] Failed to load `com.novell.ldap.spml.NoAuthImpl` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: org/openspml/client/SpmlClient
+2018-10-30 16:44:10.009+0000 WARN [o.n.k.i.p.Procedures] Failed to load `com.novell.ldap.spml.SPMLImpl` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: org/openspml/client/SpmlClient
+2018-10-30 16:44:10.011+0000 WARN [o.n.k.i.p.Procedures] Failed to load `com.novell.ldap.spml.SunIdm` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: org/openspml/util/SpmlException
+2018-10-30 16:44:10.024+0000 WARN [o.n.k.i.p.Procedures] Failed to load `com.novell.ldap.SPMLConnection` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: org/openspml/util/SpmlException
+2018-10-30 16:44:10.114+0000 WARN [o.n.k.i.p.Procedures] Failed to load `com.novell.ldap.util.HttpRequestCallback` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: org/apache/commons/httpclient/methods/PostMethod
+2018-10-30 16:44:10.152+0000 WARN [o.n.k.i.p.Procedures] Failed to load `com.novell.sasl.client.NMASSaslClient$NmasLdapTransport` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: com/novell/security/nmas/transport/NMASTransport
+2018-10-30 16:44:10.154+0000 WARN [o.n.k.i.p.Procedures] Failed to load `com.novell.sasl.client.NMASSaslClient` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: com/novell/security/nmas/transport/MAFTransportException
+2018-10-30 16:44:17.925+0000 WARN [o.n.k.i.p.Procedures] Failed to load `org.apache.commons.logging.impl.AvalonLogger` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: org/apache/avalon/framework/logger/Logger
+2018-10-30 16:44:17.937+0000 WARN [o.n.k.i.p.Procedures] Failed to load `org.apache.commons.logging.impl.Log4JLogger` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: org/apache/log4j/Category
+2018-10-30 16:44:17.969+0000 WARN [o.n.k.i.p.Procedures] Failed to load `org.apache.commons.logging.impl.LogKitLogger` from plugin jar `/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/plugins/apoc-3.4.0.3-all.jar`: org/apache/log/Logger
+2018-10-30 16:44:20.127+0000 INFO [o.n.k.AvailabilityGuard] Fulfilling of requirement makes database available: Database available
+2018-10-30 16:44:20.139+0000 INFO [o.n.k.i.f.GraphDatabaseFacadeFactory] Database is now ready
+2018-10-30 16:44:21.601+0000 INFO [o.n.k.i.DiagnosticsManager] --- STARTED diagnostics for KernelDiagnostics:Versions START ---
+2018-10-30 16:44:21.601+0000 INFO [o.n.k.i.DiagnosticsManager] Graph Database: enterprise single StoreId{creationTime=1539786668536, randomId=3891965082714679425, storeVersion=16094931155187206, upgradeTime=1539786668536, upgradeId=1}
+2018-10-30 16:44:21.601+0000 INFO [o.n.k.i.DiagnosticsManager] Kernel version: 3.4.7,be5c7e8cd4392c69f1e4ac630415497ada29e7ae
+2018-10-30 16:44:21.601+0000 INFO [o.n.k.i.DiagnosticsManager] --- STARTED diagnostics for KernelDiagnostics:Versions END ---
+2018-10-30 16:44:21.634+0000 INFO [o.n.k.i.DiagnosticsManager] --- STARTED diagnostics for NEO_STORE_VERSIONS START ---
+2018-10-30 16:44:21.635+0000 INFO [o.n.k.i.DiagnosticsManager] Store versions:
+2018-10-30 16:44:21.635+0000 INFO [o.n.k.i.DiagnosticsManager] Store versions:
+2018-10-30 16:44:21.635+0000 INFO [o.n.k.i.DiagnosticsManager]   ArrayPropertyStore v0.A.9
+2018-10-30 16:44:21.635+0000 INFO [o.n.k.i.DiagnosticsManager]   NodeStore v0.A.9
+2018-10-30 16:44:21.635+0000 INFO [o.n.k.i.DiagnosticsManager]   StringPropertyStore v0.A.9
+2018-10-30 16:44:21.635+0000 INFO [o.n.k.i.DiagnosticsManager]   PropertyIndexStore v0.A.9
+2018-10-30 16:44:21.635+0000 INFO [o.n.k.i.DiagnosticsManager]   StringPropertyStore v0.A.9
+2018-10-30 16:44:21.635+0000 INFO [o.n.k.i.DiagnosticsManager]   ArrayPropertyStore v0.A.9
+2018-10-30 16:44:21.635+0000 INFO [o.n.k.i.DiagnosticsManager]   PropertyStore v0.A.9
+2018-10-30 16:44:21.635+0000 INFO [o.n.k.i.DiagnosticsManager]   RelationshipStore v0.A.9
+2018-10-30 16:44:21.635+0000 INFO [o.n.k.i.DiagnosticsManager]   StringPropertyStore v0.A.9
+2018-10-30 16:44:21.636+0000 INFO [o.n.k.i.DiagnosticsManager]   RelationshipTypeStore v0.A.9
+2018-10-30 16:44:21.636+0000 INFO [o.n.k.i.DiagnosticsManager]   StringPropertyStore v0.A.9
+2018-10-30 16:44:21.636+0000 INFO [o.n.k.i.DiagnosticsManager]   LabelTokenStore v0.A.9
+2018-10-30 16:44:21.636+0000 INFO [o.n.k.i.DiagnosticsManager]   SchemaStore v0.A.9
+2018-10-30 16:44:21.636+0000 INFO [o.n.k.i.DiagnosticsManager]   RelationshipGroupStore v0.A.9
+2018-10-30 16:44:21.636+0000 INFO [o.n.k.i.DiagnosticsManager]   NeoStore v0.A.9
+2018-10-30 16:44:21.636+0000 INFO [o.n.k.i.DiagnosticsManager] --- STARTED diagnostics for NEO_STORE_VERSIONS END ---
+2018-10-30 16:44:21.636+0000 INFO [o.n.k.i.DiagnosticsManager] --- STARTED diagnostics for NEO_STORE_ID_USAGE START ---
+2018-10-30 16:44:21.636+0000 INFO [o.n.k.i.DiagnosticsManager] Id usage:
+2018-10-30 16:44:21.636+0000 INFO [o.n.k.i.DiagnosticsManager] Id usage:
+2018-10-30 16:44:21.636+0000 INFO [o.n.k.i.DiagnosticsManager]   ArrayPropertyStore: used=1 high=0
+2018-10-30 16:44:21.636+0000 INFO [o.n.k.i.DiagnosticsManager]   NodeStore: used=105 high=104
+2018-10-30 16:44:21.636+0000 INFO [o.n.k.i.DiagnosticsManager]   StringPropertyStore: used=7 high=6
+2018-10-30 16:44:21.636+0000 INFO [o.n.k.i.DiagnosticsManager]   PropertyIndexStore: used=6 high=5
+2018-10-30 16:44:21.636+0000 INFO [o.n.k.i.DiagnosticsManager]   StringPropertyStore: used=209 high=208
+2018-10-30 16:44:21.637+0000 INFO [o.n.k.i.DiagnosticsManager]   ArrayPropertyStore: used=137 high=136
+2018-10-30 16:44:21.637+0000 INFO [o.n.k.i.DiagnosticsManager]   PropertyStore: used=126 high=125
+2018-10-30 16:44:21.637+0000 INFO [o.n.k.i.DiagnosticsManager]   RelationshipStore: used=0 high=-1
+2018-10-30 16:44:21.637+0000 INFO [o.n.k.i.DiagnosticsManager]   StringPropertyStore: used=3 high=2
+2018-10-30 16:44:21.637+0000 INFO [o.n.k.i.DiagnosticsManager]   RelationshipTypeStore: used=2 high=1
+2018-10-30 16:44:21.637+0000 INFO [o.n.k.i.DiagnosticsManager]   StringPropertyStore: used=2 high=1
+2018-10-30 16:44:21.637+0000 INFO [o.n.k.i.DiagnosticsManager]   LabelTokenStore: used=1 high=0
+2018-10-30 16:44:21.637+0000 INFO [o.n.k.i.DiagnosticsManager]   SchemaStore: used=1 high=0
+2018-10-30 16:44:21.637+0000 INFO [o.n.k.i.DiagnosticsManager]   RelationshipGroupStore: used=1 high=0
+2018-10-30 16:44:21.637+0000 INFO [o.n.k.i.DiagnosticsManager]   NeoStore: used=15 high=14
+2018-10-30 16:44:21.637+0000 INFO [o.n.k.i.DiagnosticsManager] --- STARTED diagnostics for NEO_STORE_ID_USAGE END ---
+2018-10-30 16:44:21.637+0000 INFO [o.n.k.i.DiagnosticsManager] --- STARTED diagnostics for NEO_STORE_RECORDS START ---
+2018-10-30 16:44:21.637+0000 INFO [o.n.k.i.DiagnosticsManager] Neostore records:
+2018-10-30 16:44:21.638+0000 INFO [o.n.k.i.DiagnosticsManager] TIME (Creation time): 1539786668536
+2018-10-30 16:44:21.638+0000 INFO [o.n.k.i.DiagnosticsManager] RANDOM_NUMBER (Random number for store id): 3891965082714679425
+2018-10-30 16:44:21.638+0000 INFO [o.n.k.i.DiagnosticsManager] LOG_VERSION (Current log version): 0
+2018-10-30 16:44:21.638+0000 INFO [o.n.k.i.DiagnosticsManager] LAST_TRANSACTION_ID (Last committed transaction): 518
+2018-10-30 16:44:21.638+0000 INFO [o.n.k.i.DiagnosticsManager] STORE_VERSION (Store format version): 16094931155187206
+2018-10-30 16:44:21.638+0000 INFO [o.n.k.i.DiagnosticsManager] FIRST_GRAPH_PROPERTY (First property record containing graph properties): -1
+2018-10-30 16:44:21.638+0000 INFO [o.n.k.i.DiagnosticsManager] LAST_CONSTRAINT_TRANSACTION (Last committed transaction containing constraint changes): 0
+2018-10-30 16:44:21.638+0000 INFO [o.n.k.i.DiagnosticsManager] UPGRADE_TRANSACTION_ID (Transaction id most recent upgrade was performed at): 1
+2018-10-30 16:44:21.638+0000 INFO [o.n.k.i.DiagnosticsManager] UPGRADE_TIME (Time of last upgrade): 1539786668536
+2018-10-30 16:44:21.638+0000 INFO [o.n.k.i.DiagnosticsManager] LAST_TRANSACTION_CHECKSUM (Checksum of last committed transaction): -161832799090
+2018-10-30 16:44:21.638+0000 INFO [o.n.k.i.DiagnosticsManager] UPGRADE_TRANSACTION_CHECKSUM (Checksum of transaction id the most recent upgrade was performed at): 0
+2018-10-30 16:44:21.638+0000 INFO [o.n.k.i.DiagnosticsManager] LAST_CLOSED_TRANSACTION_LOG_VERSION (Log version where the last transaction commit entry has been written into): 0
+2018-10-30 16:44:21.638+0000 INFO [o.n.k.i.DiagnosticsManager] LAST_CLOSED_TRANSACTION_LOG_BYTE_OFFSET (Byte offset in the log file where the last transaction commit entry has been written into): 602757
+2018-10-30 16:44:21.638+0000 INFO [o.n.k.i.DiagnosticsManager] LAST_TRANSACTION_COMMIT_TIMESTAMP (Commit time timestamp for last committed transaction): 1540845429215
+2018-10-30 16:44:21.638+0000 INFO [o.n.k.i.DiagnosticsManager] UPGRADE_TRANSACTION_COMMIT_TIMESTAMP (Commit timestamp of transaction the most recent upgrade was performed at): 0
+2018-10-30 16:44:21.638+0000 INFO [o.n.k.i.DiagnosticsManager] --- STARTED diagnostics for NEO_STORE_RECORDS END ---
+2018-10-30 16:44:21.654+0000 INFO [o.n.k.i.DiagnosticsManager] --- STARTED diagnostics for TRANSACTION_RANGE START ---
+2018-10-30 16:44:21.660+0000 INFO [o.n.k.i.DiagnosticsManager] Transaction log:
+2018-10-30 16:44:21.671+0000 INFO [o.n.k.i.DiagnosticsManager] Oldest transaction 2 found in log with version 0
+2018-10-30 16:44:21.671+0000 INFO [o.n.k.i.DiagnosticsManager] --- STARTED diagnostics for TRANSACTION_RANGE END ---
+2018-10-30 16:44:21.671+0000 INFO [o.n.k.i.DiagnosticsManager] --- STARTED diagnostics for KernelDiagnostics:StoreFiles START ---
+2018-10-30 16:44:21.672+0000 INFO [o.n.k.i.DiagnosticsManager] Disk space on partition (Total / Free / Free %): 28401831936 / 19941474304 / 70
+2018-10-30 16:44:21.672+0000 INFO [o.n.k.i.DiagnosticsManager] Storage files: (filename : modification date - size)
+2018-10-30 16:44:21.684+0000 INFO [o.n.k.i.DiagnosticsManager]   index:
+2018-10-30 16:44:21.746+0000 INFO [o.n.k.i.DiagnosticsManager]   - Total: 2018-10-17T19:11:59+0200 - 0.00 B
+2018-10-30 16:44:21.746+0000 INFO [o.n.k.i.DiagnosticsManager]   logs:
+2018-10-30 16:44:21.754+0000 INFO [o.n.k.i.DiagnosticsManager]     debug.log: 2018-10-28T17:52:27+0100 - 42.29 kB
+2018-10-30 16:44:21.754+0000 INFO [o.n.k.i.DiagnosticsManager]   - Total: 2018-10-28T17:52:24+0100 - 42.29 kB
+2018-10-30 16:44:21.754+0000 INFO [o.n.k.i.DiagnosticsManager]   metrics:
+2018-10-30 16:44:21.769+0000 INFO [o.n.k.i.DiagnosticsManager]   - Total: 2018-10-28T17:52:26+0100 - 0.00 B
+2018-10-30 16:44:21.769+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore: 2018-10-29T21:40:34+0100 - 8.00 kB
+2018-10-30 16:44:21.770+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.counts.db.a: 2018-10-29T21:40:34+0100 - 160.00 B
+2018-10-30 16:44:21.770+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.counts.db.b: 2018-10-29T21:25:33+0100 - 160.00 B
+2018-10-30 16:44:21.770+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.id: 2018-10-30T17:44:04+0100 - 9.00 B
+2018-10-30 16:44:21.770+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.labelscanstore.db: 2018-10-30T17:44:04+0100 - 48.00 kB
+2018-10-30 16:44:21.772+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.labeltokenstore.db: 2018-10-29T16:03:12+0100 - 8.00 kB
+2018-10-30 16:44:21.772+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.labeltokenstore.db.id: 2018-10-30T17:44:04+0100 - 9.00 B
+2018-10-30 16:44:21.772+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.labeltokenstore.db.names: 2018-10-17T19:40:30+0200 - 8.00 kB
+2018-10-30 16:44:21.772+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.labeltokenstore.db.names.id: 2018-10-30T17:44:04+0100 - 9.00 B
+2018-10-30 16:44:21.773+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.nodestore.db: 2018-10-29T21:40:34+0100 - 8.00 kB
+2018-10-30 16:44:21.773+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.nodestore.db.id: 2018-10-30T17:44:04+0100 - 9.00 B
+2018-10-30 16:44:21.773+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.nodestore.db.labels: 2018-10-17T18:55:01+0200 - 8.00 kB
+2018-10-30 16:44:21.773+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.nodestore.db.labels.id: 2018-10-30T17:44:04+0100 - 9.00 B
+2018-10-30 16:44:21.773+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.propertystore.db: 2018-10-29T21:40:34+0100 - 7.97 kB
+2018-10-30 16:44:21.774+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.propertystore.db.arrays: 2018-10-29T21:40:34+0100 - 24.00 kB
+2018-10-30 16:44:21.774+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.propertystore.db.arrays.id: 2018-10-30T17:44:04+0100 - 9.00 B
+2018-10-30 16:44:21.775+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.propertystore.db.id: 2018-10-30T17:44:04+0100 - 9.00 B
+2018-10-30 16:44:21.775+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.propertystore.db.index: 2018-10-29T16:03:12+0100 - 8.00 kB
+2018-10-30 16:44:21.775+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.propertystore.db.index.id: 2018-10-30T17:44:04+0100 - 9.00 B
+2018-10-30 16:44:21.775+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.propertystore.db.index.keys: 2018-10-28T16:23:49+0100 - 8.00 kB
+2018-10-30 16:44:21.775+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.propertystore.db.index.keys.id: 2018-10-30T17:44:04+0100 - 9.00 B
+2018-10-30 16:44:21.775+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.propertystore.db.strings: 2018-10-29T21:40:34+0100 - 32.00 kB
+2018-10-30 16:44:21.775+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.propertystore.db.strings.id: 2018-10-30T17:44:04+0100 - 9.00 B
+2018-10-30 16:44:21.776+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.relationshipgroupstore.db: 2018-10-17T18:55:01+0200 - 8.00 kB
+2018-10-30 16:44:21.776+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.relationshipgroupstore.db.id: 2018-10-30T17:44:04+0100 - 9.00 B
+2018-10-30 16:44:21.776+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.relationshipstore.db: 2018-10-29T21:25:33+0100 - 7.97 kB
+2018-10-30 16:44:21.776+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.relationshipstore.db.id: 2018-10-30T17:44:04+0100 - 9.00 B
+2018-10-30 16:44:21.776+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.relationshiptypestore.db: 2018-10-29T16:03:12+0100 - 8.00 kB
+2018-10-30 16:44:21.776+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.relationshiptypestore.db.id: 2018-10-30T17:44:04+0100 - 9.00 B
+2018-10-30 16:44:21.776+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.relationshiptypestore.db.names: 2018-10-28T14:35:06+0100 - 8.00 kB
+2018-10-30 16:44:21.777+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.relationshiptypestore.db.names.id: 2018-10-30T17:44:04+0100 - 9.00 B
+2018-10-30 16:44:21.777+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.schemastore.db: 2018-10-17T18:55:01+0200 - 8.00 kB
+2018-10-30 16:44:21.777+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.schemastore.db.id: 2018-10-30T17:44:04+0100 - 9.00 B
+2018-10-30 16:44:21.777+0000 INFO [o.n.k.i.DiagnosticsManager]   neostore.transaction.db.0: 2018-10-29T21:40:34+0100 - 588.65 kB
+2018-10-30 16:44:21.777+0000 INFO [o.n.k.i.DiagnosticsManager]   profiles:
+2018-10-30 16:44:21.777+0000 INFO [o.n.k.i.DiagnosticsManager]     neostore.1142.cacheprof: 2018-10-30T17:44:21+0100 - 21.00 B
+2018-10-30 16:44:21.777+0000 INFO [o.n.k.i.DiagnosticsManager]     neostore.counts.db.a.815.cacheprof: 2018-10-30T17:44:21+0100 - 21.00 B
+2018-10-30 16:44:21.777+0000 INFO [o.n.k.i.DiagnosticsManager]     neostore.counts.db.b.326.cacheprof: 2018-10-29T21:40:04+0100 - 21.00 B
+2018-10-30 16:44:21.778+0000 INFO [o.n.k.i.DiagnosticsManager]     neostore.labelscanstore.db.1142.cacheprof: 2018-10-30T17:44:21+0100 - 21.00 B
+2018-10-30 16:44:21.778+0000 INFO [o.n.k.i.DiagnosticsManager]     neostore.labeltokenstore.db.1142.cacheprof: 2018-10-30T17:44:21+0100 - 21.00 B
+2018-10-30 16:44:21.778+0000 INFO [o.n.k.i.DiagnosticsManager]     neostore.labeltokenstore.db.names.1142.cacheprof: 2018-10-30T17:44:21+0100 - 21.00 B
+2018-10-30 16:44:21.787+0000 INFO [o.n.k.i.DiagnosticsManager]     neostore.nodestore.db.1142.cacheprof: 2018-10-30T17:44:21+0100 - 21.00 B
+2018-10-30 16:44:21.787+0000 INFO [o.n.k.i.DiagnosticsManager]     neostore.nodestore.db.labels.1142.cacheprof: 2018-10-30T17:44:21+0100 - 21.00 B
+2018-10-30 16:44:21.787+0000 INFO [o.n.k.i.DiagnosticsManager]     neostore.propertystore.db.1142.cacheprof: 2018-10-30T17:44:21+0100 - 21.00 B
+2018-10-30 16:44:21.787+0000 INFO [o.n.k.i.DiagnosticsManager]     neostore.propertystore.db.arrays.1142.cacheprof: 2018-10-30T17:44:21+0100 - 21.00 B
+2018-10-30 16:44:21.787+0000 INFO [o.n.k.i.DiagnosticsManager]     neostore.propertystore.db.index.1142.cacheprof: 2018-10-30T17:44:21+0100 - 21.00 B
+2018-10-30 16:44:21.787+0000 INFO [o.n.k.i.DiagnosticsManager]     neostore.propertystore.db.index.keys.1142.cacheprof: 2018-10-30T17:44:21+0100 - 21.00 B
+2018-10-30 16:44:21.788+0000 INFO [o.n.k.i.DiagnosticsManager]     neostore.propertystore.db.strings.1142.cacheprof: 2018-10-30T17:44:21+0100 - 21.00 B
+2018-10-30 16:44:21.788+0000 INFO [o.n.k.i.DiagnosticsManager]     neostore.relationshipgroupstore.db.1142.cacheprof: 2018-10-30T17:44:21+0100 - 21.00 B
+2018-10-30 16:44:21.788+0000 INFO [o.n.k.i.DiagnosticsManager]     neostore.relationshipstore.db.1142.cacheprof: 2018-10-30T17:44:21+0100 - 21.00 B
+2018-10-30 16:44:21.788+0000 INFO [o.n.k.i.DiagnosticsManager]     neostore.relationshiptypestore.db.1142.cacheprof: 2018-10-30T17:44:21+0100 - 21.00 B
+2018-10-30 16:44:21.788+0000 INFO [o.n.k.i.DiagnosticsManager]     neostore.relationshiptypestore.db.names.1142.cacheprof: 2018-10-30T17:44:21+0100 - 21.00 B
+2018-10-30 16:44:21.788+0000 INFO [o.n.k.i.DiagnosticsManager]     neostore.schemastore.db.1142.cacheprof: 2018-10-30T17:44:21+0100 - 21.00 B
+2018-10-30 16:44:21.788+0000 INFO [o.n.k.i.DiagnosticsManager]   - Total: 2018-10-30T17:44:21+0100 - 378.00 B
+2018-10-30 16:44:21.788+0000 INFO [o.n.k.i.DiagnosticsManager]   store_lock: 2018-10-17T18:55:01+0200 - 0.00 B
+2018-10-30 16:44:21.788+0000 INFO [o.n.k.i.DiagnosticsManager] Storage summary: 
+2018-10-30 16:44:21.789+0000 INFO [o.n.k.i.DiagnosticsManager]   Total size of store: 839.68 kB
+2018-10-30 16:44:21.789+0000 INFO [o.n.k.i.DiagnosticsManager]   Total size of mapped files: 207.93 kB
+2018-10-30 16:44:21.789+0000 INFO [o.n.k.i.DiagnosticsManager] --- STARTED diagnostics for KernelDiagnostics:StoreFiles END ---
+2018-10-30 16:44:26.773+0000 INFO [o.n.k.i.DiagnosticsManager] --- SERVER STARTED START ---
+2018-10-30 16:44:27.384+0000 INFO [o.n.m.s.s.ServerMetrics] Server thread metrics has been registered successfully
+2018-10-30 16:44:29.920+0000 INFO [o.n.k.i.DiagnosticsManager] --- SERVER STARTED END ---
+2018-10-30 16:49:41.383+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 292 seconds: CALL db.labels() YIELD label
+RETURN {name:'labels', data:COLLECT(label)[..1000]} as result
+UNION ALL
+CALL db.relationshipTypes() YIELD relationshipType
+RETURN {name:'relationshipTypes', data:COLLECT(relationshipType)[..1000]} as result
+UNION ALL
+CALL db.propertyKeys() YIELD propertyKey
+RETURN {name:'propertyKeys', data:COLLECT(propertyKey)[..1000]} as result
+UNION ALL
+CALL dbms.functions() YIELD name, signature, description
+RETURN {name:'functions', data: collect({name: name, signature: signature, description: description})} AS result
+UNION ALL
+CALL dbms.procedures() YIELD name, signature, description
+RETURN {name:'procedures', data:collect({name: name, signature: signature, description: description})} as result
+UNION ALL
+MATCH () RETURN { name:'nodes', data:count(*) } AS result
+UNION ALL
+MATCH ()-[]->() RETURN { name:'relationships', data: count(*)} AS result
+
+2018-10-30 16:49:41.536+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 291 seconds: 
+CALL db.labels() YIELD label
+RETURN {name:'labels', data:COLLECT(label)[..1000]} as result
+UNION ALL
+CALL db.relationshipTypes() YIELD relationshipType
+RETURN {name:'relationshipTypes', data:COLLECT(relationshipType)[..1000]} as result
+UNION ALL
+CALL db.propertyKeys() YIELD propertyKey
+RETURN {name:'propertyKeys', data:COLLECT(propertyKey)[..1000]} as result
+UNION ALL
+CALL dbms.functions() YIELD name, signature, description
+RETURN {name:'functions', data: collect({name: name, signature: signature, description: description})} AS result
+UNION ALL
+CALL dbms.procedures() YIELD name, signature, description
+RETURN {name:'procedures', data:collect({name: name, signature: signature, description: description})} as result
+UNION ALL
+MATCH () RETURN { name:'nodes', data:count(*) } AS result
+UNION ALL
+MATCH ()-[]->() RETURN { name:'relationships', data: count(*)} AS result
+
+2018-10-30 16:51:03.851+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 99 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 16:51:03.859+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 99 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 16:52:23.063+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 177 seconds: MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false
+2018-10-30 16:52:23.065+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 177 seconds: MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false
+2018-10-30 16:52:23.318+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 176 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 16:52:23.319+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 176 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 16:52:45.759+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 180 seconds: CALL db.labels() YIELD label
+RETURN {name:'labels', data:COLLECT(label)[..1000]} as result
+UNION ALL
+CALL db.relationshipTypes() YIELD relationshipType
+RETURN {name:'relationshipTypes', data:COLLECT(relationshipType)[..1000]} as result
+UNION ALL
+CALL db.propertyKeys() YIELD propertyKey
+RETURN {name:'propertyKeys', data:COLLECT(propertyKey)[..1000]} as result
+UNION ALL
+CALL dbms.functions() YIELD name, signature, description
+RETURN {name:'functions', data: collect({name: name, signature: signature, description: description})} AS result
+UNION ALL
+CALL dbms.procedures() YIELD name, signature, description
+RETURN {name:'procedures', data:collect({name: name, signature: signature, description: description})} as result
+UNION ALL
+MATCH () RETURN { name:'nodes', data:count(*) } AS result
+UNION ALL
+MATCH ()-[]->() RETURN { name:'relationships', data: count(*)} AS result
+
+2018-10-30 16:52:45.762+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 180 seconds: 
+CALL db.labels() YIELD label
+RETURN {name:'labels', data:COLLECT(label)[..1000]} as result
+UNION ALL
+CALL db.relationshipTypes() YIELD relationshipType
+RETURN {name:'relationshipTypes', data:COLLECT(relationshipType)[..1000]} as result
+UNION ALL
+CALL db.propertyKeys() YIELD propertyKey
+RETURN {name:'propertyKeys', data:COLLECT(propertyKey)[..1000]} as result
+UNION ALL
+CALL dbms.functions() YIELD name, signature, description
+RETURN {name:'functions', data: collect({name: name, signature: signature, description: description})} AS result
+UNION ALL
+CALL dbms.procedures() YIELD name, signature, description
+RETURN {name:'procedures', data:collect({name: name, signature: signature, description: description})} as result
+UNION ALL
+MATCH () RETURN { name:'nodes', data:count(*) } AS result
+UNION ALL
+MATCH ()-[]->() RETURN { name:'relationships', data: count(*)} AS result
+
+2018-10-30 16:55:14.583+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 250 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 16:55:14.591+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 250 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 16:57:51.287+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 327 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 16:57:51.369+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 327 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 16:59:21.267+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 395 seconds: CALL db.labels() YIELD label
+RETURN {name:'labels', data:COLLECT(label)[..1000]} as result
+UNION ALL
+CALL db.relationshipTypes() YIELD relationshipType
+RETURN {name:'relationshipTypes', data:COLLECT(relationshipType)[..1000]} as result
+UNION ALL
+CALL db.propertyKeys() YIELD propertyKey
+RETURN {name:'propertyKeys', data:COLLECT(propertyKey)[..1000]} as result
+UNION ALL
+CALL dbms.functions() YIELD name, signature, description
+RETURN {name:'functions', data: collect({name: name, signature: signature, description: description})} AS result
+UNION ALL
+CALL dbms.procedures() YIELD name, signature, description
+RETURN {name:'procedures', data:collect({name: name, signature: signature, description: description})} as result
+UNION ALL
+MATCH () RETURN { name:'nodes', data:count(*) } AS result
+UNION ALL
+MATCH ()-[]->() RETURN { name:'relationships', data: count(*)} AS result
+
+2018-10-30 16:59:21.275+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 395 seconds: 
+CALL db.labels() YIELD label
+RETURN {name:'labels', data:COLLECT(label)[..1000]} as result
+UNION ALL
+CALL db.relationshipTypes() YIELD relationshipType
+RETURN {name:'relationshipTypes', data:COLLECT(relationshipType)[..1000]} as result
+UNION ALL
+CALL db.propertyKeys() YIELD propertyKey
+RETURN {name:'propertyKeys', data:COLLECT(propertyKey)[..1000]} as result
+UNION ALL
+CALL dbms.functions() YIELD name, signature, description
+RETURN {name:'functions', data: collect({name: name, signature: signature, description: description})} AS result
+UNION ALL
+CALL dbms.procedures() YIELD name, signature, description
+RETURN {name:'procedures', data:collect({name: name, signature: signature, description: description})} as result
+UNION ALL
+MATCH () RETURN { name:'nodes', data:count(*) } AS result
+UNION ALL
+MATCH ()-[]->() RETURN { name:'relationships', data: count(*)} AS result
+
+2018-10-30 17:02:14.844+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 732 checkpoint started...
+2018-10-30 17:02:16.231+0000 INFO [o.n.k.i.s.c.CountsTracker] Rotated counts store at transaction 732 to [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.b], from [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.a].
+2018-10-30 17:02:16.781+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 732 checkpoint completed in 1s 935ms
+2018-10-30 17:02:16.835+0000 INFO [o.n.k.i.t.l.p.LogPruningImpl] No log version pruned, last checkpoint was made in version 0
+2018-10-30 17:20:45.240+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 1882 seconds: MATCH (n), ()-[r]-() DELETE n,r
+2018-10-30 17:20:45.249+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 1882 seconds: MATCH (n), ()-[r]-() DELETE n,r
+2018-10-30 17:20:45.905+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 1531 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 17:20:45.908+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 1531 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 17:20:46.053+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 1702 seconds: MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false
+2018-10-30 17:20:46.056+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 1702 seconds: MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false
+2018-10-30 17:20:46.315+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 1374 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 17:20:46.318+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 1374 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 17:20:46.937+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 745 checkpoint started...
+2018-10-30 17:20:46.960+0000 INFO [o.n.k.i.s.c.CountsTracker] Rotated counts store at transaction 745 to [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.a], from [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.b].
+2018-10-30 17:20:47.031+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 745 checkpoint completed in 94ms
+2018-10-30 17:20:47.031+0000 INFO [o.n.k.i.t.l.p.LogPruningImpl] No log version pruned, last checkpoint was made in version 0
+2018-10-30 17:21:05.976+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 19 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 17:21:05.977+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 19 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 17:21:57.018+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 70 seconds: MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false
+2018-10-30 17:21:57.020+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 70 seconds: MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false
+2018-10-30 17:23:00.975+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 134 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 17:23:00.977+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 134 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 17:25:08.426+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 242 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 17:25:08.428+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 242 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 17:35:47.097+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 825 checkpoint started...
+2018-10-30 17:35:47.129+0000 INFO [o.n.k.i.s.c.CountsTracker] Rotated counts store at transaction 825 to [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.b], from [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.a].
+2018-10-30 17:35:47.148+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 825 checkpoint completed in 41ms
+2018-10-30 17:35:47.148+0000 INFO [o.n.k.i.t.l.p.LogPruningImpl] No log version pruned, last checkpoint was made in version 0
+2018-10-30 17:42:05.633+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 1017 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 17:42:05.653+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 1017 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 17:42:05.698+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 3160 seconds: MATCH (initialDoc:MADocumentBasic {title: {Title}}) SET initialDoc.isRoot = true
+2018-10-30 17:42:05.702+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 3160 seconds: MATCH (initialDoc:MADocumentBasic {title: {Title}}) SET initialDoc.isRoot = true
+2018-10-30 17:42:05.800+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 1208 seconds: MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false
+2018-10-30 17:42:05.803+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 1208 seconds: MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false
+2018-10-30 17:42:06.047+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 1144 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 17:42:06.048+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 1144 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 17:42:24.925+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 19 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 17:42:24.927+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 19 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 17:43:20.819+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 74 seconds: MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false
+2018-10-30 17:43:20.822+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 74 seconds: MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false
+2018-10-30 17:44:23.911+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 137 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 17:44:23.912+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 137 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 17:46:27.584+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 242 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 17:46:27.587+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 242 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 17:50:47.207+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 918 checkpoint started...
+2018-10-30 17:50:47.260+0000 INFO [o.n.k.i.s.c.CountsTracker] Rotated counts store at transaction 918 to [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.a], from [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.b].
+2018-10-30 17:50:47.343+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 918 checkpoint completed in 116ms
+2018-10-30 17:50:47.343+0000 INFO [o.n.k.i.t.l.p.LogPruningImpl] No log version pruned, last checkpoint was made in version 0
+2018-10-30 17:51:35.421+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 494 seconds: MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false
+2018-10-30 17:51:35.428+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 494 seconds: MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false
+2018-10-30 17:51:36.504+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 432 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 17:51:36.507+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 432 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 17:56:27.724+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 600 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 17:56:27.732+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 600 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 18:05:47.451+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 1083 checkpoint started...
+2018-10-30 18:05:47.596+0000 INFO [o.n.k.i.s.c.CountsTracker] Rotated counts store at transaction 1083 to [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.b], from [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.a].
+2018-10-30 18:05:47.672+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 1083 checkpoint completed in 209ms
+2018-10-30 18:05:47.685+0000 INFO [o.n.k.i.t.l.p.LogPruningImpl] No log version pruned, last checkpoint was made in version 0
+2018-10-30 18:07:08.605+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 931 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 18:07:08.606+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 931 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 18:08:10.731+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 995 seconds: MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false
+2018-10-30 18:08:10.733+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 995 seconds: MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false
+2018-10-30 18:20:48.021+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 1130 checkpoint started...
+2018-10-30 18:20:50.826+0000 INFO [o.n.k.i.s.c.CountsTracker] Rotated counts store at transaction 1130 to [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.a], from [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.b].
+2018-10-30 18:20:52.023+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 1130 checkpoint completed in 3s 664ms
+2018-10-30 18:20:52.061+0000 INFO [o.n.k.i.t.l.p.LogPruningImpl] No log version pruned, last checkpoint was made in version 0
+2018-10-30 18:23:33.002+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 1616 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 18:23:33.034+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 1615 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 18:24:55.697+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 5133 seconds: CALL db.labels() YIELD label
+RETURN {name:'labels', data:COLLECT(label)[..1000]} as result
+UNION ALL
+CALL db.relationshipTypes() YIELD relationshipType
+RETURN {name:'relationshipTypes', data:COLLECT(relationshipType)[..1000]} as result
+UNION ALL
+CALL db.propertyKeys() YIELD propertyKey
+RETURN {name:'propertyKeys', data:COLLECT(propertyKey)[..1000]} as result
+UNION ALL
+CALL dbms.functions() YIELD name, signature, description
+RETURN {name:'functions', data: collect({name: name, signature: signature, description: description})} AS result
+UNION ALL
+CALL dbms.procedures() YIELD name, signature, description
+RETURN {name:'procedures', data:collect({name: name, signature: signature, description: description})} as result
+UNION ALL
+MATCH () RETURN { name:'nodes', data:count(*) } AS result
+UNION ALL
+MATCH ()-[]->() RETURN { name:'relationships', data: count(*)} AS result
+
+2018-10-30 18:24:55.712+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 5132 seconds: 
+CALL db.labels() YIELD label
+RETURN {name:'labels', data:COLLECT(label)[..1000]} as result
+UNION ALL
+CALL db.relationshipTypes() YIELD relationshipType
+RETURN {name:'relationshipTypes', data:COLLECT(relationshipType)[..1000]} as result
+UNION ALL
+CALL db.propertyKeys() YIELD propertyKey
+RETURN {name:'propertyKeys', data:COLLECT(propertyKey)[..1000]} as result
+UNION ALL
+CALL dbms.functions() YIELD name, signature, description
+RETURN {name:'functions', data: collect({name: name, signature: signature, description: description})} AS result
+UNION ALL
+CALL dbms.procedures() YIELD name, signature, description
+RETURN {name:'procedures', data:collect({name: name, signature: signature, description: description})} as result
+UNION ALL
+MATCH () RETURN { name:'nodes', data:count(*) } AS result
+UNION ALL
+MATCH ()-[]->() RETURN { name:'relationships', data: count(*)} AS result
+
+2018-10-30 18:28:23.151+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 1274 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 18:28:23.174+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 1274 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 18:30:49.647+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 1358 seconds: MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false
+2018-10-30 18:30:49.660+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 1358 seconds: MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false
+2018-10-30 18:35:52.761+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 1503 checkpoint started...
+2018-10-30 18:35:53.226+0000 INFO [o.n.k.i.s.c.CountsTracker] Rotated counts store at transaction 1503 to [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.b], from [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.a].
+2018-10-30 18:35:53.522+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 1503 checkpoint completed in 731ms
+2018-10-30 18:35:53.624+0000 INFO [o.n.k.i.t.l.p.LogPruningImpl] No log version pruned, last checkpoint was made in version 0
+2018-10-30 18:45:57.961+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 1258 seconds: CALL db.labels() YIELD label
+RETURN {name:'labels', data:COLLECT(label)[..1000]} as result
+UNION ALL
+CALL db.relationshipTypes() YIELD relationshipType
+RETURN {name:'relationshipTypes', data:COLLECT(relationshipType)[..1000]} as result
+UNION ALL
+CALL db.propertyKeys() YIELD propertyKey
+RETURN {name:'propertyKeys', data:COLLECT(propertyKey)[..1000]} as result
+UNION ALL
+CALL dbms.functions() YIELD name, signature, description
+RETURN {name:'functions', data: collect({name: name, signature: signature, description: description})} AS result
+UNION ALL
+CALL dbms.procedures() YIELD name, signature, description
+RETURN {name:'procedures', data:collect({name: name, signature: signature, description: description})} as result
+UNION ALL
+MATCH () RETURN { name:'nodes', data:count(*) } AS result
+UNION ALL
+MATCH ()-[]->() RETURN { name:'relationships', data: count(*)} AS result
+
+2018-10-30 18:45:57.995+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 1257 seconds: 
+CALL db.labels() YIELD label
+RETURN {name:'labels', data:COLLECT(label)[..1000]} as result
+UNION ALL
+CALL db.relationshipTypes() YIELD relationshipType
+RETURN {name:'relationshipTypes', data:COLLECT(relationshipType)[..1000]} as result
+UNION ALL
+CALL db.propertyKeys() YIELD propertyKey
+RETURN {name:'propertyKeys', data:COLLECT(propertyKey)[..1000]} as result
+UNION ALL
+CALL dbms.functions() YIELD name, signature, description
+RETURN {name:'functions', data: collect({name: name, signature: signature, description: description})} AS result
+UNION ALL
+CALL dbms.procedures() YIELD name, signature, description
+RETURN {name:'procedures', data:collect({name: name, signature: signature, description: description})} as result
+UNION ALL
+MATCH () RETURN { name:'nodes', data:count(*) } AS result
+UNION ALL
+MATCH ()-[]->() RETURN { name:'relationships', data: count(*)} AS result
+
+2018-10-30 18:50:52.884+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 1348 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 18:50:52.896+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 1348 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 18:50:53.734+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 1746 checkpoint started...
+2018-10-30 18:50:53.813+0000 INFO [o.n.k.i.s.c.CountsTracker] Rotated counts store at transaction 1746 to [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.a], from [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.b].
+2018-10-30 18:50:53.905+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 1746 checkpoint completed in 171ms
+2018-10-30 18:50:53.905+0000 INFO [o.n.k.i.t.l.p.LogPruningImpl] No log version pruned, last checkpoint was made in version 0
+2018-10-30 19:06:00.257+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 1909 checkpoint started...
+2018-10-30 19:06:01.298+0000 INFO [o.n.k.i.s.c.CountsTracker] Rotated counts store at transaction 1909 to [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.b], from [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.a].
+2018-10-30 19:06:02.062+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 1909 checkpoint completed in 1s 622ms
+2018-10-30 19:06:02.079+0000 INFO [o.n.k.i.t.l.p.LogPruningImpl] No log version pruned, last checkpoint was made in version 0
+2018-10-30 19:18:59.258+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 3324 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 19:18:59.274+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 3324 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 19:21:02.139+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 1969 checkpoint started...
+2018-10-30 19:21:02.161+0000 INFO [o.n.k.i.s.c.CountsTracker] Rotated counts store at transaction 1969 to [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.a], from [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.b].
+2018-10-30 19:21:02.206+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 1969 checkpoint completed in 67ms
+2018-10-30 19:21:02.206+0000 INFO [o.n.k.i.t.l.p.LogPruningImpl] No log version pruned, last checkpoint was made in version 0
+2018-10-30 19:36:02.275+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 2172 checkpoint started...
+2018-10-30 19:36:02.309+0000 INFO [o.n.k.i.s.c.CountsTracker] Rotated counts store at transaction 2172 to [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.b], from [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.a].
+2018-10-30 19:36:02.501+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 2172 checkpoint completed in 217ms
+2018-10-30 19:36:02.501+0000 INFO [o.n.k.i.t.l.p.LogPruningImpl] No log version pruned, last checkpoint was made in version 0
+2018-10-30 19:36:58.856+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 3967 seconds: MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false
+2018-10-30 19:36:58.858+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 3967 seconds: MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false
+2018-10-30 19:43:21.161+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 3147 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 19:43:21.179+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 3147 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 19:51:02.585+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 2429 checkpoint started...
+2018-10-30 19:51:02.605+0000 INFO [o.n.k.i.s.c.CountsTracker] Rotated counts store at transaction 2429 to [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.a], from [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.b].
+2018-10-30 19:51:02.798+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 2429 checkpoint completed in 207ms
+2018-10-30 19:51:02.798+0000 INFO [o.n.k.i.t.l.p.LogPruningImpl] No log version pruned, last checkpoint was made in version 0
+2018-10-30 20:06:03.789+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 2580 checkpoint started...
+2018-10-30 20:06:04.151+0000 INFO [o.n.k.i.s.c.CountsTracker] Rotated counts store at transaction 2580 to [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.b], from [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.a].
+2018-10-30 20:06:04.332+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 2580 checkpoint completed in 458ms
+2018-10-30 20:06:04.656+0000 INFO [o.n.k.i.t.l.p.LogPruningImpl] No log version pruned, last checkpoint was made in version 0
+2018-10-30 20:21:04.736+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 2764 checkpoint started...
+2018-10-30 20:21:04.782+0000 INFO [o.n.k.i.s.c.CountsTracker] Rotated counts store at transaction 2764 to [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.a], from [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.b].
+2018-10-30 20:21:05.440+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 2764 checkpoint completed in 690ms
+2018-10-30 20:21:05.440+0000 INFO [o.n.k.i.t.l.p.LogPruningImpl] No log version pruned, last checkpoint was made in version 0
+2018-10-30 20:36:05.507+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 2976 checkpoint started...
+2018-10-30 20:36:05.670+0000 INFO [o.n.k.i.s.c.CountsTracker] Rotated counts store at transaction 2976 to [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.b], from [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.a].
+2018-10-30 20:36:05.789+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 2976 checkpoint completed in 270ms
+2018-10-30 20:36:05.789+0000 INFO [o.n.k.i.t.l.p.LogPruningImpl] No log version pruned, last checkpoint was made in version 0
+2018-10-30 20:46:07.850+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 5227 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 20:46:07.862+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 5227 seconds: MERGE (doc:MADocumentBasic {title: {Title}, numCitations: {NumCitations}, linkCitations: {LinkCitations}, fieldsOfStudy: {FieldsOfStudy}})
+2018-10-30 20:46:08.775+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 3767 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 20:46:08.777+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 3767 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 20:51:05.845+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 3163 checkpoint started...
+2018-10-30 20:51:06.025+0000 INFO [o.n.k.i.s.c.CountsTracker] Rotated counts store at transaction 3163 to [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.a], from [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.b].
+2018-10-30 20:51:06.126+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 3163 checkpoint completed in 280ms
+2018-10-30 20:51:06.126+0000 INFO [o.n.k.i.t.l.p.LogPruningImpl] No log version pruned, last checkpoint was made in version 0
+2018-10-30 21:06:06.189+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 3380 checkpoint started...
+2018-10-30 21:06:06.249+0000 INFO [o.n.k.i.s.c.CountsTracker] Rotated counts store at transaction 3380 to [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.b], from [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.a].
+2018-10-30 21:06:06.392+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 3380 checkpoint completed in 193ms
+2018-10-30 21:06:06.392+0000 INFO [o.n.k.i.t.l.p.LogPruningImpl] No log version pruned, last checkpoint was made in version 0
+2018-10-30 21:21:06.464+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 3534 checkpoint started...
+2018-10-30 21:21:06.510+0000 INFO [o.n.k.i.s.c.CountsTracker] Rotated counts store at transaction 3534 to [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.a], from [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.b].
+2018-10-30 21:21:06.561+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 3534 checkpoint completed in 97ms
+2018-10-30 21:21:06.561+0000 INFO [o.n.k.i.t.l.p.LogPruningImpl] No log version pruned, last checkpoint was made in version 0
+2018-10-30 21:36:06.634+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 3760 checkpoint started...
+2018-10-30 21:36:06.726+0000 INFO [o.n.k.i.s.c.CountsTracker] Rotated counts store at transaction 3760 to [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.b], from [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.a].
+2018-10-30 21:36:06.864+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 3760 checkpoint completed in 220ms
+2018-10-30 21:36:06.864+0000 INFO [o.n.k.i.t.l.p.LogPruningImpl] No log version pruned, last checkpoint was made in version 0
+2018-10-30 21:44:17.913+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 7636 seconds: MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false
+2018-10-30 21:44:17.948+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 7636 seconds: MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false
+2018-10-30 21:51:06.947+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 3936 checkpoint started...
+2018-10-30 21:51:07.030+0000 INFO [o.n.k.i.s.c.CountsTracker] Rotated counts store at transaction 3936 to [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.a], from [/home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/data/databases/graph.db/neostore.counts.db.b].
+2018-10-30 21:51:07.206+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Checkpoint triggered by scheduler for time threshold @ txId: 3936 checkpoint completed in 243ms
+2018-10-30 21:51:07.206+0000 INFO [o.n.k.i.t.l.p.LogPruningImpl] No log version pruned, last checkpoint was made in version 0
+2018-10-30 21:51:59.028+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 3949 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 21:51:59.029+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 3949 seconds: MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) WHERE (otherDoc)-[:CITE]->(doc) RETURN COUNT(otherDoc)
+2018-10-30 21:59:52.670+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 11618 seconds: CALL db.labels() YIELD label
+RETURN {name:'labels', data:COLLECT(label)[..1000]} as result
+UNION ALL
+CALL db.relationshipTypes() YIELD relationshipType
+RETURN {name:'relationshipTypes', data:COLLECT(relationshipType)[..1000]} as result
+UNION ALL
+CALL db.propertyKeys() YIELD propertyKey
+RETURN {name:'propertyKeys', data:COLLECT(propertyKey)[..1000]} as result
+UNION ALL
+CALL dbms.functions() YIELD name, signature, description
+RETURN {name:'functions', data: collect({name: name, signature: signature, description: description})} AS result
+UNION ALL
+CALL dbms.procedures() YIELD name, signature, description
+RETURN {name:'procedures', data:collect({name: name, signature: signature, description: description})} as result
+UNION ALL
+MATCH () RETURN { name:'nodes', data:count(*) } AS result
+UNION ALL
+MATCH ()-[]->() RETURN { name:'relationships', data: count(*)} AS result
+
+2018-10-30 21:59:52.704+0000 INFO [o.n.c.i.EnterpriseCompatibilityFactory] Discarded stale query from the query cache after 11625 seconds: CALL db.labels() YIELD label
+RETURN {name:'labels', data:COLLECT(label)[..1000]} as result
+UNION ALL
+CALL db.relationshipTypes() YIELD relationshipType
+RETURN {name:'relationshipTypes', data:COLLECT(relationshipType)[..1000]} as result
+UNION ALL
+CALL db.propertyKeys() YIELD propertyKey
+RETURN {name:'propertyKeys', data:COLLECT(propertyKey)[..1000]} as result
+UNION ALL
+CALL dbms.functions() YIELD name, signature, description
+RETURN {name:'functions', data: collect({name: name, signature: signature, description: description})} AS result
+UNION ALL
+CALL dbms.procedures() YIELD name, signature, description
+RETURN {name:'procedures', data:collect({name: name, signature: signature, description: description})} as result
+UNION ALL
+MATCH () RETURN { name:'nodes', data:count(*) } AS result
+UNION ALL
+MATCH ()-[]->() RETURN { name:'relationships', data: count(*)} AS result
+
+2018-10-30 21:59:52.755+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 11625 seconds: 
+CALL db.labels() YIELD label
+RETURN {name:'labels', data:COLLECT(label)[..1000]} as result
+UNION ALL
+CALL db.relationshipTypes() YIELD relationshipType
+RETURN {name:'relationshipTypes', data:COLLECT(relationshipType)[..1000]} as result
+UNION ALL
+CALL db.propertyKeys() YIELD propertyKey
+RETURN {name:'propertyKeys', data:COLLECT(propertyKey)[..1000]} as result
+UNION ALL
+CALL dbms.functions() YIELD name, signature, description
+RETURN {name:'functions', data: collect({name: name, signature: signature, description: description})} AS result
+UNION ALL
+CALL dbms.procedures() YIELD name, signature, description
+RETURN {name:'procedures', data:collect({name: name, signature: signature, description: description})} as result
+UNION ALL
+MATCH () RETURN { name:'nodes', data:count(*) } AS result
+UNION ALL
+MATCH ()-[]->() RETURN { name:'relationships', data: count(*)} AS result
+
+2018-10-30 21:59:52.756+0000 INFO [o.n.c.i.ExecutionEngine] Discarded stale query from the query cache after 11613 seconds: 
+CALL db.labels() YIELD label
+RETURN {name:'labels', data:COLLECT(label)[..1000]} as result
+UNION ALL
+CALL db.relationshipTypes() YIELD relationshipType
+RETURN {name:'relationshipTypes', data:COLLECT(relationshipType)[..1000]} as result
+UNION ALL
+CALL db.propertyKeys() YIELD propertyKey
+RETURN {name:'propertyKeys', data:COLLECT(propertyKey)[..1000]} as result
+UNION ALL
+CALL dbms.functions() YIELD name, signature, description
+RETURN {name:'functions', data: collect({name: name, signature: signature, description: description})} AS result
+UNION ALL
+CALL dbms.procedures() YIELD name, signature, description
+RETURN {name:'procedures', data:collect({name: name, signature: signature, description: description})} as result
+UNION ALL
+MATCH () RETURN { name:'nodes', data:count(*) } AS result
+UNION ALL
+MATCH ()-[]->() RETURN { name:'relationships', data: count(*)} AS result
+

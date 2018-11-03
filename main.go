@@ -33,7 +33,7 @@ func GetEverFirst(wd selenium.WebDriver) bool {
 		}
 		fmt.Println("Numero iterazioni: ", repeatFor)
 		allDoc := make([]structures.Document, repeatFor+1)
-//		initialDoc := webDriver.GetInitialDocument_MA(wd)
+		//		initialDoc := webDriver.GetInitialDocument_MA(wd)
 		initialDoc := webDriver.GetInitialDocument(wd)
 		allDoc[0] = initialDoc
 
@@ -244,14 +244,14 @@ func main2() {
 	defer wd.Quit()
 
 	switch os.Args[1] {
-	//Classico: docIniziale + primi n che lo citano
+	//Sempre Il Primo: docIniziale + n volte sempre il primo della classifica
 	case "everFirst":
 		if GetEverFirst(wd) {
 			fmt.Println("Tutto ok")
 		} else {
 			fmt.Println("Parametri da passare: 'everFirst' numDocCheCitano")
 		}
-	//Sempre Il Primo: docIniziale + n volte sempre il primo della classifica
+	//Classico: docIniziale + primi n che lo citano
 	case "firstN":
 		if GetFirstsNDoc(wd) {
 			fmt.Println("Tutto ok")

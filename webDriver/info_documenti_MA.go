@@ -49,7 +49,7 @@ func conditionResultPage(wd selenium.WebDriver) (bool, error) {
 	return true, err
 }
 
-//Condizione per il caricamento della pagina del singolo documento (aspetto i aspetto i fields of study)
+//Condizione per il caricamento della pagina del singolo documento (aspetto i aspetto i fields of study e sources)
 func conditionDocumentPage(wd selenium.WebDriver) (bool, error) {
 	elem, err := wd.FindElements(selenium.ByXPATH,
 		"//section[@class='pure-u-1 pure-u-md-1-4 entity-right detail-right']"+
@@ -58,8 +58,8 @@ func conditionDocumentPage(wd selenium.WebDriver) (bool, error) {
 	if err != nil {
 		panic(err)
 	}
-	if len(elem) == 0 {
-		fmt.Println("Condizione caricamento pagina documento: fields")
+	if len(elem) < 2 {
+		fmt.Println("Condizione caricamento pagina documento: fields e sources")
 		return false, err
 	}
 	fmt.Println("************* ", elem)
@@ -265,32 +265,29 @@ func setFieldsOfStudyAndSources(wd selenium.WebDriver, document *structures.MADo
 	}
 
 	//sources
-	sources, err := fieldsAndSources[1].FindElements(selenium.ByXPATH,
-		"li/a")
-	if err != nil {
-		if t, _ := regexp.MatchString(".*index out of range*", err.Error()); t {
-			currentUrl, err := wd.CurrentURL()
-			if err != nil {
-				panic(err)
-			}
-			logger.Printf("Alla pagina %s non ci sono Sources", currentUrl)
-		} else if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
-			currentUrl, err := wd.CurrentURL()
-			if err != nil {
-				panic(err)
-			}
-			logger.Printf("Alla pagina %s non ci sono Sources", currentUrl)
-		} else {
-			panic(err)
-		}
-	} else {
-		for _, source := range sources {
-			URLSource, _ := source.GetAttribute("href")
-			//controllo se e' un PDF
-			if t, _ := regexp.MatchString(".*\\.pdf", URLSource); t {
-				document.Url.PDF = append(document.Url.PDF, URLSource)
+	//non posso gestire errore "index out of range", devo controllare la dimensione di fieldsAndSources
+	if len(fieldsAndSources) > 1 {
+		sources, err := fieldsAndSources[1].FindElements(selenium.ByXPATH,
+			"li/a")
+		if err != nil {
+			if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
+				currentUrl, err := wd.CurrentURL()
+				if err != nil {
+					panic(err)
+				}
+				logger.Printf("Alla pagina %s non ci sono Sources", currentUrl)
 			} else {
-				document.Url.WWW = append(document.Url.WWW, URLSource)
+				panic(err)
+			}
+		} else {
+			for _, source := range sources {
+				URLSource, _ := source.GetAttribute("href")
+				//controllo se e' un PDF
+				if t, _ := regexp.MatchString(".*\\.pdf", URLSource); t {
+					document.Url.PDF = append(document.Url.PDF, URLSource)
+				} else {
+					document.Url.WWW = append(document.Url.WWW, URLSource)
+				}
 			}
 		}
 	}
@@ -529,7 +526,7 @@ func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, threshold int) ([]struc
 
 	//_ = wd.Refresh()
 	//aspetto che gli elementi article siano caricati
-	wd.WaitWithTimeout(conditionResultPage, 10000*time.Millisecond)
+	wd.WaitWithTimeout(conditionResultPage, 20*time.Second)
 
 	//sorgente, err := wd.PageSource()  |  va insieme all'else
 	_, err = wd.PageSource()
@@ -684,7 +681,7 @@ func GetInitialDocument_MA(wd selenium.WebDriver) structures.MADocument {
 	if err != nil {
 		panic(err)
 	}
-	if err := textBox.SendKeys(`case`); err != nil {
+	if err := textBox.SendKeys(`http`); err != nil {
 		panic(err)
 	}
 	searchButton, err := wd.FindElement(selenium.ByXPATH,

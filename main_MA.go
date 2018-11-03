@@ -98,6 +98,11 @@ func getFirstsNDoc_MA(wd selenium.WebDriver, initialDoc structures.MADocument, c
 	return citeInitialDoc
 }
 
+/*
+Il documento iniziale lo prendo da info_documenti_MA/GetInitialDocument_MA() facendo una ricerca nella home
+di Microsoft Academic e prendendo il primo documento tra quelli restituiti.
+Per cambiare il documento si puo' cambiare la parola da cercare nella funzione textBox.SendKeys() (riga 688)
+*/
 func main() {
 
 	service, wd := webDriver.StartSelenium(-1)
