@@ -1,3 +1,5 @@
+#Serve se invochi "go run main.go thread ..." e il programma va in crash.
+#Chiude tutte le connessioni dei thread creati.
 PORTA_INIZIO=23514
 NUM_PROC=$(( $1 - 1 ))
 
