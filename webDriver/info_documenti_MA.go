@@ -549,6 +549,11 @@ func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, threshold int) ([]struc
 	if err != nil {
 		panic(err)
 	}
+	//piccolo controllo
+	for i, t := range titles {
+		tit, _ := t.Text()
+		fmt.Println("Titolo ", i, " :", tit)
+	}
 	//prendo tutti gli articoli
 	articles, err := wd.FindElements(selenium.ByXPATH,
 		"//article[@class='paper paper-mode-2 card']")
