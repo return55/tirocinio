@@ -23,12 +23,12 @@ Al momento per usare il progetto e' necessario andare nella directory del preoge
 ## Note
 ### Neo4j
 * Se le prestazioni di neo4j sono scarse o se da errore per mancanza di memoria heap, puo' essere utile modificare nel file:  
-"docDatabase/neo4j-community-3.3.5/conf/neo4j.conf" il campo "dbms.memory.heap.max_size" e dare al dbms piu' memoria.
+"docDatabase/neo4j-enterprise-3.4.7/conf/neo4j.conf" il campo "dbms.memory.heap.max_size" e dare al dbms piu' memoria.
 * All'avvio di neo4j, il dbms si potrebbe lamentare del max numero di file open. E' possibile modificarne il valore tra le
 impostazioni di sicurezza ma anche facendolo non ho notato cambiamenti nelle prestazioni.
 * Per vedere il grafo:
 ** Vai all'indirizzo "localhost:7687", accedi a neo4j (se richiesto: username: neo4j - password: neo4j)
-** Esegui "match(n) return n"
+** Esegui "match (n) return n"
 ### Microsoft Academic
 * I file con la sigla MA alla fine sono specifici per gli articoli di Academic, tuttavia non sono sufficienti.
 Alcune delle funzionalita' di base sono nei rispettivi file senza sigla (es creo_db.go - creo_db_MA.go)
@@ -37,6 +37,6 @@ Alcune delle funzionalita' di base sono nei rispettivi file senza sigla (es creo
     firstN <n> : Prendo i primi n articoli che citano quello iniziale.
     everFirst <n> : Prendo per n volte il primo tra gli articoli che citano quello precedente.
     thread <numThreads> <docPerLink> <lenLinkList> : guarda la funzione concurrency() per piu' dettagli.
-* main_MA.go (solo per Academic):
-    <num_livelli> <soglia> : quanti livelli avra' (al massimo) l'albero delle citazioni e numero di citazioni minime che un documento         deve avere per essere preso.
+* main_MA.go (solo per Academic): num_livelli soglia url_doc_iniziale : quanti livelli avra' (al massimo) l'albero delle citazioni e numero di citazioni minime     che un documento deve avere per essere preso e l'indirizo alla pagina del primo documento.
+** !! Al momento la soglia non ha importanza ma va comunque passata come parametro !!
 
