@@ -42,10 +42,27 @@ func conditionResultPage(wd selenium.WebDriver) (bool, error) {
 		panic(err)
 	}
 	fmt.Println("Condizione pagina dei risultati")
-	if len(elem) == 0 {
+	if len(elem) < structures.NumArticlePerPageMA {
 		return false, err
 	}
 
+	return true, err
+}
+
+//Sempre per la pagina dei risultati
+func conditionTitleText(wd selenium.WebDriver) (bool, error) {
+	titles, err := wd.FindElements(selenium.ByXPATH,
+		"//article/section[@class='paper-title']/h2/a[@class='blue-title']")
+	if err != nil {
+		panic(err)
+	}
+	for _, t := range titles {
+		tit, err := t.Text()
+		//tit, _ := t.GetAttribute("title")
+		if tit == "" || err != nil {
+			return false, err
+		}
+	}
 	return true, err
 }
 
@@ -525,21 +542,22 @@ func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, threshold int) ([]struc
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Url attuale: ", currentUrl)
+	fmt.Println("Url attuale **** : ", currentUrl)
 
 	//per non far arrabbiare MA
 	//time.Sleep(3000 * time.Millisecond)
 
-	//_ = wd.Refresh()
+	_ = wd.Refresh()
 	//aspetto che gli elementi article siano caricati
-	wd.WaitWithTimeout(conditionResultPage, 20*time.Second)
+	//wd.WaitWithTimeout(conditionResultPage, 60*time.Second)
+	wd.WaitWithTimeout(conditionTitleText, 60*time.Second)
 
-	//sorgente, err := wd.PageSource()  |  va insieme all'else
-	_, err = wd.PageSource()
+	sorgente, err := wd.PageSource() // |  va insieme all'else
+	//_, err = wd.PageSource()
 	if err != nil {
 		logger.Println(err)
 	} else {
-		//logger.Println(sorgente)
+		logger.Println(sorgente)
 	}
 
 	//prendo i titoli degli articoli, mi serviranno per scorrere
@@ -552,6 +570,7 @@ func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, threshold int) ([]struc
 	//piccolo controllo
 	for i, t := range titles {
 		tit, _ := t.Text()
+		//tit, _ := t.GetAttribute("title")
 		fmt.Println("Titolo ", i, " :", tit)
 	}
 	//prendo tutti gli articoli
@@ -597,14 +616,17 @@ func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, threshold int) ([]struc
 		textNumCitations = strings.Replace(textNumCitations, ",", "", -1)
 		numsCitations[i], err = strconv.ParseInt(textNumCitations, 10, 0)
 
+		fmt.Println("Num citazioni: ", numsCitations[i])
+
 		//se e' il primo risulatato della pagina e non ho ancora un valore valido di threshold
 		if i == 0 && threshold == -1 {
 			threshold = int(numsCitations[i])
+			fmt.Println("Soglia: ", threshold)
 		}
 		/*Condozione banale sulla soglia
 		if int(numsCitations[i]) < threshold {*/
 		/*Condizione superiore a una percentuale di threshold*/
-		if numsCitations[i] < 800 || float32(numsCitations[i]) < float32(threshold)*0.8 {
+		if numsCitations[i] < 500 || float32(numsCitations[i]) < float32(threshold)*0.6 {
 			howMany = i
 			break
 		}
@@ -736,7 +758,7 @@ func GetInitialDocumentByURL_MA(wd selenium.WebDriver, startURL string) structur
 	var initialDoc structures.MADocument
 
 	//aspetto gli showmore
-	wd.Wait(conditionDocumentPage2)
+	wd.WaitWithTimeout(conditionDocumentPage2, 60*time.Second)
 
 	//prendo il titolo
 	title, err := wd.FindElement(selenium.ByXPATH,
@@ -750,7 +772,7 @@ func GetInitialDocumentByURL_MA(wd selenium.WebDriver, startURL string) structur
 	expandShowMore(wd)
 
 	//aspetto di caricare la pagina (i fields of study come riferimento)
-	wd.Wait(conditionDocumentPage)
+	wd.WaitWithTimeout(conditionDocumentPage, 60*time.Second)
 
 	//prendo i fields of study e sources
 	setFieldsOfStudyAndSources(wd, &initialDoc)
@@ -879,7 +901,7 @@ func GetCiteDocumentsByThreshold_MA(wd selenium.WebDriver, linkCitedBy string, n
 	//genero la sequenza di numeri casuali
 	//r := rand.New(rand.NewSource(12))
 
-	wd.WaitWithTimeout(conditionSortBy, 30*time.Second)
+	wd.WaitWithTimeout(conditionSortBy, 60*time.Second)
 	//ordino i risultati per numero di citazioni decrescente, cosi' non appena
 	//trovo un articolo sotto la soglia mi fermo.
 	mostCitations, err := wd.FindElement(selenium.ByXPATH,
@@ -951,7 +973,7 @@ func GetCiteDocumentsByThreshold_MA(wd selenium.WebDriver, linkCitedBy string, n
 		}
 		//Aspetto che si carichi entityResultPager dove sono presenti i link alle
 		//varie pagine dei risultati.
-		wd.WaitWithTimeout(conditionNextLink, 3000*time.Millisecond)
+		wd.WaitWithTimeout(conditionNextLink, 60*time.Second)
 
 		//Torno alla pagina con i rusultati
 		if err := wd.Get(currentUrl); err != nil {

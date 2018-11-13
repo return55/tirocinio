@@ -172,3 +172,39 @@ nohup: input ignorato
 2018-11-03 10:29:01.240+0000 INFO  Mounted REST API at: /db/manage
 2018-11-03 10:29:01.817+0000 INFO  Server thread metrics has been registered successfully
 2018-11-03 10:29:04.120+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-11-08 10:57:26.651+0000 INFO  ======== Neo4j 3.4.7 ========
+2018-11-08 10:57:26.759+0000 INFO  Starting...
+2018-11-08 10:57:29.922+0000 INFO  Initiating metrics...
+2018-11-08 10:57:32.366+0000 INFO  Sending metrics to CSV file at /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/metrics
+2018-11-08 10:57:33.066+0000 INFO  Bolt enabled on 127.0.0.1:7687.
+2018-11-08 10:57:38.116+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.all)
+2018-11-08 10:57:38.117+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.idle)
+2018-11-08 10:57:57.354+0000 INFO  Started.
+2018-11-08 10:57:57.645+0000 INFO  Mounted REST API at: /db/manage
+2018-11-08 10:57:58.133+0000 INFO  Server thread metrics has been registered successfully
+2018-11-08 10:58:00.512+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-11-13 14:56:44.086+0000 INFO  ======== Neo4j 3.4.7 ========
+2018-11-13 14:56:44.225+0000 INFO  Starting...
+2018-11-13 14:56:47.679+0000 INFO  Initiating metrics...
+2018-11-13 14:56:50.146+0000 INFO  Sending metrics to CSV file at /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/metrics
+2018-11-13 14:56:50.916+0000 INFO  Bolt enabled on 127.0.0.1:7687.
+2018-11-13 14:56:53.378+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.all)
+2018-11-13 14:56:53.379+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.idle)
+2018-11-13 14:57:06.291+0000 INFO  Started.
+2018-11-13 14:57:06.824+0000 INFO  Mounted REST API at: /db/manage
+2018-11-13 14:57:07.117+0000 INFO  Server thread metrics has been registered successfully
+2018-11-13 14:57:09.784+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-11-13 20:58:31.555+0000 INFO  ======== Neo4j 3.4.7 ========
+2018-11-13 20:58:31.672+0000 INFO  Starting...
+2018-11-13 20:58:38.107+0000 INFO  Initiating metrics...
+2018-11-13 20:58:41.764+0000 INFO  Sending metrics to CSV file at /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/metrics
+2018-11-13 20:58:42.594+0000 INFO  Bolt enabled on 127.0.0.1:7687.
+2018-11-13 20:58:45.383+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.all)
+2018-11-13 20:58:45.403+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.idle)
+2018-11-13 20:59:05.373+0000 INFO  Started.
+2018-11-13 20:59:05.631+0000 INFO  Mounted REST API at: /db/manage
+2018-11-13 20:59:05.899+0000 INFO  Server thread metrics has been registered successfully
+2018-11-13 20:59:08.731+0000 INFO  Remote interface available at http://localhost:7474/

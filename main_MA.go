@@ -87,6 +87,8 @@ func creaAlberoCitazioni_MA(wd selenium.WebDriver) bool {
 			}
 			parentDocs = childDocs
 			childDocs = nil
+			logger.Println("parent: ", parentDocs)
+			logger.Println("child: ", childDocs)
 			logger.Println("Ho finito il livello: ", livelli-numLevels+1)
 		}
 		return true

@@ -55,6 +55,13 @@ func StartSelenium(port int) (*selenium.Service, selenium.WebDriver) {
 		panic(err)
 	}
 
+	if err = wd.SetImplicitWaitTimeout(300 * time.Second); err != nil {
+		panic(err)
+	}
+	if err = wd.SetPageLoadTimeout(300 * time.Second); err != nil {
+		panic(err)
+	}
+
 	return service, wd
 }
 
