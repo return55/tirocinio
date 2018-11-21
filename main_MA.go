@@ -64,6 +64,15 @@ func creaAlberoCitazioni_MA(wd selenium.WebDriver) bool {
 		defer conn.Close()
 		//pulisco il db
 		docDatabase.CleanAll(conn)
+		// SOLO PER QUANDO USO LA CAMPO GENERICO !!
+		result, err := conn.ExecNeo("MERGE (doc:MAFieldOfStudy { name: 'Generic'})",
+			map[string]interface{}{})
+		if err != nil {
+			panic(err)
+		}
+		numResult, _ := result.RowsAffected()
+		fmt.Printf("Creato campo generico : %d\n", numResult)
+		// FINE
 
 		//aggiungo il documento iniziale
 		docDatabase.AddDocumentBasic_MA(conn, allDoc[0], "")
