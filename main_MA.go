@@ -59,12 +59,14 @@ func creaAlberoCitazioni_MA(wd selenium.WebDriver) bool {
 		citeInitialDoc, _ := webDriver.GetCiteDocumentsByThreshold_MA(wd, initialDoc.LinkCitations, numPages, int(threshold))
 		allDoc = append(allDoc, citeInitialDoc...)
 
+		fmt.Println(allDoc)
+
 		//fase neo4j
 		conn := docDatabase.StartNeo4j()
 		defer conn.Close()
 		//pulisco il db
 		docDatabase.CleanAll(conn)
-		// SOLO PER QUANDO USO LA CAMPO GENERICO !!
+		// SOLO PER QUANDO USO IL CAMPO GENERICO !!
 		result, err := conn.ExecNeo("MERGE (doc:MAFieldOfStudy { name: 'Generic'})",
 			map[string]interface{}{})
 		if err != nil {

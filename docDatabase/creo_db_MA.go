@@ -3,7 +3,10 @@ package docDatabase
 import (
 	"fmt"
 	"io"
+	"log"
 	"reflect"
+	"regexp"
+	"strings"
 
 	"github.com/return55/tirocinio/structures"
 
@@ -116,7 +119,36 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleSt
 			panic(err)
 		}
 	}
+	/* VARIANTE IN CUI ESISTE UN SOLO NODO "CATEGORIA GENERICA" E METTO IL NOME
+	   DEL CAMPO SULLA RELAZIONE*/
+	var interfaceField interface{}
+	for _, field := range document.FieldsOfStudy {
+		interfaceField = field
+		/*
+			str := strings.Replace(strings.Replace(strings.ToUpper(interfaceField.(string)), " ", "_", -1), "-", "_", -1)
+			str := strings.Replace(strings.Replace(strings.ToUpper(str), "(", "_", -1), ")", "_", -1)
+		*/
+		reg, err := regexp.Compile(`( |\)|\(|-)`)
+		if err != nil {
+			log.Fatal(err)
+		}
+		str := reg.ReplaceAllString(strings.ToUpper(interfaceField.(string)), "_")
 
+		//aggiungo relazione
+		result, err = conn.ExecNeo("MATCH (doc:MADocumentBasic {title: {Title}}),"+
+			" (field:MAFieldOfStudy {name: 'Generic'}) CREATE (doc)-[:"+
+			str+"]->(field)",
+			map[string]interface{}{"Title": fieldsMap["Title"]})
+		if err != nil {
+			panic(err)
+		}
+		numResult, _ := result.RowsAffected()
+		if numResult > 0 {
+			fmt.Println("Creata relazione campo: ", field)
+		}
+
+	}
+	/* VARIANTE IN CUI CREO UN NODO PER OGNI RELAZIONE
 	//aggiungo le relazioni con i fields of study
 	var interfaceField interface{}
 	for _, field := range document.FieldsOfStudy {
@@ -139,7 +171,7 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleSt
 			panic(err)
 		}
 	}
-
+	*/
 }
 
 //Controllo se il documento e' gia stato esplorato:
