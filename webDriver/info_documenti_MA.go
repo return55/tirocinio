@@ -626,7 +626,7 @@ func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, threshold int) ([]struc
 		/*Condozione banale sulla soglia
 		if int(numsCitations[i]) < threshold {*/
 		/*Condizione superiore a una percentuale di threshold*/
-		if numsCitations[i] < 500 || float32(numsCitations[i]) < float32(threshold)*0.6 {
+		if numsCitations[i] < 300 || float32(numsCitations[i]) < float32(threshold)*0.6 {
 			howMany = i
 			break
 		}

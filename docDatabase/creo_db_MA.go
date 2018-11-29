@@ -99,6 +99,10 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleSt
 	numResult, _ := result.RowsAffected()
 	fmt.Printf("CREATED DOCUMENT: %d\n", numResult)
 
+	/* CREO LE RELAZIONE (CITA + FIELDS VARI) SOLO SE IL DOCUMENTO NON ESISTE GIA' */
+	if numResult == 0 {
+		return
+	}
 	//aggiungo la relazione tra document e il documento che cita
 	//e dico che non e' la radice (isRoot = false)
 	if titleStartDoc != "" {
