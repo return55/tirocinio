@@ -104,7 +104,8 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleSt
 
 	//aggiungo la relazione tra document e il documento che cita
 	//e dico che non e' la radice (isRoot = false)
-	if titleStartDoc != "" {
+	/* SOLO SE CREO UN DOCUMENTO AGGIUNGO LA RELAZIONE "CITE" */
+	if titleStartDoc != "" && numResult > 0{
 		_, err := conn.ExecNeo("MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) "+
 			"CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false",
 			map[string]interface{}{"Title": document.Title, "TitleStartDoc": titleStartDoc})
