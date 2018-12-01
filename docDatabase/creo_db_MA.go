@@ -109,7 +109,7 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleSt
 	//aggiungo la relazione tra document e il documento che cita
 	//e dico che non e' la radice (isRoot = false)
 	/* SOLO SE CREO UN DOCUMENTO AGGIUNGO LA RELAZIONE "CITE" */
-	if titleStartDoc != "" && numResult > 0{
+	if titleStartDoc != "" && numResult > 0 {
 		_, err := conn.ExecNeo("MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) "+
 			"CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false",
 			map[string]interface{}{"Title": document.Title, "TitleStartDoc": titleStartDoc})
@@ -124,20 +124,24 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleSt
 			panic(err)
 		}
 	}
-	/* VARIANTE IN CUI ESISTE UN SOLO NODO "CATEGORIA GENERICA" E METTO IL NOME
-	   DEL CAMPO SULLA RELAZIONE*/
+	/* ENNESIMA VARIANTE IN CUI SE DUE ARTICOLI (DI CUI UNO CIT AL'ALTRO) HANNO UN CAMPO IN COMUNE,
+	   AGGIUNGO UN ARCO  TRA I DUE CHE HA COME TIPO IL NOME DEL CAMPO
+
+	   PER ORA NON POSSO FARLO PERCHE' NON HO LE CATEGORIE DEI NODI DENTRO I NODI
+
 	var interfaceField interface{}
 	for _, field := range document.FieldsOfStudy {
 		interfaceField = field
 		/*
-			str := strings.Replace(strings.Replace(strings.ToUpper(interfaceField.(string)), " ", "_", -1), "-", "_", -1)
-			str := strings.Replace(strings.Replace(strings.ToUpper(str), "(", "_", -1), ")", "_", -1)
-		*/
-		reg, err := regexp.Compile(`( |\)|\(|-)`)
+		   str := strings.Replace(strings.Replace(strings.ToUpper(interfaceField.(string)), " ", "_", -1), "-", "_", -1)
+		   str := strings.Replace(strings.Replace(strings.ToUpper(str), "(", "_", -1), ")", "_", -1)
+
+		reg, err := regexp.Compile(`( |\)|\(|-|\.)`)
 		if err != nil {
 			log.Fatal(err)
 		}
 		str := reg.ReplaceAllString(strings.ToUpper(interfaceField.(string)), "_")
+		str = strings.Replace(str, "#", "hashMark", -1)
 
 		//aggiungo relazione
 		result, err = conn.ExecNeo("MATCH (doc:MADocumentBasic {title: {Title}}),"+
@@ -153,6 +157,38 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleSt
 		}
 
 	}
+	*/
+	/* VARIANTE IN CUI ESISTE UN SOLO NODO "CATEGORIA GENERICA" E METTO IL NOME
+	   DEL CAMPO SULLA RELAZIONE*/
+	var interfaceField interface{}
+	for _, field := range document.FieldsOfStudy {
+		interfaceField = field
+		/*
+			str := strings.Replace(strings.Replace(strings.ToUpper(interfaceField.(string)), " ", "_", -1), "-", "_", -1)
+			str := strings.Replace(strings.Replace(strings.ToUpper(str), "(", "_", -1), ")", "_", -1)
+		*/
+		reg, err := regexp.Compile(`( |\)|\(|-|\.)`)
+		if err != nil {
+			log.Fatal(err)
+		}
+		str := reg.ReplaceAllString(strings.ToUpper(interfaceField.(string)), "_")
+		str = strings.Replace(str, "#", "hashMark", -1)
+
+		//aggiungo relazione
+		result, err = conn.ExecNeo("MATCH (doc:MADocumentBasic {title: {Title}}),"+
+			" (field:MAFieldOfStudy {name: 'Generic'}) CREATE (doc)-[:"+
+			str+"]->(field)",
+			map[string]interface{}{"Title": fieldsMap["Title"]})
+		if err != nil {
+			panic(err)
+		}
+		numResult, _ := result.RowsAffected()
+		if numResult > 0 {
+			fmt.Println("Creata relazione campo: ", field)
+		}
+
+	}
+
 	/* VARIANTE IN CUI CREO UN NODO PER OGNI RELAZIONE
 	//aggiungo le relazioni con i fields of study
 	var interfaceField interface{}

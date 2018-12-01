@@ -1,5 +1,5 @@
 #ignora i database creati in locale
-#docDatabase/neo4j-enterprise-3.4.7/data/
+docDatabase/neo4j-enterprise-3.4.7/data/
 
 #prova.go
 out
@@ -11,5 +11,10 @@ webDriver/geckodriver-v0.21.0-linux64/geckodriver
 webDriver/selenium-server-standalone-3.11.0.jar
 webDriver/selenium-server-standalone-3.12.0.jar
 webDriver/selenium-server-standalone-3.13.0.jar
+
+#disegno del grafo
+draw/archi.xml
+draw/grafo_colorato.dot
+draw/out.graphml
 
 index.html

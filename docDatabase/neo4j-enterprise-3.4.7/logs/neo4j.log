@@ -286,3 +286,27 @@ nohup: input ignorato
 2018-11-29 14:10:01.346+0000 INFO  Mounted REST API at: /db/manage
 2018-11-29 14:10:01.506+0000 INFO  Server thread metrics has been registered successfully
 2018-11-29 14:10:04.436+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-12-01 15:20:01.518+0000 INFO  ======== Neo4j 3.4.7 ========
+2018-12-01 15:20:01.649+0000 INFO  Starting...
+2018-12-01 15:20:05.265+0000 INFO  Initiating metrics...
+2018-12-01 15:20:07.530+0000 INFO  Sending metrics to CSV file at /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/metrics
+2018-12-01 15:20:08.235+0000 INFO  Bolt enabled on 127.0.0.1:7687.
+2018-12-01 15:20:10.855+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.all)
+2018-12-01 15:20:10.859+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.idle)
+2018-12-01 15:21:22.402+0000 INFO  Started.
+2018-12-01 15:21:24.001+0000 INFO  Mounted REST API at: /db/manage
+2018-12-01 15:21:25.902+0000 INFO  Server thread metrics has been registered successfully
+2018-12-01 15:21:30.531+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-12-01 15:35:43.510+0000 INFO  ======== Neo4j 3.4.7 ========
+2018-12-01 15:35:43.657+0000 INFO  Starting...
+2018-12-01 15:35:48.035+0000 INFO  Initiating metrics...
+2018-12-01 15:35:52.833+0000 INFO  Sending metrics to CSV file at /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/metrics
+2018-12-01 15:35:54.437+0000 INFO  Bolt enabled on 127.0.0.1:7687.
+2018-12-01 15:35:56.186+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.all)
+2018-12-01 15:35:56.192+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.idle)
+2018-12-01 15:36:06.080+0000 INFO  Started.
+2018-12-01 15:36:06.272+0000 INFO  Mounted REST API at: /db/manage
+2018-12-01 15:36:06.403+0000 INFO  Server thread metrics has been registered successfully
+2018-12-01 15:36:08.081+0000 INFO  Remote interface available at http://localhost:7474/
