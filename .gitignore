@@ -1,5 +1,5 @@
 #ignora i database creati in locale
-docDatabase/neo4j-enterprise-3.4.7/data/
+docDatabase/neo4j-enterprise-3.4.7/
 
 #prova.go
 out
