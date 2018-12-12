@@ -1,10 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"strconv"
 	"strings"
+	"sync"
+	"time"
 
 	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
 	"github.com/return55/tirocinio/docDatabase"
@@ -21,7 +24,7 @@ func main3() {
 	fmt.Println(t)
 }
 
-func mainProva() { /*
+func main() { /*
 		service, wd := webDriver.StartSelenium(-1)
 
 		defer service.Stop()
@@ -38,19 +41,83 @@ func mainProva() { /*
 		SaveDoc_MA(allDoc)
 		webDriver.SaveDocuments(allDoc)
 	*/
-	//Apro connessione neo4j
-	conn := docDatabase.StartNeo4j()
-	defer conn.Close()
-	result, err := conn.ExecNeo("MATCH (doc:MADocumentBasic {title: 'Smashing the stack for fun and profit'}),"+
-		" (field:MAFieldOfStudy {name: 'Generic'}) CREATE (doc)-[:"+strings.ToUpper("aoic")+"]->(field)",
-		map[string]interface{}{})
-	/*result, err := conn.ExecNeo("CREATE (doc:MAFieldOfStudy { name: 'Generic'})",
-	map[string]interface{}{})*/
-	if err != nil {
-		panic(err)
-	}
-	numResult, _ := result.RowsAffected()
-	fmt.Printf("Creato campo generico : %d\n", numResult)
+
+	/*stdinput := os.Stdin
+	s, _ := stdinput.Stat()
+
+	fmt.Println(s.Size())
+	fmt.Println(reader.Buffered())
+	time.Sleep(5 * time.Second)
+	fmt.Println(s.Size())
+	b, err := reader.Peek(1)
+	fmt.Println("buff: ", b, "-", len(b), "-", err)
+	str, _ := reader.ReadString('\n')
+	fmt.Println(str)
+	fmt.Println(reader.Buffered())
+	fmt.Println(s.Size())
+	return*/
+	//Start collecting articles and writing them on neo4j, it stops when the user writes "stop"
+	var wg sync.WaitGroup
+	wg.Add(2)
+	//if the user writes "stop", the second goroutine stops the first through this channel
+	quit := make(chan int8, 1)
+	//if the function ends by itself, the first goroutine closes the channel to stop the second
+	reader := bufio.NewReader(os.Stdin)
+	go func() {
+		for i := 0; i < 5; i++ {
+			time.Sleep(5 * time.Second)
+			fmt.Println("sono ancora vivo ", i)
+		}
+		wg.Done()
+	}()
+	//scanner := bufio.NewScanner(os.Stdin)
+
+	go func() {
+		defer fmt.Println("finito")
+		defer wg.Done()
+		fmt.Println("Type \"stop\" to stop searching or wait until it ends:")
+		stdin := make(chan string, 1)
+		//this routine checks when the user insert some values
+		go func() {
+			fmt.Println("sono l'altro2")
+			str, _ := reader.ReadString('\n')
+			fmt.Println("cosa ho letto: -", str, "-")
+			stdin <- strings.Replace(strings.Replace(str, "\n", "", -1), " ", "", -1)
+		}()
+		for {
+			time.Sleep(5 * time.Second)
+			//if the channel (quit) is closed, the first routine has already terminate
+			select {
+			case _, ok := <-quit:
+				fmt.Println("sono l'altro")
+				if !ok {
+					fmt.Println("Channel closed correctly")
+					return
+				} else {
+					fmt.Println("The channel is open")
+				}
+			case str, _ := <-stdin:
+				fmt.Printf("-%s-", str)
+				if str == "stop" {
+					fmt.Println("-----------")
+					quit <- 1
+					fmt.Println("-----------")
+					close(stdin)
+					return
+				} else {
+					fmt.Println("Type \"stop\" to stop searching or wait until it ends:")
+					go func() {
+						fmt.Println("sono l'altro2")
+						str, _ := reader.ReadString('\n')
+						fmt.Println("cosa ho letto: -", str, "-")
+						stdin <- strings.Replace(strings.Replace(str, "\n", "", -1), " ", "", -1)
+					}()
+					continue
+				}
+			}
+
+		}
+	}()
 	/*
 		//Pulisco il DB
 		docDatabase.CleanAll(conn)
@@ -63,6 +130,7 @@ func mainProva() { /*
 			docDatabase.AddDocument_MA(conn, allDoc[i], allDoc[0].Title)
 		}
 	*/
+	wg.Wait()
 	return
 
 }

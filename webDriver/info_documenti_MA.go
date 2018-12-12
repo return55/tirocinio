@@ -690,7 +690,7 @@ func conditionMainPage(wd selenium.WebDriver) (bool, error) {
 }
 
 //Restituisce il documento da cui inizia la ricerca
-func GetInitialDocument_MA(wd selenium.WebDriver) structures.MADocument {
+func GetInitialDocument_MA(wd selenium.WebDriver, phrase string) structures.MADocument {
 	if err := wd.Get(structures.URLAcademic); err != nil {
 		panic(err)
 	}
@@ -722,7 +722,7 @@ func GetInitialDocument_MA(wd selenium.WebDriver) structures.MADocument {
 	if err != nil {
 		panic(err)
 	}
-	if err := textBox.SendKeys(`http`); err != nil {
+	if err := textBox.SendKeys(phrase); err != nil {
 		panic(err)
 	}
 	searchButton, err := wd.FindElement(selenium.ByXPATH,
