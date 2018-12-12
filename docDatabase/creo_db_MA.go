@@ -3,10 +3,7 @@ package docDatabase
 import (
 	"fmt"
 	"io"
-	"log"
 	"reflect"
-	"regexp"
-	"strings"
 
 	"github.com/return55/tirocinio/structures"
 
@@ -82,7 +79,7 @@ func AddDocument_MA(conn bolt.Conn, document structures.MADocument, titleStartDo
 
 //Crea un nodo che ha solo: titolo, numCitazioni e linkCitazioni.
 //Niente autori, ne sources
-func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleStartDoc string) {
+func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleStartDoc, graphNumber string) {
 	//mappa di un singolo documento
 	fieldsMap := make(map[string]interface{})
 	//devo usare la reflection per accedere ai campi di Document
@@ -94,7 +91,7 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleSt
 	fieldsMap["LinkCitations"] = doc.FieldByName("LinkCitations").Interface()
 
 	//aggiungo il documento se non e' presente
-	result, err := conn.ExecNeo("MERGE (doc:MADocumentBasic {title: {Title}, "+
+	result, err := conn.ExecNeo("MERGE (doc:MADocumentBasic"+graphNumber+" {title: {Title}, "+
 		"numCitations: {NumCitations}, linkCitations: {LinkCitations}})", fieldsMap)
 	if err != nil {
 		panic(err)
@@ -110,7 +107,7 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleSt
 	//e dico che non e' la radice (isRoot = false)
 	/* SOLO SE CREO UN DOCUMENTO AGGIUNGO LA RELAZIONE "CITE" */
 	if titleStartDoc != "" && numResult > 0 {
-		_, err := conn.ExecNeo("MATCH (newDoc:MADocumentBasic {title: {Title}}), (citedDoc:MADocumentBasic {title: {TitleStartDoc}}) "+
+		_, err := conn.ExecNeo("MATCH (newDoc:MADocumentBasic"+graphNumber+" {title: {Title}}), (citedDoc:MADocumentBasic"+graphNumber+" {title: {TitleStartDoc}}) "+
 			"CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false",
 			map[string]interface{}{"Title": document.Title, "TitleStartDoc": titleStartDoc})
 		if err != nil {
@@ -118,7 +115,7 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleSt
 		}
 	} else {
 		//dico che il doc iniziale e' la radice dell'albero
-		_, err := conn.ExecNeo("MATCH (initialDoc:MADocumentBasic {title: {Title}}) SET initialDoc.isRoot = true",
+		_, err := conn.ExecNeo("MATCH (initialDoc:MADocumentBasic"+graphNumber+" {title: {Title}}) SET initialDoc.isRoot = true",
 			map[string]interface{}{"Title": document.Title})
 		if err != nil {
 			panic(err)
@@ -144,7 +141,7 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleSt
 		str = strings.Replace(str, "#", "hashMark", -1)
 
 		//aggiungo relazione
-		result, err = conn.ExecNeo("MATCH (doc:MADocumentBasic {title: {Title}}),"+
+		result, err = conn.ExecNeo("MATCH (doc:MADocumentBasic"+graphNumber+" {title: {Title}}),"+
 			" (field:MAFieldOfStudy {name: 'Generic'}) CREATE (doc)-[:"+
 			str+"]->(field)",
 			map[string]interface{}{"Title": fieldsMap["Title"]})
@@ -160,13 +157,13 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleSt
 	*/
 	/* VARIANTE IN CUI ESISTE UN SOLO NODO "CATEGORIA GENERICA" E METTO IL NOME
 	   DEL CAMPO SULLA RELAZIONE*/
-	var interfaceField interface{}
+	/*var interfaceField interface{}
 	for _, field := range document.FieldsOfStudy {
 		interfaceField = field
-		/*
+
 			str := strings.Replace(strings.Replace(strings.ToUpper(interfaceField.(string)), " ", "_", -1), "-", "_", -1)
 			str := strings.Replace(strings.Replace(strings.ToUpper(str), "(", "_", -1), ")", "_", -1)
-		*/
+
 		reg, err := regexp.Compile(`( |\)|\(|-|\.)`)
 		if err != nil {
 			log.Fatal(err)
@@ -175,7 +172,7 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleSt
 		str = strings.Replace(str, "#", "hashMark", -1)
 
 		//aggiungo relazione
-		result, err = conn.ExecNeo("MATCH (doc:MADocumentBasic {title: {Title}}),"+
+		result, err = conn.ExecNeo("MATCH (doc:MADocumentBasic"+graphNumber+" {title: {Title}}),"+
 			" (field:MAFieldOfStudy {name: 'Generic'}) CREATE (doc)-[:"+
 			str+"]->(field)",
 			map[string]interface{}{"Title": fieldsMap["Title"]})
@@ -187,9 +184,9 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleSt
 			fmt.Println("Creata relazione campo: ", field)
 		}
 
-	}
+	}*/
 
-	/* VARIANTE IN CUI CREO UN NODO PER OGNI RELAZIONE
+	/* VARIANTE IN CUI CREO UN NODO PER OGNI RELAZIONE*/
 	//aggiungo le relazioni con i fields of study
 	var interfaceField interface{}
 	for _, field := range document.FieldsOfStudy {
@@ -205,14 +202,14 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleSt
 			fmt.Println("Creato campo: ", field)
 		}
 		//aggiungo relazione
-		_, err = conn.ExecNeo("MATCH (doc:MADocumentBasic {title: {Title}}),"+
+		_, err = conn.ExecNeo("MATCH (doc:MADocumentBasic"+graphNumber+" {title: {Title}}),"+
 			" (field:MAFieldOfStudy {name: {Name}}) CREATE (doc)-[:HAS_FIELD]->(field)",
 			map[string]interface{}{"Title": fieldsMap["Title"], "Name": interfaceField})
 		if err != nil {
 			panic(err)
 		}
 	}
-	*/
+
 }
 
 //Controllo se il documento e' gia stato esplorato:
@@ -220,8 +217,8 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleSt
 //NOTA:
 //Non e' proprio vero perche' un doc potrebbe non avere figli che
 //soddisfano la soglia minima, ma a me va benem cosi'
-func AlreadyExplored(conn bolt.Conn, title string) bool {
-	rows, err := conn.QueryNeo("MATCH (doc:MADocumentBasic {title: {Title}}), (otherDoc:MADocumentBasic) "+
+func AlreadyExplored(conn bolt.Conn, title, graphNumber string) bool {
+	rows, err := conn.QueryNeo("MATCH (doc:MADocumentBasic"+graphNumber+" {title: {Title}}), (otherDoc:MADocumentBasic"+graphNumber+") "+
 		"WHERE (otherDoc)-[:CITE]->(doc) "+
 		"RETURN COUNT(otherDoc)", map[string]interface{}{"Title": title})
 	if err != nil {

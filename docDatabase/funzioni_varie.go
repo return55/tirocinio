@@ -25,7 +25,7 @@ func FieldsRanking(conn bolt.Conn, numFields int) map[string]int {
 
 	var ranking map[string]int
 	for row, _, err := rows.NextNeo(); err != io.EOF; row, _, err = rows.NextNeo() {
-		ranking[row[0].(string)] = row[1].(int)
+		ranking[row[0].(string)] = (int) (row[1].(int64))
 	}
 	return ranking
 }

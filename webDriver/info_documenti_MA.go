@@ -41,7 +41,7 @@ func conditionResultPage(wd selenium.WebDriver) (bool, error) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Condizione pagina dei risultati")
+	logger.Println("Condizione pagina dei risultati")
 	if len(elem) < structures.NumArticlePerPageMA {
 		return false, err
 	}
@@ -76,15 +76,15 @@ func conditionDocumentPage(wd selenium.WebDriver) (bool, error) {
 		panic(err)
 	}
 	if len(elem) < 2 {
-		fmt.Println("Condizione caricamento pagina documento: fields e sources")
+		logger.Println("Condizione caricamento pagina documento: fields e sources")
 		return false, err
 	}
-	fmt.Println("************* ", elem)
+	logger.Println("************* ", elem)
 	currentUrl, err := wd.CurrentURL()
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(currentUrl)
+	logger.Println(currentUrl)
 	return true, err
 }
 
@@ -97,15 +97,15 @@ func conditionDocumentPage2(wd selenium.WebDriver) (bool, error) {
 		panic(err)
 	}
 	if len(elem) == 0 {
-		fmt.Println("Condizione caricamento pagina documento: show more")
+		logger.Println("Condizione caricamento pagina documento: show more")
 		return false, err
 	}
-	fmt.Println("************* ", elem)
+	logger.Println("************* ", elem)
 	currentUrl, err := wd.CurrentURL()
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(currentUrl)
+	logger.Println(currentUrl)
 	return true, err
 }
 
@@ -118,12 +118,12 @@ func setTitlesAndGetURLs(titles []selenium.WebElement, documents []structures.MA
 		tit = strings.TrimSuffix(tit, ")")
 		documents[i].Title = tit
 
-		fmt.Println("Titolo ", i, ": ", documents[i].Title)
+		logger.Println("Titolo ", i, ": ", documents[i].Title)
 
 		URLDoc, _ := titles[i].GetAttribute("href")
 		URLDocuments[i] = structures.URLAcademic + URLDoc
 
-		fmt.Println("URL ", i, ": ", URLDocuments[i])
+		logger.Println("URL ", i, ": ", URLDocuments[i])
 	}
 }
 
@@ -148,20 +148,20 @@ func getAuthorsInResultPage(wd selenium.WebDriver, documents []structures.MADocu
 			panic(err)
 		}
 	}
-	fmt.Println("Numero tot autori: ", len(authorsAndAffiliations))
+	logger.Println("Numero tot autori: ", len(authorsAndAffiliations))
 	//scorro autori e affiliazioni
 	for pos := 0; pos < len(documents); pos++ {
 		//prendo gli autori
 		authors, err := authorsAndAffiliations[pos].FindElements(selenium.ByXPATH,
 			"li/span/a")
-		fmt.Println("Numero autori: ", len(authors))
+		logger.Println("Numero autori: ", len(authors))
 		if err != nil {
 			panic(err)
 		}
 		textAuthors := make([]string, len(authors))
 		for i := 0; i < len(authors); i++ {
 			textAuthors[i], err = authors[i].Text()
-			fmt.Println("Autore: ", textAuthors[i])
+			logger.Println("Autore: ", textAuthors[i])
 			if err != nil {
 				panic(err)
 			}
@@ -172,7 +172,7 @@ func getAuthorsInResultPage(wd selenium.WebDriver, documents []structures.MADocu
 		//prendo solo la prima.
 		affiliation, err := authorsAndAffiliations[pos].FindElements(selenium.ByXPATH,
 			"li/span/span[@class='affiliation']/ul")
-		fmt.Println("Numero affiliazioni: ", len(authors))
+		logger.Println("Numero affiliazioni: ", len(authors))
 		textAffiliation := make([]string, len(authors))
 		if err != nil {
 			if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
@@ -206,7 +206,7 @@ func getAuthorsInResultPage(wd selenium.WebDriver, documents []structures.MADocu
 						textAffiliation[i] = ""
 					}
 				}
-				fmt.Println("Affiliazione: ", textAffiliation[i])
+				logger.Println("Affiliazione: ", textAffiliation[i])
 
 			}
 		}
@@ -233,7 +233,7 @@ func expandShowMore(wd selenium.WebDriver) {
 			panic(err)
 		}
 	}
-	fmt.Println("Numero show more: ", len(showMore))
+	logger.Println("Numero show more: ", len(showMore))
 	for _, showToClick := range showMore {
 		err = showToClick.Click()
 		if err != nil {
@@ -258,7 +258,7 @@ func setFieldsOfStudyAndSources(wd selenium.WebDriver, document *structures.MADo
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(fieldsAndSources)
+	logger.Println(fieldsAndSources)
 	//fields of study
 	fieldsOfStudy, err := fieldsAndSources[0].FindElements(selenium.ByXPATH,
 		"li/a/span")
@@ -329,7 +329,7 @@ func setDate(wd selenium.WebDriver, document *structures.MADocument) {
 	/*if document.Date == "" {
 		document.Date = "No Date"
 	}*/
-	fmt.Println("Data: ", document.Date)
+	logger.Println("Data: ", document.Date)
 }
 
 //Imposto le citazioni(numero e link) e le refernces(numero e link)
@@ -339,7 +339,7 @@ func setCitationsAndReferences(wd selenium.WebDriver, document *structures.MADoc
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(len(referencesAndCitations))
+	logger.Println(len(referencesAndCitations))
 	//References
 	numRef, err := referencesAndCitations[0].FindElement(selenium.ByXPATH,
 		"h1")
@@ -373,11 +373,11 @@ func setCitationsAndReferences(wd selenium.WebDriver, document *structures.MADoc
 
 	//elimino la virgola (se presente)
 	textNumCit = strings.Replace(textNumCit, ",", "", -1)
-	fmt.Println("Numero citazioni: ", textNumCit)
+	logger.Println("Numero citazioni: ", textNumCit)
 	document.NumCitations, err = strconv.ParseInt(textNumCit, 10, 0)
-	fmt.Println("numero citazioni: ", document.NumCitations, " ... ", textNumCit)
+	logger.Println("numero citazioni: ", document.NumCitations, " ... ", textNumCit)
 	if err != nil {
-		fmt.Println("Entro nell'errore delle citazioni")
+		logger.Println("Entro nell'errore delle citazioni")
 		//Non ci sono citations
 		document.NumCitations = 0
 		document.LinkCitations = ""
@@ -388,7 +388,7 @@ func setCitationsAndReferences(wd selenium.WebDriver, document *structures.MADoc
 			panic(err)
 		}
 		textURLCit, _ := URLCit.GetAttribute("href")
-		fmt.Println("Link citazioni: ", textURLCit)
+		logger.Println("Link citazioni: ", textURLCit)
 		document.LinkCitations = structures.URLAcademic + textURLCit
 	}
 }
@@ -423,7 +423,7 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Url attuale: ", currentUrl)
+	logger.Println("Url attuale: ", currentUrl)
 
 	//per non far arrabbiare MA
 	//time.Sleep(4000 * time.Millisecond)
@@ -459,7 +459,7 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println("Url attuale dopo titoli: ", currentUrl)*/
+		logger.Println("Url attuale dopo titoli: ", currentUrl)*/
 
 	//creo array di documenti pari al minimo(numDocs, numResults)
 	var min int
@@ -501,7 +501,7 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println("URL: ", currentUrl)
+		logger.Println("URL: ", currentUrl)
 
 		//Espando gli "show more" di fields of study e sources
 		expandShowMore(wd)
@@ -518,7 +518,7 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 		//Abstract (0)
 		setAbstract(wd, &documents[count])
 
-		fmt.Println("---------------------------------------------------")
+		logger.Println("---------------------------------------------------")
 		//Torno alla pagina dei risultati(E' NECESSARIO -- NON NE SONO SICURO (FAI UNA PROVA))
 		//wd.Back()
 	}
@@ -537,12 +537,12 @@ func GetDocumentsFromPage_MA(wd selenium.WebDriver, numDocs int) ([]structures.M
 //	Se threshold = -1 -> sono al primo giro
 //
 //Ritorno: documenti, quanti ne ho presi e la nuova soglia (che cambia solo al primo giro)
-func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, threshold int) ([]structures.MADocument, int, int) {
+func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, maxCit, threshold, perc int) ([]structures.MADocument, int, int) {
 	currentUrl, err := wd.CurrentURL()
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Url attuale **** : ", currentUrl)
+	logger.Println("Url attuale **** : ", currentUrl)
 
 	//per non far arrabbiare MA
 	//time.Sleep(3000 * time.Millisecond)
@@ -571,7 +571,7 @@ func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, threshold int) ([]struc
 	for i, t := range titles {
 		tit, _ := t.Text()
 		//tit, _ := t.GetAttribute("title")
-		fmt.Println("Titolo ", i, " :", tit)
+		logger.Println("Titolo ", i, " :", tit)
 	}
 	//prendo tutti gli articoli
 	articles, err := wd.FindElements(selenium.ByXPATH,
@@ -616,17 +616,17 @@ func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, threshold int) ([]struc
 		textNumCitations = strings.Replace(textNumCitations, ",", "", -1)
 		numsCitations[i], err = strconv.ParseInt(textNumCitations, 10, 0)
 
-		fmt.Println("Num citazioni: ", numsCitations[i])
+		logger.Println("Num citazioni: ", numsCitations[i])
 
 		//se e' il primo risulatato della pagina e non ho ancora un valore valido di threshold
-		if i == 0 && threshold == -1 {
-			threshold = int(numsCitations[i])
-			fmt.Println("Soglia: ", threshold)
+		if i == 0 && maxCit == -1 {
+			maxCit = int(numsCitations[i])
+			logger.Println("Soglia: ", maxCit)
 		}
 		/*Condozione banale sulla soglia
 		if int(numsCitations[i]) < threshold {*/
-		/*Condizione superiore a una percentuale di threshold*/
-		if numsCitations[i] < 300 || float32(numsCitations[i]) < float32(threshold)*0.6 {
+		/*Condizione superiore a una percentuale di maxCit*/
+		if numsCitations[i] < int64(threshold) || float32(numsCitations[i]) < float32(maxCit)*(float32(perc)/100) {
 			howMany = i
 			break
 		}
@@ -670,7 +670,7 @@ func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, threshold int) ([]struc
 		//prendo i fields of study e sources
 		setFieldsOfStudyAndSources(wd, &docs[i])
 	}
-	return docs, len(docs), threshold
+	return docs, len(docs), maxCit
 }
 
 //Condizione per il caricamento della pagina iniziale: aspetto che si
@@ -696,7 +696,7 @@ func GetInitialDocument_MA(wd selenium.WebDriver, phrase string) structures.MADo
 	}
 	//stampo url
 	url, _ := wd.CurrentURL()
-	fmt.Println("Url: ", url)
+	logger.Println("Url: ", url)
 
 	fileS, _ := os.OpenFile("sorgenteInitialDoc.html", os.O_WRONLY, 0600)
 	logger = log.New(fileS, "", 0)
@@ -736,12 +736,12 @@ func GetInitialDocument_MA(wd selenium.WebDriver, phrase string) structures.MADo
 	}
 	//stampa----------------------------------------
 	url, _ = wd.CurrentURL()
-	fmt.Println("Url: ", url)
+	logger.Println("Url: ", url)
 
 	//prendo il primo documento della pagina
 	docs, numDocs := GetDocumentsFromPage_MA(wd, 1)
 	if numDocs > 1 {
-		panic(fmt.Sprintf("GetInitialDocument - GetDocumentsFromPage\nHa resituito piu' di un documento"))
+		panic(fmt.Sprint("GetInitialDocument - GetDocumentsFromPage\nHa resituito piu' di un documento"))
 	}
 
 	return docs[0]
@@ -753,7 +753,7 @@ func GetInitialDocumentByURL_MA(wd selenium.WebDriver, startURL string) structur
 	}
 	//stampo url
 	url, _ := wd.CurrentURL()
-	fmt.Println("Url: ", url)
+	logger.Println("Url: ", url)
 
 	var initialDoc structures.MADocument
 
@@ -792,7 +792,7 @@ func conditionNextLink(wd selenium.WebDriver) (bool, error) {
 		panic(err)
 	}
 	if len(elem) == 0 {
-		fmt.Println("Aspetto che si carichino i link alle pagine successive dei rusultati")
+		logger.Println("Aspetto che si carichino i link alle pagine successive dei rusultati")
 		return false, err
 	}
 	return true, err
@@ -808,7 +808,7 @@ func GetCiteDocuments_MA(wd selenium.WebDriver, linkCitedBy string, numDoc uint6
 	var allDoc []structures.MADocument
 	//Mi serve per dire quanti documenti ho preso
 	initialNumDoc := numDoc
-	fmt.Println("***** numDoc= " + strconv.FormatUint(numDoc, 10))
+	logger.Println("***** numDoc= " + strconv.FormatUint(numDoc, 10))
 
 	//genero la sequenza di numeri casuali
 	r := rand.New(rand.NewSource(12))
@@ -822,7 +822,7 @@ func GetCiteDocuments_MA(wd selenium.WebDriver, linkCitedBy string, numDoc uint6
 			//se non trovo il link per andare avanti, mi fermo
 			if err != nil {
 				if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
-					fmt.Println("\n\nSono uscito perche' non ho trovato il link alla prossima pagina\n")
+					logger.Println("\n\nSono uscito perche' non ho trovato il link alla prossima pagina\n")
 					return allDoc, numDoc
 				} else {
 					panic(err)
@@ -844,8 +844,8 @@ func GetCiteDocuments_MA(wd selenium.WebDriver, linkCitedBy string, numDoc uint6
 		allDoc = append(allDoc, newDoc...)
 		//tolgo il numero di documenti appena letti
 		numDoc = numDoc - numNewDoc
-		fmt.Println("***** docRead= ", numNewDoc)
-		fmt.Println("***** numDoc= ", numDoc)
+		logger.Println("***** docRead= ", numNewDoc)
+		logger.Println("***** numDoc= ", numDoc)
 
 		if numDoc <= 0 {
 			if numDoc == 0 {
@@ -853,7 +853,7 @@ func GetCiteDocuments_MA(wd selenium.WebDriver, linkCitedBy string, numDoc uint6
 				return allDoc, initialNumDoc
 			} else {
 				//Qualcosa non va
-				fmt.Println("\nGetCiteDocuments_MA(): Ho raccolto piu' documenti di quelli che mi servivano!!")
+				logger.Println("\nGetCiteDocuments_MA(): Ho raccolto piu' documenti di quelli che mi servivano!!")
 				return allDoc, initialNumDoc
 			}
 		}
@@ -882,16 +882,16 @@ func conditionSortBy(wd selenium.WebDriver) (bool, error) {
 		panic(err)
 	}
 	if len(elem) == 0 {
-		fmt.Println("Aspetto che si carichi sort by")
+		logger.Println("Aspetto che si carichi sort by")
 		return false, err
 	}
-	fmt.Println("Numero option: ", len(elem))
+	logger.Println("Numero option: ", len(elem))
 	return true, err
 }
 
 //Raccolgie i documenti in base a una soglia sul numero di citazioni.
 //Serve per creare l'albero
-func GetCiteDocumentsByThreshold_MA(wd selenium.WebDriver, linkCitedBy string, numPages int, threshold int) ([]structures.MADocument, int) {
+func GetCiteDocumentsByThreshold_MA(wd selenium.WebDriver, linkCitedBy string, numPages, threshold, perc int) ([]structures.MADocument, int) {
 	if err := wd.Get(linkCitedBy); err != nil {
 		panic(err)
 	}
@@ -907,7 +907,7 @@ func GetCiteDocumentsByThreshold_MA(wd selenium.WebDriver, linkCitedBy string, n
 	mostCitations, err := wd.FindElement(selenium.ByXPATH,
 		"//div[@class='result-stats']/div/section/select/option[4]")
 	if err != nil {
-		fmt.Println("Non sono riuscito ad ordinare i risultati!!!")
+		logger.Println("Non sono riuscito ad ordinare i risultati!!!")
 	} else {
 		err = mostCitations.Click()
 		if err != nil {
@@ -915,14 +915,15 @@ func GetCiteDocumentsByThreshold_MA(wd selenium.WebDriver, linkCitedBy string, n
 		}
 	}
 
-	//Modifica per usare una percentuale sulla soglia !!!!!!!!!!!!!
-	threshold = -1
+	//This is the citations number of the first of result's articles
+	//-1 indicates the search hasn't started yet
+	maxCit := -1
 
 	for pageNumber := 1; pageNumber <= numPages; pageNumber++ {
 		//aspetto che si carichi la pagina, specialmente nel caso abbia
 		//appena ordinato i risultati.
 		/*waitTimeSec := time.Duration((math.Round(r.ExpFloat64())))
-		fmt.Println("Aspetto ", waitTimeSec, " secondi.")
+		logger.Println("Aspetto ", waitTimeSec, " secondi.")
 		time.Sleep(waitTimeSec * time.Second)*/
 
 		if pageNumber != 1 {
@@ -932,7 +933,7 @@ func GetCiteDocumentsByThreshold_MA(wd selenium.WebDriver, linkCitedBy string, n
 			//se non trovo il link per andare avanti, mi fermo
 			if err != nil {
 				if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
-					fmt.Println("\n\nSono uscito perche' non ho trovato il link alla prossima pagina\n")
+					logger.Println("\n\nSono uscito perche' non ho trovato il link alla prossima pagina\n")
 					return allDoc, numDoc
 				} else {
 					panic(err)
@@ -954,13 +955,13 @@ func GetCiteDocumentsByThreshold_MA(wd selenium.WebDriver, linkCitedBy string, n
 		//se non considero la percentuale:
 		//newDoc, numNewDoc, _ := GetDocumentsFromPageBasic_MA(wd, threshold)
 		//e modificare la condizione nella funzione GetDocumentsFromPageBasic_MA
-		newDoc, numNewDoc, threshold := GetDocumentsFromPageBasic_MA(wd, threshold)
+		newDoc, numNewDoc, maxCit := GetDocumentsFromPageBasic_MA(wd, maxCit, threshold, perc)
 		allDoc = append(allDoc, newDoc...)
 		//tolgo il numero di documenti appena letti
 		numDoc = numDoc + numNewDoc
-		fmt.Println("***** docRead= ", numNewDoc)
-		fmt.Println("***** numDoc= ", numDoc)
-		fmt.Println("***** soglia_max= ", threshold)
+		logger.Println("***** docRead= ", numNewDoc)
+		logger.Println("***** numDoc= ", numDoc)
+		logger.Println("***** soglia_max= ", maxCit)
 
 		//se ho preso meno di 8 doc, significa che sono sceso sotto la soglia
 		//e mi fermo

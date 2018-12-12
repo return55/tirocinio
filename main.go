@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"strconv"
 	"time"
@@ -15,11 +14,11 @@ import (
 	"github.com/tebeka/selenium"
 )
 
-var (
+/*var (
 	//creo il logger per i thread
 	fileThreadTimes, _ = os.OpenFile("thread_times.LOG", os.O_WRONLY, 0600)
 	logger             = log.New(fileThreadTimes, "", 0)
-)
+)*/
 
 //Partendo dal classico documento iniziale vado alla pagina di scholar con
 //i documenti che lo citano e prendo il primo in alto.
