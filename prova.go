@@ -19,7 +19,7 @@ func main3() {
 	conn := docDatabase.StartNeo4j()
 	defer conn.Close()
 
-	t := docDatabase.AlreadyExplored(conn, "Pyrolysis of Wood/Biomass for Bio-oil: A Critical Review", "1")
+	t := docDatabase.AlreadyExplored(conn, "Pyrolysis of Wood/Biomass for Bio-oil: A Critical Review", 1)
 
 	fmt.Println(t)
 }

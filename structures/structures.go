@@ -12,6 +12,7 @@ type Document struct {
 //MADocument e' utilizzata per i documenti presi da Microsoft Academic
 type MADocument struct {
 	Title          string
+	URL            string
 	Url            sources  //URL dei vari sorgenti disponibili
 	Authors        []Author //Nomi, cognomi e affiliazioni dei vari autori
 	NumCitations   int64

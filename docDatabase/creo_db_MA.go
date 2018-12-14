@@ -79,7 +79,7 @@ func AddDocument_MA(conn bolt.Conn, document structures.MADocument, titleStartDo
 
 //Crea un nodo che ha solo: titolo, numCitazioni e linkCitazioni.
 //Niente autori, ne sources
-func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleStartDoc, graphNumber string) {
+func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleStartDoc string, graphNumber int) {
 	//mappa di un singolo documento
 	fieldsMap := make(map[string]interface{})
 	//devo usare la reflection per accedere ai campi di Document
@@ -89,10 +89,12 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleSt
 	fieldsMap["Title"] = doc.FieldByName("Title").Interface()
 	fieldsMap["NumCitations"] = doc.FieldByName("NumCitations").Interface()
 	fieldsMap["LinkCitations"] = doc.FieldByName("LinkCitations").Interface()
+	var graphNumberInterface interface{} = graphNumber
+	fieldsMap["GraphNumber"] = graphNumberInterface
 
 	//aggiungo il documento se non e' presente
-	result, err := conn.ExecNeo("MERGE (doc:MADocumentBasic"+graphNumber+" {title: {Title}, "+
-		"numCitations: {NumCitations}, linkCitations: {LinkCitations}})", fieldsMap)
+	result, err := conn.ExecNeo("MERGE (doc:MADocumentBasic {title: {Title}, "+
+		"numCitations: {NumCitations}, linkCitations: {LinkCitations}, searchId: {GraphNumber}})", fieldsMap)
 	if err != nil {
 		panic(err)
 	}
@@ -107,16 +109,18 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleSt
 	//e dico che non e' la radice (isRoot = false)
 	/* SOLO SE CREO UN DOCUMENTO AGGIUNGO LA RELAZIONE "CITE" */
 	if titleStartDoc != "" && numResult > 0 {
-		_, err := conn.ExecNeo("MATCH (newDoc:MADocumentBasic"+graphNumber+" {title: {Title}}), (citedDoc:MADocumentBasic"+graphNumber+" {title: {TitleStartDoc}}) "+
+		_, err := conn.ExecNeo("MATCH (newDoc:MADocumentBasic {title: {Title}, searchId: {GraphNumber}}),"+
+			" (citedDoc:MADocumentBasic {title: {TitleStartDoc}, searchId: {GraphNumber}}) "+
 			"CREATE (newDoc)-[:CITE]->(citedDoc) SET newDoc.isRoot = false",
-			map[string]interface{}{"Title": document.Title, "TitleStartDoc": titleStartDoc})
+			map[string]interface{}{"Title": document.Title, "TitleStartDoc": titleStartDoc, "GraphNumber": graphNumberInterface})
 		if err != nil {
 			panic(err)
 		}
 	} else {
 		//dico che il doc iniziale e' la radice dell'albero
-		_, err := conn.ExecNeo("MATCH (initialDoc:MADocumentBasic"+graphNumber+" {title: {Title}}) SET initialDoc.isRoot = true",
-			map[string]interface{}{"Title": document.Title})
+		_, err := conn.ExecNeo("MATCH (initialDoc:MADocumentBasic {title: {Title}, searchId: {GraphNumber}})"+
+			" SET initialDoc.isRoot = true",
+			map[string]interface{}{"Title": document.Title, "GraphNumber": graphNumberInterface})
 		if err != nil {
 			panic(err)
 		}
@@ -202,9 +206,9 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleSt
 			fmt.Println("Creato campo: ", field)
 		}
 		//aggiungo relazione
-		_, err = conn.ExecNeo("MATCH (doc:MADocumentBasic"+graphNumber+" {title: {Title}}),"+
+		_, err = conn.ExecNeo("MATCH (doc:MADocumentBasic {title: {Title}, searchId: {GraphNumber}}),"+
 			" (field:MAFieldOfStudy {name: {Name}}) CREATE (doc)-[:HAS_FIELD]->(field)",
-			map[string]interface{}{"Title": fieldsMap["Title"], "Name": interfaceField})
+			map[string]interface{}{"Title": fieldsMap["Title"], "Name": interfaceField, "GraphNumber": graphNumberInterface})
 		if err != nil {
 			panic(err)
 		}
@@ -217,10 +221,12 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, titleSt
 //NOTA:
 //Non e' proprio vero perche' un doc potrebbe non avere figli che
 //soddisfano la soglia minima, ma a me va benem cosi'
-func AlreadyExplored(conn bolt.Conn, title, graphNumber string) bool {
-	rows, err := conn.QueryNeo("MATCH (doc:MADocumentBasic"+graphNumber+" {title: {Title}}), (otherDoc:MADocumentBasic"+graphNumber+") "+
-		"WHERE (otherDoc)-[:CITE]->(doc) "+
-		"RETURN COUNT(otherDoc)", map[string]interface{}{"Title": title})
+func AlreadyExplored(conn bolt.Conn, title string, graphNumber int) bool {
+	var graphNumberInterface interface{} = graphNumber
+	rows, err := conn.QueryNeo("MATCH (doc:MADocumentBasic {title: {Title}, searchId: {GraphNumber}}),"+
+		" (otherDoc:MADocumentBasic {searchId: {GraphNumber}}) WHERE (otherDoc)-[:CITE]->(doc) "+
+		"RETURN COUNT(otherDoc)",
+		map[string]interface{}{"Title": title, "GraphNumber": graphNumberInterface})
 	if err != nil {
 		panic(err)
 	}
@@ -235,5 +241,4 @@ func AlreadyExplored(conn bolt.Conn, title, graphNumber string) bool {
 	}
 
 	return reflect.ValueOf(numDocInterface[0]).Int() > 0
-
 }

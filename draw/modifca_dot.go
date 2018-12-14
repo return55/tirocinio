@@ -47,7 +47,7 @@ var colorMap = map[string]string{
 }
 
 //Rimuove i nodi duplicati
-func RemoveDuplicatesFromSlice(s []string) []string {
+func removeDuplicatesFromSlice(s []string) []string {
 	m := make(map[string]bool)
 	for _, item := range s {
 		if _, ok := m[item]; ok {
@@ -121,7 +121,7 @@ func oneCluster(dict map[string]EdgeInfo, fieldName string) string {
 		}
 	}
 	//rimuovo i duplicati
-	nodes = RemoveDuplicatesFromSlice(nodes)
+	nodes = removeDuplicatesFromSlice(nodes)
 	//creo la stringa che contiene la lista dei nodi: "nodo1" "nodo2" ...
 	code := "\""
 	for _, node := range nodes {

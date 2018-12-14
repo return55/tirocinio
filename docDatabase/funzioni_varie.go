@@ -1,7 +1,9 @@
 package docDatabase
 
 import (
+	"fmt"
 	"io"
+	"reflect"
 	"strconv"
 
 	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
@@ -11,21 +13,72 @@ import (
 //If <numFields> == -1 -> there's no limit
 //The field score is the number of edges from one article to another whose
 //property "name" is equal to the field.
-func FieldsRanking(conn bolt.Conn, numFields int) map[string]int {
-	query := "match (f:MAFieldOfStudy)<-[r]-(d:MADocumentBasic) " +
-		"return type(r) as name, count(distinct(d)) as score " +
+//If print -> print to stdOut the ranking
+func FieldsRanking(conn bolt.Conn, numFields, graphNumber int, print bool) map[string]int {
+	var graphNumberInterface interface{} = graphNumber
+	query := "match (f:MAFieldOfStudy)<-[r:HAS_FIELD]-(d:MADocumentBasic {searchId: {GraphNumber}})" +
+		"return f.name as name, count(distinct(d)) as score " +
 		"order by score desc "
 	if numFields >= 0 {
 		query += "limit " + strconv.FormatInt(int64(numFields), 10)
 	}
-	rows, err := conn.QueryNeo(query, map[string]interface{}{})
+	rows, err := conn.QueryNeo(query, map[string]interface{}{"GraphNumber": graphNumberInterface})
 	if err != nil {
 		panic(err)
 	}
 
-	var ranking map[string]int
-	for row, _, err := rows.NextNeo(); err != io.EOF; row, _, err = rows.NextNeo() {
-		ranking[row[0].(string)] = (int) (row[1].(int64))
+	ranking := make(map[string]int)
+	if print {
+		fmt.Println("RANKING:\nSCORE\tFIELD")
 	}
+	for row, _, err := rows.NextNeo(); err != io.EOF; row, _, err = rows.NextNeo() {
+		ranking[row[0].(string)] = (int)(row[1].(int64))
+		if print {
+			fmt.Println(strconv.Itoa((int)(row[1].(int64))) + "\t" + row[0].(string))
+		}
+
+	}
+	_ = rows.Close()
 	return ranking
+}
+
+//DeleteGraph remove from the database all documents and relations relative to a specific research
+func DeleteGraph(conn bolt.Conn, graphNumber int) bool {
+	var graphNumberInterface interface{} = graphNumber
+	result, err := conn.ExecNeo("match (d:MADocumentBasic {searchId: {GraphNumber}})-[r]->() DELETE d,r",
+		map[string]interface{}{"GraphNumber": graphNumberInterface})
+	if err != nil {
+		panic(err)
+	}
+	numResult, _ := result.RowsAffected()
+	if numResult < 0 {
+		panic("docDatabase/DeleteGraph : returns a negative value")
+	} else if numResult == 0 {
+		return false
+	} else {
+		return true
+	}
+}
+
+//GetResearchNumber returns the number of graphs (of searches) in the db
+func GetResearchNumber(conn bolt.Conn) int {
+	rows, err := conn.QueryNeo("MATCH (n:MADocumentBasic) RETURN MAX(n.searchId)",
+		map[string]interface{}{})
+	if err != nil {
+		panic(err)
+	}
+
+	numDocInterface, _, err := rows.NextNeo()
+	_ = rows.Close()
+	if err != nil {
+		panic(err)
+	}
+	if numDocInterface[0] == nil {
+		fmt.Println("There are no articles")
+		return 0
+	} else {
+		fmt.Println("The db contains ", reflect.ValueOf(numDocInterface[0]).Int(), " searches")
+		return int(reflect.ValueOf(numDocInterface[0]).Int())
+	}
+
 }

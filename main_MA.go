@@ -31,7 +31,10 @@ var (
 //posso decidere il numero dei levels da input, per ora la soglia la decido io.
 //NOTA:
 //Non conoscero' i documenti che citano le foglie del mio albero
-func createCitationsTree_MA(wd selenium.WebDriver, startingPoint string, maxNumLv, threshold, perc, graphNumber int, quit chan int8) bool {
+func createCitationsTree_MA(startingPoint string, maxNumLv, threshold, perc, graphNumber int, quit chan int8) bool {
+	service, wd := webDriver.StartSelenium(-1)
+	defer service.Stop()
+	defer wd.Quit()
 
 	var allDoc []structures.MADocument
 	var initialDoc structures.MADocument
@@ -60,7 +63,7 @@ func createCitationsTree_MA(wd selenium.WebDriver, startingPoint string, maxNumL
 	conn := docDatabase.StartNeo4j()
 	defer conn.Close()
 	//pulisco il db
-	docDatabase.CleanAll(conn)
+	//docDatabase.CleanAll(conn)
 	// SOLO PER QUANDO USO IL CAMPO GENERICO !!
 	/*result, err := conn.ExecNeo("MERGE (doc:MAFieldOfStudy { name: 'Generic'})",
 		map[string]interface{}{})
@@ -72,13 +75,13 @@ func createCitationsTree_MA(wd selenium.WebDriver, startingPoint string, maxNumL
 	// FINE
 
 	//aggiungo il documento iniziale e i suoi figli
+	docDatabase.AddDocumentBasic_MA(conn, allDoc[0], "", graphNumber)
 	//if this condition is true, i have to create a new graph
 	if graphNumber == researchNumber {
 		researchNumber++
 	}
-	docDatabase.AddDocumentBasic_MA(conn, allDoc[0], "", string(graphNumber))
 	for docIndex := 1; docIndex < len(allDoc); docIndex++ {
-		docDatabase.AddDocumentBasic_MA(conn, allDoc[docIndex], allDoc[0].Title, string(graphNumber))
+		docDatabase.AddDocumentBasic_MA(conn, allDoc[docIndex], allDoc[0].Title, graphNumber)
 	}
 
 	//sono i documenti ancora da esplorare ovvero i figli appena creati
@@ -98,7 +101,7 @@ func createCitationsTree_MA(wd selenium.WebDriver, startingPoint string, maxNumL
 				}
 			default:
 				//prima di esplorare un doc controllo se l'ho gia' esplorato
-				if !docDatabase.AlreadyExplored(conn, doc.Title, string(graphNumber)) {
+				if !docDatabase.AlreadyExplored(conn, doc.Title, graphNumber) {
 					childDocs = append(childDocs, getFirstsNDoc_MA(wd, doc, conn, threshold, perc, graphNumber)...)
 				}
 			}
@@ -123,7 +126,7 @@ func getFirstsNDoc_MA(wd selenium.WebDriver, initialDoc structures.MADocument, c
 	citeInitialDoc, numFigli := webDriver.GetCiteDocumentsByThreshold_MA(wd, initialDoc.LinkCitations, numPages, threshold, perc)
 
 	for docIndex := 0; docIndex < len(citeInitialDoc); docIndex++ {
-		docDatabase.AddDocumentBasic_MA(conn, citeInitialDoc[docIndex], initialDoc.Title, string(graphNumber))
+		docDatabase.AddDocumentBasic_MA(conn, citeInitialDoc[docIndex], initialDoc.Title, graphNumber)
 	}
 	fmt.Println("Titolo: ", initialDoc.Title, " -- num figli: ", numFigli)
 	return citeInitialDoc
@@ -181,10 +184,10 @@ func getUserInput() (string, int, int, int, int) {
 		}
 	}
 	//choose which graph modify (previous research) or create a new one
-	var graph int = 0
+	var graphNumber int = 0
 	if researchNumber == 1 {
 		fmt.Println("There is no graph stored, a new one will be created")
-		graph = researchNumber
+		graphNumber = researchNumber
 	} else {
 		for {
 			fmt.Println("There are ", researchNumber-1, " graphs stored.")
@@ -192,15 +195,15 @@ func getUserInput() (string, int, int, int, int) {
 			str, _ := reader.ReadString('\n')
 			str = strings.Replace(str, "\n", "", -1)
 			if str == "yes" {
-				graph = researchNumber
+				graphNumber = researchNumber
 				break
 			}
 			if str == "no" {
-				for graph < 1 || graph >= researchNumber {
+				for graphNumber < 1 || graphNumber >= researchNumber {
 					fmt.Println("Choose one number between [1-", researchNumber-1, "]:	")
 					str, _ := reader.ReadString('\n')
 					str = strings.Replace(str, "\n", "", -1)
-					graph, err = strconv.Atoi(str)
+					graphNumber, err = strconv.Atoi(str)
 					if err != nil {
 						fmt.Println("Please insert a number")
 						continue
@@ -211,10 +214,10 @@ func getUserInput() (string, int, int, int, int) {
 		}
 	}
 
-	return startingPoint, maxNumLv, threshold, perc, graph
+	return startingPoint, maxNumLv, threshold, perc, graphNumber
 }
 
-func collectingArticles(wd selenium.WebDriver, startingPoint string, maxNumLv, threshold, perc, graph int) bool {
+func collectingArticles(startingPoint string, maxNumLv, threshold, perc, graphNumber int) bool {
 	//Start collecting articles and writing them on neo4j, it stops when the user writes "stop"
 	var wg sync.WaitGroup
 	wg.Add(2)
@@ -224,7 +227,7 @@ func collectingArticles(wd selenium.WebDriver, startingPoint string, maxNumLv, t
 
 	var t bool
 	go func() {
-		t = createCitationsTree_MA(wd, startingPoint, maxNumLv, threshold, perc, graph, quit)
+		t = createCitationsTree_MA(startingPoint, maxNumLv, threshold, perc, graphNumber, quit)
 		wg.Done()
 	}()
 	fmt.Println("The search has begun")
@@ -269,6 +272,84 @@ func collectingArticles(wd selenium.WebDriver, startingPoint string, maxNumLv, t
 	return true
 }
 
+//printFieldsRanking print to stdOut the topN of the fields ordered by popularity (how many
+//articles have this field of study) of one graph.
+func printFieldsRanking() {
+	//if there's no graph -> print an error message
+	if researchNumber == 1 {
+		fmt.Println("Sorry but the database is empty, first do a search")
+		return
+	}
+	graphNumber := 0
+	var err error
+	for graphNumber <= 0 || graphNumber >= researchNumber {
+		fmt.Println("What research do you mean?	[ 1 -", researchNumber-1, "]")
+		str, _ := reader.ReadString('\n')
+		str = strings.Replace(str, "\n", "", -1)
+		graphNumber, err = strconv.Atoi(str)
+		if err != nil {
+			fmt.Println("Please insert a number")
+		}
+	}
+	numFields := 0
+	for numFields <= 0 && numFields != -1 {
+		fmt.Println("Insert the number of fields to show (-1 to see all fields):	")
+		str, _ := reader.ReadString('\n')
+		str = strings.Replace(str, "\n", "", -1)
+		numFields, err = strconv.Atoi(str)
+		if err != nil {
+			fmt.Println("Please insert a number")
+		}
+	}
+	conn := docDatabase.StartNeo4j()
+	defer conn.Close()
+	_ = docDatabase.FieldsRanking(conn, numFields, graphNumber, true)
+	/*fmt.Println("RANKING:\nSCORE\tFIELD")
+	for field, score := range ranking {
+		fmt.Println(strconv.Itoa(score) + "\t" + field)
+	}*/
+}
+
+func cleanAll() {
+	conn := docDatabase.StartNeo4j()
+	defer conn.Close()
+	docDatabase.CleanAll(conn)
+}
+
+func deleteGraph() {
+	//if there's no graph -> print an error message
+	if researchNumber == 1 {
+		fmt.Println("Sorry but the database is empty, first do a search")
+		return
+	}
+	graphNumber := 0
+	var err error
+	for graphNumber <= 0 || graphNumber >= researchNumber {
+		fmt.Println("Which graph do you want to remove?	[ 1 -", researchNumber-1, "]")
+		str, _ := reader.ReadString('\n')
+		str = strings.Replace(str, "\n", "", -1)
+		graphNumber, err = strconv.Atoi(str)
+		if err != nil {
+			fmt.Println("Please insert a number")
+		}
+	}
+	conn := docDatabase.StartNeo4j()
+	defer conn.Close()
+	if docDatabase.DeleteGraph(conn, graphNumber) {
+		fmt.Println("Graph", graphNumber, "has been successfully deleted")
+	} else {
+		fmt.Println("No information has been deleted")
+	}
+}
+
+//initialization queries the db to find the number of graphs (of search) and set
+//the researchNumber's value
+func initialization() {
+	conn := docDatabase.StartNeo4j()
+	defer conn.Close()
+	researchNumber = docDatabase.GetResearchNumber(conn) + 1
+}
+
 /*
 Il documento iniziale lo prendo da info_documenti_MA/GetInitialDocument_MA() facendo una ricerca nella home
 di Microsoft Academic e prendendo il primo documento tra quelli restituiti.
@@ -278,63 +359,76 @@ Oppure se al main viene passato un terzo argomento, questo viene considerato l'U
 primo documento.
 */
 func main() {
-
-	service, wd := webDriver.StartSelenium(-1)
-
-	defer service.Stop()
-	defer wd.Quit()
-
+	//Initialization: set researchNumber
+	initialization()
+	//if the user pass one command line argument (no matter the value), i start the script research
+	if len(os.Args) > 1 {
+		cleanAll()
+		type data struct {
+			startingPoint                          string
+			maxNumLv, threshold, perc, graphNumber int
+		}
+		input := []data{
+			{"https://academic.microsoft.com/#/detail/2320816109", 10, 1000, 50, 1},
+			{"https://academic.microsoft.com/#/detail/2320816109", 10, 800, 50, 2},
+			{"https://academic.microsoft.com/#/detail/2320816109", 10, 600, 50, 3},
+			{"https://academic.microsoft.com/#/detail/2320816109", 10, 400, 50, 4},
+			{"https://academic.microsoft.com/#/detail/2320816109", 10, 150, 50, 5},
+			{"https://academic.microsoft.com/#/detail/2320816109", 10, 50, 50, 6},
+		}
+		for i, in := range input {
+			quit := make(chan int8, 1)
+			if !createCitationsTree_MA(in.startingPoint, in.maxNumLv, in.threshold, in.perc, in.graphNumber, quit) {
+				logger.Println("There is a problem with the iteration number", i)
+				return
+			} else {
+				logger.Println("ALL GOOD with", i)
+			}
+		}
+		return
+	}
 	//Show the functionality
 	for {
 		fmt.Println("Select a function:\n" +
 			"0) Start searching\n" +
-			"1) Print the fields ranking")
+			"1) Print the fields ranking\n" +
+			"2) Clean db (delete all graphs)\n" +
+			"3) Delete one search's results (one graph)")
 		str, _ := reader.ReadString('\n')
 		str = strings.Replace(str, "\n", "", -1)
 		choice, err := strconv.Atoi(str)
 		if err != nil {
-			fmt.Println("Please insert an integer value")
+			fmt.Println("Please insert an integer value\n")
 			continue
 		}
 		switch choice {
 		case 0:
 			//Get user input
-			startingPoint, maxNumLv, threshold, perc, graph := getUserInput()
+			startingPoint, maxNumLv, threshold, perc, graphNumber := getUserInput()
 			//print user's input
 			logger.Println("Your input:\n")
 			logger.Println("startingPoint = ", startingPoint)
 			logger.Println("maxNumLv = ", maxNumLv)
 			logger.Println("threshold = ", threshold)
 			logger.Println("percentage on citations = ", perc)
-			logger.Println("graph number = ", graph)
+			logger.Println("graph number = ", graphNumber)
 
-			t := collectingArticles(wd, startingPoint, maxNumLv, threshold, perc, graph)
+			t := collectingArticles(startingPoint, maxNumLv, threshold, perc, graphNumber)
 			if t {
-				fmt.Println("ALL OK")
+				fmt.Println("ALL GOOD")
 			} else {
 				fmt.Println("There could be some problem, check the file: Quali_livelli_ho_fatto")
 			}
 		case 1:
-			choice = 0
-			for choice <= 0 && choice != -1 {
-				fmt.Println("Insert the number of fields to show (e.g. 10 for top10):	")
-				str, _ := reader.ReadString('\n')
-				str = strings.Replace(str, "\n", "", -1)
-				choice, err = strconv.Atoi(str)
-				if err != nil {
-					fmt.Println("Please insert a non negative number")
-				}
-			}
-			conn := docDatabase.StartNeo4j()
-			ranking := docDatabase.FieldsRanking(conn, choice)
-			fmt.Println("RANKING:\nSCORE\tFIELD")
-			for field, score := range ranking {
-				fmt.Println(strconv.Itoa(score) + "\t" + field)
-			}
-			conn.Close()
+			printFieldsRanking()
+		case 2:
+			cleanAll()
+		case 3:
+			deleteGraph()
 		default:
-			fmt.Println("Please insert a correct value")
+			fmt.Println("Please select one of the option above")
 		}
+		fmt.Println()
 	}
 
 }

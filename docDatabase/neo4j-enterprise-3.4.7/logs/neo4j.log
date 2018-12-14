@@ -310,3 +310,72 @@ nohup: input ignorato
 2018-12-01 15:36:06.272+0000 INFO  Mounted REST API at: /db/manage
 2018-12-01 15:36:06.403+0000 INFO  Server thread metrics has been registered successfully
 2018-12-01 15:36:08.081+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-12-03 15:10:20.107+0000 INFO  ======== Neo4j 3.4.7 ========
+2018-12-03 15:10:20.235+0000 INFO  Starting...
+2018-12-03 15:10:24.146+0000 INFO  Initiating metrics...
+2018-12-03 15:10:26.784+0000 INFO  Sending metrics to CSV file at /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/metrics
+2018-12-03 15:10:28.250+0000 INFO  Bolt enabled on 127.0.0.1:7687.
+2018-12-03 15:10:30.218+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.all)
+2018-12-03 15:10:30.224+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.idle)
+2018-12-03 15:11:20.944+0000 INFO  Started.
+2018-12-03 15:11:22.563+0000 INFO  Mounted REST API at: /db/manage
+2018-12-03 15:11:23.837+0000 INFO  Server thread metrics has been registered successfully
+2018-12-03 15:11:31.795+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-12-06 14:21:28.044+0000 INFO  ======== Neo4j 3.4.7 ========
+2018-12-06 14:21:28.160+0000 INFO  Starting...
+2018-12-06 14:21:31.214+0000 INFO  Initiating metrics...
+2018-12-06 14:21:33.216+0000 INFO  Sending metrics to CSV file at /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/metrics
+2018-12-06 14:21:33.887+0000 INFO  Bolt enabled on 127.0.0.1:7687.
+2018-12-06 14:21:36.539+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.all)
+2018-12-06 14:21:36.548+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.idle)
+2018-12-06 14:21:44.746+0000 INFO  Started.
+2018-12-06 14:21:44.923+0000 INFO  Mounted REST API at: /db/manage
+2018-12-06 14:21:45.377+0000 INFO  Server thread metrics has been registered successfully
+2018-12-06 14:21:47.049+0000 INFO  Remote interface available at http://localhost:7474/
+2018-12-06 15:12:22.547+0000 ERROR Client triggered an unexpected error [Neo.DatabaseError.General.UnknownError]: key not found: MAField, reference abb5e6b8-72db-41a3-aee2-eae2c0e8e0f4.
+2018-12-06 15:12:28.141+0000 ERROR Client triggered an unexpected error [Neo.DatabaseError.General.UnknownError]: key not found: MAField, reference 8e9ab060-6919-4a34-be8b-9963d4ff2189.
+2018-12-06 15:12:30.399+0000 ERROR Client triggered an unexpected error [Neo.DatabaseError.General.UnknownError]: key not found: MAField, reference 912ce693-09ae-40e7-83b3-0afd5d19854c.
+2018-12-06 15:12:42.434+0000 ERROR Client triggered an unexpected error [Neo.DatabaseError.General.UnknownError]: key not found: MAField, reference 7388d221-2b5c-4c57-9314-6c0955458b04.
+2018-12-06 15:12:57.307+0000 ERROR Client triggered an unexpected error [Neo.DatabaseError.General.UnknownError]: key not found: n1MAField, reference 4bea71b1-7ae7-43d2-b46d-39e17a04bc9d.
+nohup: input ignorato
+2018-12-11 18:55:58.754+0000 INFO  ======== Neo4j 3.4.7 ========
+2018-12-11 18:55:58.884+0000 INFO  Starting...
+2018-12-11 18:56:02.086+0000 INFO  Initiating metrics...
+2018-12-11 18:56:04.263+0000 INFO  Sending metrics to CSV file at /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/metrics
+2018-12-11 18:56:04.978+0000 INFO  Bolt enabled on 127.0.0.1:7687.
+2018-12-11 18:56:07.588+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.all)
+2018-12-11 18:56:07.592+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.idle)
+2018-12-11 18:56:16.174+0000 INFO  Started.
+2018-12-11 18:56:16.375+0000 INFO  Mounted REST API at: /db/manage
+2018-12-11 18:56:16.541+0000 INFO  Server thread metrics has been registered successfully
+2018-12-11 18:56:18.364+0000 INFO  Remote interface available at http://localhost:7474/
+nohup: input ignorato
+2018-12-13 21:21:23.777+0000 INFO  ======== Neo4j 3.4.7 ========
+2018-12-13 21:21:23.899+0000 INFO  Starting...
+2018-12-13 21:21:26.987+0000 INFO  Initiating metrics...
+2018-12-13 21:21:29.265+0000 INFO  Sending metrics to CSV file at /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/metrics
+2018-12-13 21:21:29.894+0000 INFO  Bolt enabled on 127.0.0.1:7687.
+2018-12-13 21:21:32.844+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.all)
+2018-12-13 21:21:32.849+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.idle)
+2018-12-13 21:21:50.712+0000 INFO  Started.
+2018-12-13 21:21:51.044+0000 INFO  Mounted REST API at: /db/manage
+2018-12-13 21:21:51.224+0000 INFO  Server thread metrics has been registered successfully
+2018-12-13 21:21:52.941+0000 INFO  Remote interface available at http://localhost:7474/
+2018-12-13 22:19:48.043+0000 INFO  Neo4j Server shutdown initiated by request
+2018-12-13 22:19:48.198+0000 INFO  Stopping...
+2018-12-13 22:19:48.741+0000 INFO  Stopped.
+nohup: input ignorato
+2018-12-14 08:59:03.994+0000 INFO  ======== Neo4j 3.4.7 ========
+2018-12-14 08:59:04.110+0000 INFO  Starting...
+2018-12-14 08:59:07.298+0000 INFO  Initiating metrics...
+2018-12-14 08:59:09.642+0000 INFO  Sending metrics to CSV file at /home/paoloc/go/src/github.com/return55/tirocinio/docDatabase/neo4j-enterprise-3.4.7/metrics
+2018-12-14 08:59:10.331+0000 INFO  Bolt enabled on 127.0.0.1:7687.
+2018-12-14 08:59:12.996+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.all)
+2018-12-14 08:59:13.007+0000 WARN  Server thread metrics not available (missing neo4j.server.threads.jetty.idle)
+2018-12-14 08:59:21.916+0000 INFO  Started.
+2018-12-14 08:59:22.156+0000 INFO  Mounted REST API at: /db/manage
+2018-12-14 08:59:22.365+0000 INFO  Server thread metrics has been registered successfully
+2018-12-14 08:59:23.978+0000 INFO  Remote interface available at http://localhost:7474/
+2018-12-14 09:01:32.161+0000 ERROR Client triggered an unexpected error [Neo.DatabaseError.General.UnknownError]: head of empty list, reference 319bca04-769e-4580-96a8-9f692142594f.

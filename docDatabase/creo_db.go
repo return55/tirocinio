@@ -105,6 +105,7 @@ func CleanAll(conn bolt.Conn) {
 	_, err := conn.ExecNeo("MATCH (n), ()-[r]-() DELETE n,r", nil)
 	if err != nil {
 		//se l'errore e' dovuto alla mancanza della memoria heap (il db e' troppo grosso)
+		//NON FUNZIONANO PIU' PERCHE' USO ENTERPRISE, NON COMMUNITY
 		if t, _ := regexp.MatchString(".*OutOfMemoryError.*", err.Error()); t {
 			if err := exec.Command("rm", "-fr", "docDatabase/neo4j-community-3.3.5/data/databases/graph.db").Run(); err != nil {
 				panic(err)
@@ -116,5 +117,5 @@ func CleanAll(conn bolt.Conn) {
 			panic(err)
 		}
 	}
-	fmt.Println("Ho pulito il database")
+	fmt.Println("All clean!!")
 }
