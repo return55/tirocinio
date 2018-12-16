@@ -122,6 +122,7 @@ func setTitlesAndGetURLs(titles []selenium.WebElement, documents []structures.MA
 
 		URLDoc, _ := titles[i].GetAttribute("href")
 		URLDocuments[i] = structures.URLAcademic + URLDoc
+		documents[i].URL = structures.URLAcademic + URLDoc
 
 		logger.Println("URL ", i, ": ", URLDocuments[i])
 	}
@@ -637,7 +638,7 @@ func GetDocumentsFromPageBasic_MA(wd selenium.WebDriver, maxCit, threshold, perc
 	docs := make([]structures.MADocument, howMany)
 	URLDocuments := make([]string, howMany)
 
-	//Assegno i titoli ai doc e mi savo i relativi link in una var a parte perche'
+	//Assegno i titoli e gli URL ai doc e mi savo i relativi link in una var a parte perche'
 	//una volta cambiata la pagina perdo il riferimento all'elemento con il link
 	//assegno il titolo
 	setTitlesAndGetURLs(titles, docs, URLDocuments)
@@ -779,6 +780,9 @@ func GetInitialDocumentByURL_MA(wd selenium.WebDriver, startURL string) structur
 
 	//Prendo le citations (0), references (1) (opz. related (2))
 	setCitationsAndReferences(wd, &initialDoc)
+
+	//Add its URL
+	initialDoc.URL = startURL
 
 	return initialDoc
 }
@@ -977,9 +981,9 @@ func GetCiteDocumentsByThreshold_MA(wd selenium.WebDriver, linkCitedBy string, n
 		wd.WaitWithTimeout(conditionNextLink, 60*time.Second)
 
 		//Torno alla pagina con i rusultati
-		if err := wd.Get(currentUrl); err != nil {
-			panic(err)
-		}
+		//if err := wd.Get(currentUrl); err != nil {
+		//	panic(err)
+		//}
 	}
 	return allDoc, numDoc
 }

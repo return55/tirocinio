@@ -38,6 +38,14 @@ type Author struct {
 	Affiliation string //Ente con cui l'autore ha collaborato per scrivere la pubblicazione
 }
 
+//It stores the information about "CITE" relation obtained from db by the query:
+//	match (s:MADocumentBasic)-[:CITE]->(d:MADocumentBasic) return s.title, d.title
+//docDatabase/GetGraphDocuments -- draw/CreateFile
+type CiteRelation struct {
+	SourceTitle      string
+	DestinationTitle string
+}
+
 var FieldsName = []string{"Url", "Authors", "NumCitedBy", "LinkCitedBy"}
 
 var FieldsNameMA = []string{"Title", "Url", "Authors", "NumCitations", "LinkCitations", "NumReferences",

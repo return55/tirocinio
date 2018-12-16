@@ -1,4 +1,4 @@
-package main
+package draw
 
 import (
 	"encoding/xml"
@@ -138,7 +138,7 @@ func oneCluster(dict map[string]EdgeInfo, fieldName string) string {
 
 }
 
-func main() {
+func main99() {
 	//apro il file
 	xmlFile, err := os.Open("archi.xml")
 	if err != nil {

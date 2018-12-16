@@ -18,7 +18,7 @@ import (
 )
 
 const (
-	seleniumPath     = "webDriver/selenium-server-standalone-3.14.0.jar"
+	seleniumPath     = "webDriver/selenium-server-standalone-3.141.59.jar"
 	geckoDriverPath  = "webDriver/geckodriver-v0.23.0-linux64/geckodriver"
 	chromeDriverPath = "webDriver/chromedriver2.42"
 	chromeBinary     = "/opt/google/chrome/chrome"

@@ -1,0 +1,5 @@
+#!/bin/bash
+for i in {1..$(ls -l | grep .dot | tr -s ' ' | cut -d ' ' -f 9 | cut -d '.' -f 1)}
+do
+   dot -Tpng -o ../filePNG/$i $i.dot
+done

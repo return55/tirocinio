@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"go/build"
 	"log"
 	"os"
 	"strconv"
@@ -11,6 +12,7 @@ import (
 	"time"
 
 	"github.com/return55/tirocinio/docDatabase"
+	"github.com/return55/tirocinio/draw"
 	"github.com/return55/tirocinio/structures"
 	"github.com/return55/tirocinio/webDriver"
 
@@ -81,7 +83,7 @@ func createCitationsTree_MA(startingPoint string, maxNumLv, threshold, perc, gra
 		researchNumber++
 	}
 	for docIndex := 1; docIndex < len(allDoc); docIndex++ {
-		docDatabase.AddDocumentBasic_MA(conn, allDoc[docIndex], allDoc[0].Title, graphNumber)
+		docDatabase.AddDocumentBasic_MA(conn, allDoc[docIndex], allDoc[0].URL, graphNumber)
 	}
 
 	//sono i documenti ancora da esplorare ovvero i figli appena creati
@@ -101,15 +103,15 @@ func createCitationsTree_MA(startingPoint string, maxNumLv, threshold, perc, gra
 				}
 			default:
 				//prima di esplorare un doc controllo se l'ho gia' esplorato
-				if !docDatabase.AlreadyExplored(conn, doc.Title, graphNumber) {
+				if !docDatabase.AlreadyExplored(conn, doc.URL, graphNumber) {
 					childDocs = append(childDocs, getFirstsNDoc_MA(wd, doc, conn, threshold, perc, graphNumber)...)
 				}
 			}
 		}
 		parentDocs = childDocs
 		childDocs = nil
-		fmt.Println("parent: ", parentDocs)
-		fmt.Println("child: ", childDocs)
+		//fmt.Println("parent: ", parentDocs)
+		//fmt.Println("child: ", childDocs)
 		fmt.Println("Ho finito il livello: ", maxNumLv-level+1)
 	}
 	close(quit)
@@ -126,7 +128,7 @@ func getFirstsNDoc_MA(wd selenium.WebDriver, initialDoc structures.MADocument, c
 	citeInitialDoc, numFigli := webDriver.GetCiteDocumentsByThreshold_MA(wd, initialDoc.LinkCitations, numPages, threshold, perc)
 
 	for docIndex := 0; docIndex < len(citeInitialDoc); docIndex++ {
-		docDatabase.AddDocumentBasic_MA(conn, citeInitialDoc[docIndex], initialDoc.Title, graphNumber)
+		docDatabase.AddDocumentBasic_MA(conn, citeInitialDoc[docIndex], initialDoc.URL, graphNumber)
 	}
 	fmt.Println("Titolo: ", initialDoc.Title, " -- num figli: ", numFigli)
 	return citeInitialDoc
@@ -342,6 +344,97 @@ func deleteGraph() {
 	}
 }
 
+//createDotFile gets the user inputs: file path
+func createDotFile() {
+	//if there's no graph -> print an error message
+	if researchNumber == 1 {
+		fmt.Println("Sorry but the database is empty, first do a search")
+		return
+	}
+	fmt.Println("Insert the path of the new file:")
+	filePath, _ := reader.ReadString('\n')
+	filePath = strings.Replace(filePath, "\n", "", -1)
+	graphNumber := 0
+	var err error
+	for graphNumber <= 0 || graphNumber >= researchNumber {
+		fmt.Println("Which graph do you want to print?	[ 1 -", researchNumber-1, "]")
+		str, _ := reader.ReadString('\n')
+		str = strings.Replace(str, "\n", "", -1)
+		graphNumber, err = strconv.Atoi(str)
+		if err != nil {
+			fmt.Println("Please insert a number")
+		}
+	}
+	draw.CreateFile(filePath, graphNumber)
+}
+
+//checkProject try to find the project directory from the
+func checkProject(GOPATH string) bool {
+	//if _, os.Stat(GOPATH+"/src/")
+	return true
+}
+
+//dotEveryGraph creates a dot file for each graph in the database
+func dotEveryGraph() bool { /*
+		//get GOPATH to create the path to the project
+		goPath := strings.Split(os.Getenv("GOPATH"), string(os.PathListSeparator))
+		filePath := ""
+		if len(goPath) == 0 || goPath[0] == "" {
+			GOPATH := build.Default.GOPATH
+			fmt.Println("No path (build), i try the deafult: ", GOPATH)
+			if !checkProject(GOPATH) {
+				fmt.Println("You don't have a GOPATH variable and i can't find the project directory strarting from", GOPATH)
+				return
+			}
+
+		} else if len(goPath) == 1 {
+			GOPATH := goPath[0]
+			fmt.Println("One path:", GOPATH)
+			if !checkProject(GOPATH) {
+				fmt.Println("There's something wrong with your GOPATH variable () and i can't find the project directory")
+				return
+			}
+		} else {
+			//More than one path
+			GOPATH := ""
+			for _, path := range goPath {
+				if checkProject(path) {
+					GOPATH = path
+					break
+				}
+			}
+			//if no path is valid
+			if GOPATH == "" {
+				fmt.Println("You have more than one path in GOPATH variable but i can't find the project in any of them")
+				return
+			}
+		}*/
+	var str string
+	for str != "yes" && str != "no" {
+		fmt.Println("Do you want to use the default path ($GOPATH/src/github.com/return55/tirocinio/draw/fileDOT)?		")
+		str, _ = reader.ReadString('\n')
+		str = strings.Replace(str, "\n", "", -1)
+	}
+	var directoryPath string
+	if str == "yes" {
+		GOPATH := build.Default.GOPATH
+		directoryPath = GOPATH + "/src/github.com/return55/tirocinio/draw/fileDOT"
+	} else {
+		fmt.Println("Insert your directory's path:")
+		directoryPath, _ = reader.ReadString('\n')
+		directoryPath = strings.Replace(str, "\n", "", -1)
+	}
+	//little check
+	if directoryPath == "" {
+		panic("main/dotEveryGraph - something wrong with the path")
+	}
+	for i := 1; i < researchNumber; i++ {
+		fmt.Println("path: " + directoryPath + "/" + strconv.Itoa(i) + ".dot")
+		draw.CreateFile(directoryPath+"/"+strconv.Itoa(i)+".dot", i)
+	}
+	return true
+}
+
 //initialization queries the db to find the number of graphs (of search) and set
 //the researchNumber's value
 func initialization() {
@@ -369,31 +462,34 @@ func main() {
 			maxNumLv, threshold, perc, graphNumber int
 		}
 		input := []data{
-			{"https://academic.microsoft.com/#/detail/2320816109", 10, 1000, 50, 1},
-			{"https://academic.microsoft.com/#/detail/2320816109", 10, 800, 50, 2},
-			{"https://academic.microsoft.com/#/detail/2320816109", 10, 600, 50, 3},
-			{"https://academic.microsoft.com/#/detail/2320816109", 10, 400, 50, 4},
-			{"https://academic.microsoft.com/#/detail/2320816109", 10, 150, 50, 5},
-			{"https://academic.microsoft.com/#/detail/2320816109", 10, 50, 50, 6},
+			{"https://academic.microsoft.com/#/detail/317187901", 10, 1000, 50, 1},
+			{"https://academic.microsoft.com/#/detail/317187901", 10, 800, 50, 2},
+			{"https://academic.microsoft.com/#/detail/317187901", 10, 600, 50, 3},
+			{"https://academic.microsoft.com/#/detail/317187901", 10, 400, 50, 4},
+			{"https://academic.microsoft.com/#/detail/317187901", 10, 150, 50, 5},
+			{"https://academic.microsoft.com/#/detail/317187901", 10, 50, 50, 6},
 		}
 		for i, in := range input {
 			quit := make(chan int8, 1)
-			if !createCitationsTree_MA(in.startingPoint, in.maxNumLv, in.threshold, in.perc, in.graphNumber, quit) {
+			if createCitationsTree_MA(in.startingPoint, in.maxNumLv, in.threshold, in.perc, in.graphNumber, quit) {
+				logger.Println("ALL GOOD with", i)
+			} else {
 				logger.Println("There is a problem with the iteration number", i)
 				return
-			} else {
-				logger.Println("ALL GOOD with", i)
 			}
 		}
 		return
 	}
+	//-------------------END SCRIPT------------------------------
 	//Show the functionality
 	for {
 		fmt.Println("Select a function:\n" +
 			"0) Start searching\n" +
 			"1) Print the fields ranking\n" +
 			"2) Clean db (delete all graphs)\n" +
-			"3) Delete one search's results (one graph)")
+			"3) Delete one search's results (one graph)\n" +
+			"4) Print graph (create a new .dot file)\n" +
+			"5) Print all graph available")
 		str, _ := reader.ReadString('\n')
 		str = strings.Replace(str, "\n", "", -1)
 		choice, err := strconv.Atoi(str)
@@ -425,6 +521,10 @@ func main() {
 			cleanAll()
 		case 3:
 			deleteGraph()
+		case 4:
+			createDotFile()
+		case 5:
+			dotEveryGraph()
 		default:
 			fmt.Println("Please select one of the option above")
 		}

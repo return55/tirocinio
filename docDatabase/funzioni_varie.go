@@ -6,6 +6,8 @@ import (
 	"reflect"
 	"strconv"
 
+	"github.com/return55/tirocinio/structures"
+
 	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
 )
 
@@ -80,5 +82,43 @@ func GetResearchNumber(conn bolt.Conn) int {
 		fmt.Println("The db contains ", reflect.ValueOf(numDocInterface[0]).Int(), " searches")
 		return int(reflect.ValueOf(numDocInterface[0]).Int())
 	}
+
+}
+
+//GetGraphDocuments get the info aboute "CITE" relation:
+//		(title1)-[CITE]->(title2)
+//for all the documents of a graph (or all db if graphNumber == -1)
+func GetGraphDocuments(conn bolt.Conn, graphNumber int) []structures.CiteRelation {
+	var rows bolt.Rows
+	var err error
+	//look for only one graph
+	if graphNumber > 0 {
+		var graphNumberInterface interface{} = graphNumber
+		rows, err = conn.QueryNeo("match (s:MADocumentBasic {searchId: {GraphNumber}})-[:CITE]->(d:MADocumentBasic {searchId: {GraphNumber}})"+
+			"return s.title, d.title", map[string]interface{}{"GraphNumber": graphNumberInterface})
+		if err != nil {
+			panic(err)
+		}
+		//look for all the db
+	} else if graphNumber == -1 {
+		rows, err = conn.QueryNeo("match (s:MADocumentBasic)-[:CITE]->(d:MADocumentBasic)"+
+			"return s.title, d.title", map[string]interface{}{})
+		if err != nil {
+			panic(err)
+		}
+	} else {
+		fmt.Println("The number of graph can only be positive or -1 to consider all db")
+		return nil
+	}
+
+	var relations []structures.CiteRelation
+	for row, _, err := rows.NextNeo(); err != io.EOF; row, _, err = rows.NextNeo() {
+		relations = append(relations, structures.CiteRelation{
+			SourceTitle:      row[0].(string),
+			DestinationTitle: row[1].(string),
+		})
+	}
+	_ = rows.Close()
+	return relations
 
 }
