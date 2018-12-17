@@ -1,0 +1,5 @@
+#!/bin/bash
+for i in $(ls -l | grep .dot | tr -s ' ' | cut -d ' ' -f 9 | cut -d '.' -f 1)
+do
+   dot -Tsvg -o "../fileSVG/$i.svg" "$i.dot"
+done

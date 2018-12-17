@@ -2,12 +2,16 @@ package draw
 
 import (
 	"os"
+	"strings"
 
 	"github.com/return55/tirocinio/docDatabase"
 )
 
 //CreateFile creates a .dot file to show one or more graph with details
-func CreateFile(filePath string, graphNumber int) {
+//If the fieldName != "" -> GetGraphDocuments return two more informations about the node:
+//for each node: if it has fieldName between its fields (true) otherwise (false)
+//thank to this information i can color the node
+func CreateFile(filePath string, graphNumber int, fieldName, color string) {
 	//creo un nuovo file (.dot) con le info sugli archi e i colori
 	fOut, err := os.Create(filePath)
 	if err != nil {
@@ -31,7 +35,15 @@ func CreateFile(filePath string, graphNumber int) {
 	//scrivo i vari archi
 	if relations != nil {
 		for _, rel := range relations {
-			fOut.WriteString("\t\t\"" + rel.SourceTitle + "\" -> \"" + rel.DestinationTitle + "\";\n")
+			rel.SourceTitle = strings.Replace(rel.SourceTitle, "\"", "'", -1)
+			rel.DestinationTitle = strings.Replace(rel.DestinationTitle, "\"", "'", -1)
+			fOut.WriteString("\t\t\"" + rel.SourceTitle + "\" -> \"" + rel.DestinationTitle + "\"\n")
+			if docDatabase.DoesDocumentHaveField(conn, rel.SourceTitle, fieldName, graphNumber) {
+				fOut.WriteString("\"" + rel.SourceTitle + "\" [color = " + color + ", penwidth = 6.0];\n")
+			}
+			if docDatabase.DoesDocumentHaveField(conn, rel.DestinationTitle, fieldName, graphNumber) {
+				fOut.WriteString("\"" + rel.DestinationTitle + "\" [color = " + color + ", penwidth = 6.0];\n")
+			}
 		}
 	}
 

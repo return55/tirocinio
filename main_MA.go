@@ -365,7 +365,8 @@ func createDotFile() {
 			fmt.Println("Please insert a number")
 		}
 	}
-	draw.CreateFile(filePath, graphNumber)
+	//devo ancora specificare campo e colore
+	draw.CreateFile(filePath, graphNumber, "", "")
 }
 
 //checkProject try to find the project directory from the
@@ -428,10 +429,30 @@ func dotEveryGraph() bool { /*
 	if directoryPath == "" {
 		panic("main/dotEveryGraph - something wrong with the path")
 	}
-	for i := 1; i < researchNumber; i++ {
-		fmt.Println("path: " + directoryPath + "/" + strconv.Itoa(i) + ".dot")
-		draw.CreateFile(directoryPath+"/"+strconv.Itoa(i)+".dot", i)
+	/*	VECCHIO PER CITE DI OGNI GRAFO
+		for i := 1; i < researchNumber; i++ {
+			fmt.Println("path: " + directoryPath + "/" + strconv.Itoa(i) + ".dot")
+			draw.CreateFile(directoryPath+"/"+strconv.Itoa(i)+".dot", i, "", "")
+		}*/
+	//UN SOLO GRAFO MA FACCIO LA TOP5 DELLE CATEGORIE E COLORO I NODI
+	conn := docDatabase.StartNeo4j()
+	temp := docDatabase.FieldsRanking(conn, 5, 4, false)
+	conn.Close()
+	var fields []string
+	for field, _ := range temp {
+		fields = append(fields, field)
 	}
+	colors := map[string]string{
+		fields[0]: "azure2",
+		fields[1]: "blue",
+		fields[2]: "brown",
+		fields[3]: "coral",
+		fields[4]: "cyan",
+	}
+	for field, color := range colors {
+		draw.CreateFile(directoryPath+"/"+field+".dot", 4, field, color)
+	}
+
 	return true
 }
 

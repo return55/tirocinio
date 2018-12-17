@@ -122,3 +122,45 @@ func GetGraphDocuments(conn bolt.Conn, graphNumber int) []structures.CiteRelatio
 	return relations
 
 }
+
+//DoesDocumentHaveField returns true if the document (title) has the field of
+//study specified, false otherwise.
+//NOTA: dovrei usare l'URL del documento non il suo titolo
+func DoesDocumentHaveField(conn bolt.Conn, title, fieldName string, graphNumber int) bool {
+	var rows bolt.Rows
+	var err error
+	//look for only one graph
+	if graphNumber > 0 {
+		var graphNumberInterface interface{} = graphNumber
+		rows, err = conn.QueryNeo(
+			"MATCH (f:MAFieldOfStudy {name: {FieldName}})<-[r:HAS_FIELD]-(d:MADocumentBasic {title: {Title}, searchId: {GraphNumber}})"+
+				"RETURN COUNT(d)",
+			map[string]interface{}{"Title": title, "GraphNumber": graphNumberInterface, "FieldName": fieldName})
+		if err != nil {
+			panic(err)
+		}
+		//look for all the db
+	} else if graphNumber == -1 {
+		rows, err = conn.QueryNeo(
+			"MATCH (f:MAFieldOfStudy {name: {FieldName}})<-[r:HAS_FIELD]-(d:MADocumentBasic {title: {Title}})"+
+				"RETURN COUNT(d)",
+			map[string]interface{}{"Title": title, "FieldName": fieldName})
+		if err != nil {
+			panic(err)
+		}
+	} else {
+		fmt.Println("The number of graph can only be positive or -1 to consider all db")
+		return false
+	}
+
+	hasField, _, err := rows.NextNeo()
+	_ = rows.Close()
+	if err != nil {
+		if err == io.EOF {
+			return false
+		}
+		panic(err)
+	}
+
+	return reflect.ValueOf(hasField[0]).Int() > 0
+}
