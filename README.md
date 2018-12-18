@@ -24,7 +24,7 @@ Al momento per usare il progetto e' necessario andare nella directory del preoge
 "docDatabase/neo4j-enterprise-3.4.7/conf/neo4j.conf" il campo "dbms.memory.heap.max_size" e dare al dbms piu' memoria.
 * All'avvio di neo4j, il dbms si potrebbe lamentare del max numero di file open. E' possibile modificarne il valore tra le
 impostazioni di sicurezza ma anche facendolo non ho notato cambiamenti nelle prestazioni.
-Per vedere il grafo:
+####Per vedere il grafo:
 ====================
 1. Vai all'indirizzo "localhost:7687", accedi a neo4j (se richiesto: username: neo4j - password: neo4j)
 2. Esegui "match (n) return n"
