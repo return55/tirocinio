@@ -1,16 +1,13 @@
 ## Prerequisiti:
 Sulla macchina devono essere presenti: la jre 8 e il pacchetto "xvfb" per permettere al web driver (Selenium) di funzionare.
-### Firefox
-Selenium vuole che in '/usr/bin/firefox' sia presente una versione di firefox non inferiore alla 57.
-E' necessario scaricarlo dal sito ufficiale e creare un link all'eseguibile:
-* sudo ln -s /path-to-firefox-directory/firefox-bin /usr/bin/firefox
-### Altri
+
 * Scarica Go dal sito e configuralo (anche GOBIN)
 * Scarica e configura git:      user.name, user.email
-
 ```
 go get github.com/return55/tirocinio
 ```
+* Copia la cartella neo4j-enterprise-3.4.7 dentro tirocinio/docDatabase
+
 ## Utilizzo
 Al momento per usare il progetto e' necessario andare nella directory del preogetto (dovrebbe essere "go/src/github.com/return55/tirocinio"):
 * avvia Neo4j: ./docDatabase/neo4j-enterprise-3.4.7/bin/neo4j start  (stop per fermare)
@@ -37,6 +34,6 @@ Alcune delle funzionalita' di base sono nei rispettivi file senza sigla (es creo
     firstN <n> : Prendo i primi n articoli che citano quello iniziale.
     everFirst <n> : Prendo per n volte il primo tra gli articoli che citano quello precedente.
     thread <numThreads> <docPerLink> <lenLinkList> : guarda la funzione concurrency() per piu' dettagli.
-* main_MA.go (solo per Academic): num_livelli soglia url_doc_iniziale : quanti livelli avra' (al massimo) l'albero delle citazioni e numero di citazioni minime     che un documento deve avere per essere preso e l'indirizo alla pagina del primo documento.
+* main_MA.go (solo per Academic): se avviato senza parametri vengono mostrate le operazioni disponibili:
 ** !! Al momento la soglia non ha importanza ma va comunque passata come parametro !!
 
