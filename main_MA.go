@@ -369,6 +369,22 @@ func createDotFile() {
 	draw.CreateFile(filePath, graphNumber, "", "")
 }
 
+//createDotFileFields gets the user inputs: file path
+//not for a single graph !!
+//!!!!!!! manca la parte di creazione dei nuovi nodi "MAFieldsOfStudy2" e delle relazioni "CITE2" !!!!!
+func createDotFileFields() {
+	//if there's no graph -> print an error message
+	if researchNumber == 1 {
+		fmt.Println("Sorry but the database is empty, first do a search")
+		return
+	}
+	fmt.Println("Insert the path of the new file:")
+	filePath, _ := reader.ReadString('\n')
+	filePath = strings.Replace(filePath, "\n", "", -1)
+	//devo ancora specificare campo e colore
+	draw.CreateFileFields(filePath)
+}
+
 //checkProject try to find the project directory from the
 func checkProject(GOPATH string) bool {
 	//if _, os.Stat(GOPATH+"/src/")
@@ -447,7 +463,7 @@ func dotEveryGraph() bool { /*
 		fields[1]: "blue",
 		fields[2]: "brown",
 		fields[3]: "coral",
-		fields[4]: "cyan",
+		fields[4]: "green",
 	}
 	for field, color := range colors {
 		draw.CreateFile(directoryPath+"/"+field+".dot", 4, field, color)
@@ -510,7 +526,8 @@ func main() {
 			"2) Clean db (delete all graphs)\n" +
 			"3) Delete one search's results (one graph)\n" +
 			"4) Print graph (create a new .dot file)\n" +
-			"5) Print all graph available")
+			"5) Print all graph available\n" +
+			"6) Print graph of fields")
 		str, _ := reader.ReadString('\n')
 		str = strings.Replace(str, "\n", "", -1)
 		choice, err := strconv.Atoi(str)
@@ -546,6 +563,8 @@ func main() {
 			createDotFile()
 		case 5:
 			dotEveryGraph()
+		case 6:
+			createDotFileFields()
 		default:
 			fmt.Println("Please select one of the option above")
 		}

@@ -123,6 +123,31 @@ func GetGraphDocuments(conn bolt.Conn, graphNumber int) []structures.CiteRelatio
 
 }
 
+//GetGraphFields get the info aboute "CITE2" relation:
+//		(field1)-[CITE2]->(field2)
+//for all the fields of all db (for now) ///////of a graph (or all db if graphNumber == -1)
+func GetGraphFields(conn bolt.Conn) []structures.CiteRelation {
+	var rows bolt.Rows
+	var err error
+
+	rows, err = conn.QueryNeo("MATCH (f:MAFieldOfStudy2)-[r]->(f2:MAFieldOfStudy2) RETURN f.name, f2.name",
+		map[string]interface{}{})
+	if err != nil {
+		panic(err)
+	}
+
+	var relations []structures.CiteRelation
+	for row, _, err := rows.NextNeo(); err != io.EOF; row, _, err = rows.NextNeo() {
+		relations = append(relations, structures.CiteRelation{
+			SourceTitle:      row[0].(string),
+			DestinationTitle: row[1].(string),
+		})
+	}
+	_ = rows.Close()
+	return relations
+
+}
+
 //DoesDocumentHaveField returns true if the document (title) has the field of
 //study specified, false otherwise.
 //NOTA: dovrei usare l'URL del documento non il suo titolo

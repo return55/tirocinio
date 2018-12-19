@@ -109,7 +109,7 @@ func AddDocumentBasic_MA(conn bolt.Conn, document structures.MADocument, URLStar
 	}
 	//aggiungo la relazione tra document e il documento che cita
 	//e dico che non e' la radice (isRoot = false)
-	/* SOLO SE CREO UN DOCUMENTO AGGIUNGO LA RELAZIONE "CITE" (si riferisce a "numResult > 0"*/
+	/* SOLO SE CREO UN DOCUMENTO AGGIUNGO LA RELAZIONE "CITE" (si riferisce a "numResult > 0")*/
 	if URLStartDoc != "" && numResult > 0 {
 		_, err := conn.ExecNeo("MATCH (newDoc:MADocumentBasic {URL: {URL}, searchId: {GraphNumber}}),"+
 			" (citedDoc:MADocumentBasic {URL: {URLStartDoc}, searchId: {GraphNumber}}) "+
