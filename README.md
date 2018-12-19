@@ -30,11 +30,11 @@ Al momento per usare il progetto e' necessario andare nella directory del preoge
 ### File .dot
 * Per ottenere le immmagini (.svg) dai .dot devi entrare nella cartella tirocinio/draw/fileDOT e avvia lo script createSVG. Questo creera' un file .svg per ogni .dot nella cartella.
 ### File .dot dei campi di studio
-Per poter creare il .dot dei campi e' prima necessaario eseguie le query nell'ordine:
-    * 1_pesi_archi (che ha effetto solo sul grafo num 5 
-    * 2_crea_campi_MAFieldOfStudy2
-    * 3_crea_rel_CITE2
-A questo punto e' possibile eseguire l'operazione numero 6 del main "Print graph of fields"
+* Per poter creare il .dot dei campi e' prima necessaario eseguie le query nell'ordine:
+    1_pesi_archi (che ha effetto solo sul grafo num 5 
+    2_crea_campi_MAFieldOfStudy2
+    3_crea_rel_CITE2
+* A questo punto e' possibile eseguire l'operazione numero 6 del main "Print graph of fields"
 * Per ottenere il file svg: "dot -Tsvg -o nome_file.svg altro_file.dot"
 ### Neo4j
 * Se le prestazioni di neo4j sono scarse o se da errore per mancanza di memoria heap, puo' essere utile modificare nel file:  
