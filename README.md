@@ -5,7 +5,7 @@ Sulla macchina devono essere presenti: la jre 8 e il pacchetto "xvfb" per permet
 * Scarica e configura git:      user.name, user.email
 ## Installazione:
 ```
-go get github.com/return55/tirocinio
+go get -v github.com/return55/tirocinio
 ```
 * Copia la cartella neo4j-enterprise-3.4.7 dentro tirocinio/docDatabase
 
