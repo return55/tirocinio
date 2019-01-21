@@ -492,7 +492,7 @@ func main() {
 	//Initialization: set researchNumber
 	initialization()
 	//if the user pass one command line argument (no matter the value), i start the script research
-	if len(os.Args) > 1 {
+	if len(os.Args) == 2 {
 		cleanAll()
 		type data struct {
 			startingPoint                          string
