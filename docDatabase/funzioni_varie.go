@@ -189,3 +189,49 @@ func DoesDocumentHaveField(conn bolt.Conn, title, fieldName string, graphNumber 
 
 	return reflect.ValueOf(hasField[0]).Int() > 0
 }
+
+//ONLY FOR GRAPH NUMBER 5
+//1) Create relations between articles that have the same field
+//2) Create a new node for each field
+//3) Create relations between these nodes
+func PrepareDBForDotFileFields() {
+	conn := StartNeo4j()
+	defer conn.Close()
+
+	CreateDocumentsRelations(conn)
+	CreateNewFields(conn)
+	CreateFieldsRelations(conn)
+}
+
+//------------------THESE FUNCTIONS ARE ONLY FOR PrepareDBForDotFileFields()--------------------
+
+//Creates a relation "CITE_FIELD" from two documents that have the same field and are linked by the
+//relation "CITE", this relation has the field's name as property.
+func CreateDocumentsRelations(conn bolt.Conn) {
+	_, err := conn.QueryNeo("-----------------------------------------------",
+		map[string]interface{}{})
+	if err != nil {
+		panic(err)
+	}
+}
+
+//Creates a new node (label:"MAFieldOfStudy2") for each field "MAFieldOfStudy"
+func CreateNewFields(conn bolt.Conn) {
+	_, err := conn.QueryNeo("-----------------------------------------------",
+		map[string]interface{}{})
+	if err != nil {
+		panic(err)
+	}
+}
+
+//Creates a relation "CITE2" between two "MAFieldOfStudy2" whose names appear
+//consecutively in two "CITE_FIELD"
+func CreateFieldsRelations(conn bolt.Conn) {
+	_, err := conn.QueryNeo("-----------------------------------------------",
+		map[string]interface{}{})
+	if err != nil {
+		panic(err)
+	}
+}
+
+//-----------------------------------------------------------------------------------------------

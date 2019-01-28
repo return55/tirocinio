@@ -370,8 +370,7 @@ func createDotFile() {
 }
 
 //createDotFileFields gets the user inputs: file path
-//not for a single graph !!
-//!!!!!!! manca la parte di creazione dei nuovi nodi "MAFieldsOfStudy2" e delle relazioni "CITE2" !!!!!
+//works only on fifth graph!!!!
 func createDotFileFields() {
 	//if there's no graph -> print an error message
 	if researchNumber == 1 {
@@ -381,7 +380,9 @@ func createDotFileFields() {
 	fmt.Println("Insert the path of the new file:")
 	filePath, _ := reader.ReadString('\n')
 	filePath = strings.Replace(filePath, "\n", "", -1)
-	//devo ancora specificare campo e colore
+	//
+	docDatabase.PrepareDBForDotFileFields()
+	//
 	draw.CreateFileFields(filePath)
 }
 
