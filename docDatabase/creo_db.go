@@ -119,3 +119,24 @@ func CleanAll(conn bolt.Conn) {
 	}
 	fmt.Println("All clean!!")
 }
+
+//Pulisce il database da tutti i nodi con label "Document" (cioe' che provengono da scholar)
+//e le relative relazioni
+func CleanAllDocument(conn bolt.Conn) {
+	_, err := conn.ExecNeo("MATCH (n:Document), (a:Author), (n)-[r]->() DELETE n,a,r", nil)
+	if err != nil {
+		//se l'errore e' dovuto alla mancanza della memoria heap (il db e' troppo grosso)
+		//NON FUNZIONANO PIU' PERCHE' USO ENTERPRISE, NON COMMUNITY
+		if t, _ := regexp.MatchString(".*OutOfMemoryError.*", err.Error()); t {
+			if err := exec.Command("rm", "-fr", "docDatabase/neo4j-enterprise-3.3.5/data/databases/graph.db").Run(); err != nil {
+				panic(err)
+			}
+			if err := exec.Command("mkdir", "docDatabase/neo4j-enterprise-3.3.5/data/databases/graph.db").Run(); err != nil {
+				panic(err)
+			}
+		} else {
+			panic(err)
+		}
+	}
+	fmt.Println("All clean!!")
+}

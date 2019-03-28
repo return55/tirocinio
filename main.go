@@ -1,9 +1,12 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"log"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/return55/tirocinio/docDatabase"
@@ -14,11 +17,12 @@ import (
 	"github.com/tebeka/selenium"
 )
 
-/*var (
+var (
 	//creo il logger per i thread
 	fileThreadTimes, _ = os.OpenFile("thread_times.LOG", os.O_WRONLY, 0600)
 	logger             = log.New(fileThreadTimes, "", 0)
-)*/
+	reader             = bufio.NewReader(os.Stdin)
+)
 
 //Partendo dal classico documento iniziale vado alla pagina di scholar con
 //i documenti che lo citano e prendo il primo in alto.
@@ -47,7 +51,7 @@ func GetEverFirst(wd selenium.WebDriver) bool {
 		conn := docDatabase.StartNeo4j()
 		defer conn.Close()
 		//pulisco il db
-		docDatabase.CleanAll(conn)
+		//docDatabase.CleanAllDocument(conn)
 		//aggiungo il documento iniziale
 		docDatabase.AddDocument(conn, allDoc[0], "")
 		for docIndex := 1; docIndex < len(allDoc); docIndex++ {
@@ -69,7 +73,35 @@ func GetFirstsNDoc(wd selenium.WebDriver) bool {
 		}
 		fmt.Println("Numero documenti: ", numDocs)
 
-		initialDoc := webDriver.GetInitialDocument(wd)
+		//raccolgo l'input sul documento iniziale
+		var initialDoc structures.Document
+		//URL
+		fmt.Println("Enter the URl of the article")
+		startingPoint, _ := reader.ReadString('\n')
+		initialDoc.Url = strings.Replace(startingPoint, "\n", "", -1)
+		//Autori
+		var author string
+		fmt.Println("Enter all author's names (like they are in scholar) one per line. \"stop\" to terminate")
+		for {
+			author, _ = reader.ReadString('\n')
+			if author == "stop\n" {
+				break
+			}
+			initialDoc.Authors = append(initialDoc.Authors, strings.Replace(author, "\n", "", -1))
+		}
+		//Numero di volte nelle quali e' stato citato
+		fmt.Println("Enter the \"cyted by\" number of the article")
+		startingPoint, _ = reader.ReadString('\n')
+		numCytedBy, err := strconv.ParseInt(strings.Replace(startingPoint, "\n", "", -1), 10, 16)
+		if err != nil {
+			panic(err)
+		}
+		initialDoc.NumCitedBy = uint16(numCytedBy)
+		//Link agli articoli che lo citano
+		fmt.Println("Enter the URL of the articles that mention it")
+		startingPoint, _ = reader.ReadString('\n')
+		initialDoc.LinkCitedBy = strings.Replace(startingPoint, "\n", "", -1)
+		//-----fine primo articolo-------
 
 		citeInitialDoc, _ := webDriver.GetCiteDocuments(wd, initialDoc.LinkCitedBy, numDocs)
 
@@ -80,7 +112,7 @@ func GetFirstsNDoc(wd selenium.WebDriver) bool {
 		conn := docDatabase.StartNeo4j()
 		defer conn.Close()
 		//pulisco il db
-		docDatabase.CleanAll(conn)
+		//docDatabase.CleanAllDocument(conn)
 		//aggiungo il documento iniziale
 		docDatabase.AddDocument(conn, allDoc[0], "")
 		for docIndex := 1; docIndex < len(allDoc); docIndex++ {
@@ -143,7 +175,7 @@ func Concurrency(wd selenium.WebDriver) bool {
 	}
 
 	//pulisco il db
-	docDatabase.CleanAll(concurrencyConn)
+	//docDatabase.CleanAllDocument(concurrencyConn)
 	//aggiungo il documento iniziale
 	docDatabase.AddDocument(concurrencyConn, initialDoc, "")
 
@@ -231,6 +263,12 @@ func threadAddLinks(newLinks []string, links chan string, id uint64) {
 	logger.Println("AddLinks chiamato da ", id, " e' terminato.")
 }
 
+//Per iniziare la ricerca con un articolo scelto da te, devi inserire manualmente
+//tutte le sue informazioni: URL, URL pagina delle citazioni, autori, numero di volte
+//in cui e' stato citato.
+//IMPORTANTE: I LINK AI VARI ARTICOLI DEVONO ESSERE ALLE PAGINE WEB IN INGLESE
+//NOTA: DEGLI ARTICOLI DI PARTENZA CONOSCO SOLO L'URL, A MENO CHE NON LI INCONTRI
+//		DURANTE LA RICERCA
 func main2() {
 	if len(os.Args) < 3 {
 		fmt.Println("I parametri da passare al main possono essere: (everFirst | firstN | thread) num1 num2")
