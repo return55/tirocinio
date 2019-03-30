@@ -208,7 +208,12 @@ func PrepareDBForDotFileFields() {
 //Creates a relation "CITE_FIELD" from two documents that have the same field and are linked by the
 //relation "CITE", this relation has the field's name as property.
 func CreateDocumentsRelations(conn bolt.Conn) {
-	_, err := conn.QueryNeo("-----------------------------------------------",
+	_, err := conn.QueryNeo(
+		"match (sorgente:MADocumentBasic {searchId: 5})-[s]->(f:MAFieldOfStudy)<-[d]-(destinazione:MADocumentBasic {searchId: 5})"+
+			"where (sorgente)-[:CITE]->(destinazione)"+
+			"and sorgente <> destinazione"+
+			"merge (sorgente)-[r:CITE_FIELD {field: f.name}]->(destinazione)"+
+			"return sorgente.title as sorg, r.field, destinazione.title as dest",
 		map[string]interface{}{})
 	if err != nil {
 		panic(err)
@@ -217,7 +222,9 @@ func CreateDocumentsRelations(conn bolt.Conn) {
 
 //Creates a new node (label:"MAFieldOfStudy2") for each field "MAFieldOfStudy"
 func CreateNewFields(conn bolt.Conn) {
-	_, err := conn.QueryNeo("-----------------------------------------------",
+	_, err := conn.QueryNeo("match (f:MAFieldOfStudy)"+
+		"merge (f2:MAFieldOfStudy2 {name: f.name})"+
+		"return count(f) as num_campi_originali, count(f2) as num_campi_nuovi",
 		map[string]interface{}{})
 	if err != nil {
 		panic(err)
@@ -227,7 +234,12 @@ func CreateNewFields(conn bolt.Conn) {
 //Creates a relation "CITE2" between two "MAFieldOfStudy2" whose names appear
 //consecutively in two "CITE_FIELD"
 func CreateFieldsRelations(conn bolt.Conn) {
-	_, err := conn.QueryNeo("-----------------------------------------------",
+	_, err := conn.QueryNeo(
+		"match (sorgente:MADocumentBasic {searchId: 5})-[f1:CITE_FIELD]->(meta:MADocumentBasic {searchId: 5})-[f2:CITE_FIELD]->(destinazione:MADocumentBasic {searchId: 5}), (field1:MAFieldOfStudy2 ), (field2:MAFieldOfStudy2)"+
+			"where f1.field <> f2.field and sorgente <> meta and meta <> destinazione and sorgente <> destinazione"+
+			"and field1.name = f1.field and field2.name = f2.field"+
+			"merge (field1)-[r:CITE2]->(field2)"+
+			"return count(r) as nuove_relazioni",
 		map[string]interface{}{})
 	if err != nil {
 		panic(err)
