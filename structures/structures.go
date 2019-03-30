@@ -3,10 +3,11 @@ package structures
 //Document e' utilizzata per i documenti presi da Google Scholar
 //!!!!!!!!! CAMBIA CitedBy CON Citations !!!!!!!!!!!!!!
 type Document struct {
-	Url         string   //Singolo link a una sorgente della pubblicazione
-	Authors     []string //Alcuni nomi degli autori del documento
-	NumCitedBy  uint16   //Numero dei documenti che lo citano
-	LinkCitedBy string   //URL a quei documenti
+	Url           string   //Singolo link a una sorgente della pubblicazione
+	Authors       []string //Alcuni nomi degli autori del documento
+	NumCitations  uint16   //Numero dei documenti che lo citano
+	LinkCitations string   //URL a quei documenti
+	Date          int64    //-1 if is not available
 }
 
 //MADocument e' utilizzata per i documenti presi da Microsoft Academic
@@ -46,12 +47,12 @@ type CiteRelation struct {
 	DestinationTitle string
 }
 
-var FieldsName = []string{"Url", "Authors", "NumCitedBy", "LinkCitedBy"}
+var FieldsName = []string{"Url", "Authors", "NumCitations", "LinkCitations"}
 
 var FieldsNameMA = []string{"Title", "Url", "Authors", "NumCitations", "LinkCitations", "NumReferences",
 	"LinkReferences", "Abstract", "Date", "FieldsOfStudy"}
 
-const URLScholar = "https://scholar.google.com/"
+const URLScholar = "https://scholar.google.com"
 
 const URLAcademic = "https://academic.microsoft.com/"
 
@@ -59,7 +60,7 @@ const NumArticlePerPageMA = 8
 
 const SaveFilePath = "DocumentiSerialize.txt"
 
-const MaxReadableDoc = 3000
+const MaxReadableDoc = 100
 
 //Valore da cui ricavo il numero di porta specifico del thread.
 // thread_port = threadBasePort + id_del_thread

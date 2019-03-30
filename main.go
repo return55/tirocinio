@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"strconv"
 	"time"
@@ -14,11 +15,11 @@ import (
 	"github.com/tebeka/selenium"
 )
 
-/*var (
+var (
 	//creo il logger per i thread
 	fileThreadTimes, _ = os.OpenFile("thread_times.LOG", os.O_WRONLY, 0600)
 	logger             = log.New(fileThreadTimes, "", 0)
-)*/
+)
 
 //Partendo dal classico documento iniziale vado alla pagina di scholar con
 //i documenti che lo citano e prendo il primo in alto.
@@ -39,7 +40,7 @@ func GetEverFirst(wd selenium.WebDriver) bool {
 		var firstDoc structures.Document
 		var i uint64
 		for i = 0; i < repeatFor; i++ {
-			firstDoc = webDriver.GetFirstDocumentOfPage(wd, allDoc[i].LinkCitedBy)
+			firstDoc = webDriver.GetFirstDocumentOfPage(wd, allDoc[i].LinkCitations)
 			allDoc[i+1] = firstDoc
 		}
 
@@ -71,7 +72,7 @@ func GetFirstsNDoc(wd selenium.WebDriver) bool {
 
 		initialDoc := webDriver.GetInitialDocument(wd)
 
-		citeInitialDoc, _ := webDriver.GetCiteDocuments(wd, initialDoc.LinkCitedBy, numDocs)
+		citeInitialDoc, _ := webDriver.GetCiteDocuments(wd, initialDoc.LinkCitations, numDocs, 0, 0)
 
 		allDoc := append(citeInitialDoc, initialDoc)
 		allDoc[0], allDoc[len(allDoc)-1] = allDoc[len(allDoc)-1], allDoc[0]
@@ -80,7 +81,7 @@ func GetFirstsNDoc(wd selenium.WebDriver) bool {
 		conn := docDatabase.StartNeo4j()
 		defer conn.Close()
 		//pulisco il db
-		docDatabase.CleanAll(conn)
+		//docDatabase.CleanAll(conn)
 		//aggiungo il documento iniziale
 		docDatabase.AddDocument(conn, allDoc[0], "")
 		for docIndex := 1; docIndex < len(allDoc); docIndex++ {
@@ -102,74 +103,117 @@ func timeTrack(start time.Time, name string) {
 //1)Faccio partire N threads che sono in attesa su un canale contenete i link delle pagine che citano (links)
 //2)Partendo da un primo documento scelto da me, ne aggiungo il link ai documenti che lo citano al canale
 //2.1)Aggiungo quel documento al db
-//3)Parte il primo thread che aggiunge il documento iniziale al db e il suo linkCitedBy alla lista
+//3)Parte il primo thread che aggiunge il documento iniziale al db e il suo LinkCitations alla lista
 //4)Questa funzione termina quando ho letto un certo numero di documenti
-func Concurrency(wd selenium.WebDriver) bool {
+func Concurrency(wd selenium.WebDriver, startLinkCitations string) bool {
 	//stampo il tempo impiegato dalla funzione
 	defer timeTrack(time.Now(), "Concurrency")
 	logger.Println("ciao")
-	numThreads, err := strconv.ParseUint(os.Args[2], 10, 64)
-	if err != nil {
-		return false
-	}
-	docPerLink, err := strconv.ParseUint(os.Args[3], 10, 64)
-	if err != nil {
-		return false
-	}
-	lenLinkList, err := strconv.ParseUint(os.Args[4], 10, 64)
-	if err != nil {
-		return false
-	}
-	links := make(chan string, lenLinkList)
-	//canale su cui i thread mettono il numero di documenti letti
-	//NOTA: basterebbe una lunghezza di 1 visto che la routine di Concurrency
-	//non fa altro che estrarre elementi dal canale...in ogni caso la imposto a
-	//4 per avere un po' di margine.
-	chanNumNewDoc := make(chan uint64, 4)
+	//input dell'utente
+	if startLinkCitations == "" {
+		numRoutine, err := strconv.ParseUint(os.Args[2], 10, 64)
+		if err != nil {
+			return false
+		}
+		docPerLink, err := strconv.ParseUint(os.Args[3], 10, 64)
+		if err != nil {
+			return false
+		}
+		lenLinkList, err := strconv.ParseUint(os.Args[4], 10, 64)
+		if err != nil {
+			return false
+		}
+		links := make(chan string, lenLinkList)
+		//canale su cui i thread mettono il numero di documenti letti
+		//NOTA: basterebbe una lunghezza di 1 visto che la routine di Concurrency
+		//non fa altro che estrarre elementi dal canale...in ogni caso la imposto a
+		//4 per avere un po' di margine.
+		chanNumNewDoc := make(chan uint64, 4)
 
-	initialDoc := webDriver.GetInitialDocument(wd)
-	//mi collego a neo4j e apro un pool di connessioni
-	pool := docDatabase.StartPoolNeo4j(int(numThreads) + 1)
-	for _, conn := range pool {
-		defer conn.Close()
-	}
-	//connessione di Concurrency
-	concurrencyConn := pool[0]
+		initialDoc := webDriver.GetInitialDocument(wd)
+		//mi collego a neo4j e apro un pool di connessioni
+		pool := docDatabase.StartPoolNeo4j(int(numRoutine) + 1)
+		for _, conn := range pool {
+			defer conn.Close()
+		}
+		//connessione di Concurrency
+		concurrencyConn := pool[0]
 
-	//faccio partire i threads di ricerca dei documenti
-	var id uint64
-	for id = 1; id <= numThreads; id++ {
-		go threadGetDocument(id, docPerLink, links, chanNumNewDoc, pool[id])
-	}
+		//faccio partire i threads di ricerca dei documenti
+		var id uint64
+		for id = 1; id <= numRoutine; id++ {
+			go routineGetDocument(id, docPerLink, links, chanNumNewDoc, pool[id])
+		}
 
-	//pulisco il db
-	docDatabase.CleanAll(concurrencyConn)
-	//aggiungo il documento iniziale
-	docDatabase.AddDocument(concurrencyConn, initialDoc, "")
+		//pulisco il db
+		//docDatabase.CleanAll(concurrencyConn)
+		//aggiungo il documento iniziale
+		docDatabase.AddDocument(concurrencyConn, initialDoc, "")
 
-	//aggiungo il suo link ai doc che lo citano alla lista (links)
-	fakeList := make([]string, 1)
-	fakeList[0] = initialDoc.LinkCitedBy
-	go threadAddLinks(fakeList, links, 0)
+		//aggiungo il suo link ai doc che lo citano alla lista (links)
+		fakeList := make([]string, 1)
+		fakeList[0] = initialDoc.LinkCitations
+		go routineAddLinks(fakeList, links, 0)
+		//devo aggiungere un controllo per l'uscita dal programma
+		//es.
+		//tempo trascorso
+		//numero documenti raccolti
+		var totReadDoc uint64 = 0
+		for totReadDoc < structures.MaxReadableDoc {
+			totReadDoc += <-chanNumNewDoc
+			logger.Println("Main, doc letti = " + strconv.FormatUint(totReadDoc, 10))
+		}
+	} else {
+		//ricerca state of art
+		links := make(chan string, 50)
+		//canale su cui i thread mettono il numero di documenti letti
+		//NOTA: basterebbe una lunghezza di 1 visto che la routine di Concurrency
+		//non fa altro che estrarre elementi dal canale...in ogni caso la imposto a
+		//4 per avere un po' di margine.
+		chanNumNewDoc := make(chan uint64, 4)
 
-	//devo aggiungere un controllo per l'uscita dal programma
-	//es.
-	//tempo trascorso
-	//numero documenti raccolti
-	var totReadDoc uint64 = 0
-	for totReadDoc < structures.MaxReadableDoc {
-		totReadDoc += <-chanNumNewDoc
-		logger.Println("Main, doc letti = " + strconv.FormatUint(totReadDoc, 10))
+		//mi collego a neo4j e apro un pool di connessioni
+		pool := docDatabase.StartPoolNeo4j(1 + 1)
+		for _, conn := range pool {
+			defer conn.Close()
+		}
+		//connessione di Concurrency
+		//concurrencyConn := pool[0]
+
+		//faccio partire i threads di ricerca dei documenti
+		var id uint64
+		for id = 1; id <= 1; id++ {
+			go routineGetDocument(id, 30, links, chanNumNewDoc, pool[id])
+		}
+
+		//pulisco il db
+		//docDatabase.CleanAll(concurrencyConn)
+		//aggiungo il documento iniziale
+		//docDatabase.AddDocument(concurrencyConn, initialDoc, "")
+		//aggiungo il suo link ai doc che lo citano alla lista (links)
+		fakeList := make([]string, 1)
+		fakeList[0] = startLinkCitations
+		go routineAddLinks(fakeList, links, 0)
+
+		//devo aggiungere un controllo per l'uscita dal programma
+		//es.
+		//tempo trascorso
+		//numero documenti raccolti
+		var totReadDoc uint64 = 0
+		for totReadDoc < structures.MaxReadableDoc {
+			totReadDoc += <-chanNumNewDoc
+			logger.Println("Main, doc letti = " + strconv.FormatUint(totReadDoc, 10))
+		}
 	}
 
 	return true
 }
 
 //Thread che si occupa di estrarre docPerLink documenti dalla pagina indicata
-//dal link che estrae dalla lista, invoca un altro thread che aggiunge i LinkCitedBy
+//dal link che estrae dalla lista, invoca un altro thread che aggiunge i LinkCitations
 //alla lista links, aggiunge i documenti al database e invia a Cuncurrency il
 //numero di documenti letti.
-func threadGetDocument(id uint64, docPerLink uint64, links chan string, chanNumNewDoc chan uint64, conn bolt.Conn) {
+func routineGetDocument(id uint64, docPerLink uint64, links chan string, chanNumNewDoc chan uint64, conn bolt.Conn) {
 	//misuro il tempo in cui il thread rimane in esecuzione
 	defer timeTrack(time.Now(), "Thread "+strconv.FormatUint(id, 10)+" (fine)")
 	//creo il web driver personale
@@ -183,19 +227,19 @@ func threadGetDocument(id uint64, docPerLink uint64, links chan string, chanNumN
 
 		startLink := <-links
 		fmt.Println("--------------URL: ", startLink)
-		newDocuments, numNewDoc := webDriver.GetCiteDocuments(wd, startLink, docPerLink)
+		newDocuments, numNewDoc := webDriver.GetCiteDocuments(wd, startLink, docPerLink, 300, 40)
 		logger.Println("Thread ", id, ": doc letti = ", numNewDoc)
 		//creo la lista dei nuovi links ai citedBy
 		newLinks := make([]string, numNewDoc)
 		for index, doc := range newDocuments {
-			newLinks[index] = doc.LinkCitedBy
+			newLinks[index] = doc.LinkCitations
 		}
 		//chiamo routine che si occupa di aggiungere i nuovi link alla coda
-		go threadAddLinks(newLinks, links, id)
+		go routineAddLinks(newLinks, links, id)
 		//fase neo4j
-		//ricavo l'URL del documento che ha: linkCitedBy = startLink
-		rows, err := conn.QueryNeo("MATCH (doc:Document {linkCitedBy: {LinkCitedBy}})"+
-			"RETURN doc.url", map[string]interface{}{"LinkCitedBy": startLink})
+		//ricavo l'URL del documento che ha: LinkCitations = startLink
+		rows, err := conn.QueryNeo("MATCH (doc:Document {LinkCitations: {LinkCitations}})"+
+			"RETURN doc.url", map[string]interface{}{"LinkCitations": startLink})
 		if err != nil {
 			panic(err)
 		}
@@ -224,18 +268,18 @@ func threadGetDocument(id uint64, docPerLink uint64, links chan string, chanNumN
 }
 
 //Thread che si occupa di aggiungere i link che gli passo alla lista (canale)
-func threadAddLinks(newLinks []string, links chan string, id uint64) {
+func routineAddLinks(newLinks []string, links chan string, id uint64) {
 	for _, link := range newLinks {
 		links <- link
 	}
 	logger.Println("AddLinks chiamato da ", id, " e' terminato.")
 }
 
-func main2() {
-	if len(os.Args) < 3 {
-		fmt.Println("I parametri da passare al main possono essere: (everFirst | firstN | thread) num1 num2")
+func main() {
+	/*if len(os.Args) < 3 {
+		fmt.Println("I parametri da passare al main possono essere: (everFirst | firstN | thread ) num1 num2")
 		return
-	}
+	}*/
 
 	service, wd := webDriver.StartSelenium(-1)
 
@@ -258,16 +302,60 @@ func main2() {
 			fmt.Println("Parametri da passare: 'firstN' numDoc")
 		}
 	case "thread":
-		if Concurrency(wd) {
+		if Concurrency(wd, "") {
 			fmt.Println("Tutto ok")
 		} else {
-			fmt.Println("Parametri da passare: 'thread' numThreads docPerLink lenLinkList")
+			fmt.Println("Parametri da passare: 'thread' numRoutine docPerLink lenLinkList")
 		}
+	case "stateOfArt":
+		//the user select 5 initial document (usualy the top of search's result on Scholar)
+		//insert manulay the information about them (in the code)
+		//start 5 different Concurrency searches
+		conn := docDatabase.StartNeo4j()
+		defer conn.Close()
+		docDatabase.AddDocument(conn,
+			structures.Document{Url: "http://www.jmlr.org/papers/v12/pedregosa11a.html",
+				Authors:       []string{"F Pedregosa", "G Varoquaux", "A Gramfort"},
+				NumCitations:  15425,
+				LinkCitations: "https://scholar.google.com/scholar?cites=17725825958939227007&as_sdt=2005&sciodt=0,5&hl=en"}, "")
+		docDatabase.AddDocument(conn,
+			structures.Document{Url: "http://cds.cern.ch/record/998831/files/9780387310732_TOC.pdf",
+				Authors:       []string{"CM Bishop"},
+				NumCitations:  35004,
+				LinkCitations: "https://scholar.google.com/scholar?cites=6233967727474674829&as_sdt=2005&sciodt=0,5&hl=en"}, "")
+		docDatabase.AddDocument(conn,
+			structures.Document{Url: "https://link.springer.com/chapter/10.1007/978-3-540-28650-9_4",
+				Authors:       []string{"CE Rasmussen"},
+				NumCitations:  13952,
+				LinkCitations: "https://scholar.google.com/scholar?cites=7937078177308138646&as_sdt=2005&sciodt=0,5&hl=en"}, "")
+		docDatabase.AddDocument(conn,
+			structures.Document{Url: "https://dl.acm.org/citation.cfm?id=505283",
+				Authors:       []string{"F Sebastiani"},
+				NumCitations:  9103,
+				LinkCitations: "https://scholar.google.com/scholar?cites=4545908088680685058&as_sdt=2005&sciodt=0,5&hl=en"}, "")
+		docDatabase.AddDocument(conn,
+			structures.Document{Url: "https://stacks.stanford.edu/file/druid:jt687kv7146/jt687kv7146.pdf",
+				Authors:       []string{"D Michie", "DJ Spiegelhalter"},
+				NumCitations:  3569,
+				LinkCitations: "https://scholar.google.com/scholar?cites=10998332438567112642&as_sdt=2005&sciodt=0,5&hl=en"}, "")
+
+		//sequential concurrency call
+		fmt.Println("\n\nInizio Prima Iterazione\n")
+		Concurrency(wd, "https://scholar.google.com/scholar?cites=17725825958939227007&as_sdt=2005&sciodt=0,5&hl=en")
+		fmt.Println("\n\nFinita Prima Iterazione\n")
+		Concurrency(wd, "https://scholar.google.com/scholar?cites=6233967727474674829&as_sdt=2005&sciodt=0,5&hl=en")
+		fmt.Println("\n\nFinita Seconda Iterazione\n")
+		Concurrency(wd, "https://scholar.google.com/scholar?cites=7937078177308138646&as_sdt=2005&sciodt=0,5&hl=en")
+		fmt.Println("\n\nFinita Terza Iterazione\n")
+		Concurrency(wd, "https://scholar.google.com/scholar?cites=4545908088680685058&as_sdt=2005&sciodt=0,5&hl=en")
+		fmt.Println("\n\nFinita Quarta Iterazione\n")
+		Concurrency(wd, "https://scholar.google.com/scholar?cites=10998332438567112642&as_sdt=2005&sciodt=0,5&hl=en")
+		fmt.Println("\n\nFinita Quinta Iterazione\n")
 	default:
-		fmt.Println("I parametri da passare al main possono essere: (everFirst | firstN | thread) num1 num2 ...")
+		fmt.Println("I parametri da passare al main possono essere: (everFirst | firstN | thread | stateOfArt) num1 num2 ...")
 	}
 
-	/*	//Metodi utili
+	/*	//Metodi utili ma non implementati
 		webDriver.SaveDocuments(nil)
 		webDriver.LoadDocuments(allDoc)
 		webDriver.PrintDocuments(allDoc)

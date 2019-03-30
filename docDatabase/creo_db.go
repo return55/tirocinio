@@ -28,7 +28,7 @@ func AddDocument(conn bolt.Conn, document structures.Document, urlStartDoc strin
 	}
 	//aggiungo il documento
 	result, err := conn.ExecNeo("CREATE (doc:Document {url: {Url},"+
-		" numCitedBy: {NumCitedBy}, linkCitedBy: {LinkCitedBy}})", fieldsMap)
+		" NumCitations: {NumCitations}, LinkCitations: {LinkCitations}})", fieldsMap)
 	if err != nil {
 		panic(err)
 	}

@@ -805,8 +805,8 @@ func conditionNextLink(wd selenium.WebDriver) (bool, error) {
 //Dato un link alla pagina di partenza, comincio a raccogliere i documenti (8 per pagina)
 //finche' non arrivo a numDoc.
 //Anche qui ho bisogno del numero delle pagine in cui sono distribuiti i doc che citano.
-func GetCiteDocuments_MA(wd selenium.WebDriver, linkCitedBy string, numDoc uint64, numPages int) ([]structures.MADocument, uint64) {
-	if err := wd.Get(linkCitedBy); err != nil {
+func GetCiteDocuments_MA(wd selenium.WebDriver, LinkCitations string, numDoc uint64, numPages int) ([]structures.MADocument, uint64) {
+	if err := wd.Get(LinkCitations); err != nil {
 		panic(err)
 	}
 	var allDoc []structures.MADocument
@@ -895,8 +895,8 @@ func conditionSortBy(wd selenium.WebDriver) (bool, error) {
 
 //Raccolgie i documenti in base a una soglia sul numero di citazioni.
 //Serve per creare l'albero
-func GetCiteDocumentsByThreshold_MA(wd selenium.WebDriver, linkCitedBy string, numPages, threshold, perc int) ([]structures.MADocument, int) {
-	if err := wd.Get(linkCitedBy); err != nil {
+func GetCiteDocumentsByThreshold_MA(wd selenium.WebDriver, LinkCitations string, numPages, threshold, perc int) ([]structures.MADocument, int) {
+	if err := wd.Get(LinkCitations); err != nil {
 		panic(err)
 	}
 	var allDoc []structures.MADocument

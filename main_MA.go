@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"go/build"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -23,8 +22,8 @@ import (
 
 var (
 	//mi serve per tenere traccia dei livelli
-	fileMA, _      = os.OpenFile("Quali_livelli_ho_fatto", os.O_WRONLY, 0600)
-	logger         = log.New(fileMA, "", 0)
+	fileMA, _ = os.OpenFile("Quali_livelli_ho_fatto", os.O_WRONLY, 0600)
+	//logger         = log.New(fileMA, "", 0)
 	reader         = bufio.NewReader(os.Stdin)
 	researchNumber = 1
 )
@@ -489,7 +488,7 @@ Per cambiare il documento si puo' cambiare la parola da cercare nella funzione t
 Oppure se al main viene passato un terzo argomento, questo viene considerato l'URL della pagina di Academic del
 primo documento.
 */
-func main() {
+func main2() {
 	//Initialization: set researchNumber
 	initialization()
 	//if the user pass one command line argument (no matter the value), i start the script research

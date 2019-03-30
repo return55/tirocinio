@@ -69,23 +69,20 @@ func StartSelenium(port int) (*selenium.Service, selenium.WebDriver) {
 //partendo dal primo in alto.
 //Se il numero (numDocs) e' maggiore del numero di documenti nella pagina (tipicamente 10),
 //mi limito a restituire i documenti presenti nella pagina e la loro quantita'.
-func GetDocumentsFromPage(wd selenium.WebDriver, numDocs uint64) ([]structures.Document, uint16) {
+func GetDocumentsFromPage(wd selenium.WebDriver, numDocs uint64, maxCit, threshold, perc int) ([]structures.Document, uint16) {
 	//raccolgo le informazioni
-	urls, err := wd.FindElements(selenium.ByXPATH, "//div/h3/a")
+	urls, err := wd.FindElements(selenium.ByXPATH, "//div[@class='gs_ri']/h3/a")
 	if err != nil {
 		panic(err)
 	}
-
 	authors, err := wd.FindElements(selenium.ByXPATH, "//div[@class='gs_a']")
 	if err != nil {
 		panic(err)
 	}
-
 	other, err := wd.FindElements(selenium.ByXPATH, "//div[@class='gs_fl']/a")
 	if err != nil {
 		panic("sto cercando i link di: citato da + related + versioni")
 	}
-
 	//imposto il valore del numero di documenti nella pagina in base a quanti
 	//url di documenti ho letto
 	docInThePage := uint64(len(urls))
@@ -109,6 +106,19 @@ func GetDocumentsFromPage(wd selenium.WebDriver, numDocs uint64) ([]structures.D
 		leftSide = strings.Replace(leftSide, "\u2026", "", -1)
 		documents[docIndex].Authors = strings.Split(leftSide, ", ")
 
+		//questo pezzo può contenere la data
+		//inizializzo a -1 nel caso non sia presente
+		documents[docIndex].Date = -1
+		center := strings.Split(text, " -")[1]
+		//!!!il carattere '…' che segue gli autori corrisponde a "\u2026" in utf-8!!!!
+		center = strings.Replace(center, "\u2026", "", -1)
+		for _, val := range strings.Split(center, ",") {
+			if date, err := strconv.ParseInt(val, 10, 64); err == nil {
+				documents[docIndex].Date = date
+				break
+			}
+		}
+
 		//scorro other, mi fermo quando trovo un match con: "Citato da", cosi' so che sono sull'elemento giusto
 		for ; ; otherIndex++ {
 			text, err = other[otherIndex].Text()
@@ -120,15 +130,26 @@ func GetDocumentsFromPage(wd selenium.WebDriver, numDocs uint64) ([]structures.D
 			}
 			if t, _ := regexp.MatchString("Cited by.*", text); t {
 				words := strings.Split(text, " ")
-				if numCitedBy, err := strconv.ParseUint(words[2], 10, 16); err != nil {
+				if NumCitations, err := strconv.ParseUint(words[2], 10, 16); err != nil {
 					panic(err)
 				} else {
-					documents[docIndex].NumCitedBy = uint16(numCitedBy)
+					documents[docIndex].NumCitations = uint16(NumCitations)
 				}
-				linkCitedBy, _ := other[otherIndex].GetAttribute("href")
-				documents[docIndex].LinkCitedBy = structures.URLScholar + linkCitedBy
+				LinkCitations, _ := other[otherIndex].GetAttribute("href")
+				documents[docIndex].LinkCitations = structures.URLScholar + LinkCitations
 				break
 			}
+		}
+		//se e' il primo risulatato della pagina e non ho ancora un valore valido di threshold
+		if docIndex == 0 && maxCit == -1 {
+			maxCit = int(documents[docIndex].NumCitations)
+			logger.Println("Soglia: ", maxCit)
+			/*Condozione banale sulla soglia
+			if int(numsCitations[i]) < threshold {*/
+			/*Condizione superiore a una percentuale di maxCit*/
+		} else if documents[docIndex].NumCitations < uint16(threshold) || float32(documents[docIndex].NumCitations) < float32(maxCit)*(float32(perc)/100) {
+			return documents[:docIndex-2], uint16(docIndex - 1)
+			break
 		}
 	}
 	return documents, uint16(docIndex)
@@ -191,7 +212,7 @@ func GetInitialDocument(wd selenium.WebDriver) structures.Document {
 	fmt.Println("Url: ", url)
 
 	//prendo il primo documento della pagina
-	docs, numDocs := GetDocumentsFromPage(wd, 1)
+	docs, numDocs := GetDocumentsFromPage(wd, 1, -1, 0, 0)
 	if numDocs > 1 {
 		panic(fmt.Sprintf("GetInitialDocument - GetDocumentsFromPage\nHa resituito piu' di un documento"))
 	}
@@ -204,7 +225,7 @@ func GetFirstDocumentOfPage(wd selenium.WebDriver, url string) structures.Docume
 		panic(err)
 	}
 	//prendo il primo documento della pagina
-	docs, numDocs := GetDocumentsFromPage(wd, 1)
+	docs, numDocs := GetDocumentsFromPage(wd, 1, -1, 0, 0)
 	if numDocs > 1 {
 		panic(fmt.Sprintf("GetFirstDocumentOfPage - GetDocumentsFromPage\nHa resituito piu' di un documento\n"))
 	}
@@ -213,8 +234,8 @@ func GetFirstDocumentOfPage(wd selenium.WebDriver, url string) structures.Docume
 
 //Dato un link alla pagina di partenza, comincio a raccogliere i documenti (10 per pagina)
 //finche' non arrivo a numDoc.
-func GetCiteDocuments(wd selenium.WebDriver, linkCitedBy string, numDoc uint64) ([]structures.Document, uint64) {
-	if err := wd.Get(linkCitedBy); err != nil {
+func GetCiteDocuments(wd selenium.WebDriver, LinkCitations string, numDoc uint64, threshold, perc int) ([]structures.Document, uint64) {
+	if err := wd.Get(LinkCitations); err != nil {
 		panic(err)
 	}
 	var allDoc []structures.Document
@@ -224,16 +245,16 @@ func GetCiteDocuments(wd selenium.WebDriver, linkCitedBy string, numDoc uint64) 
 
 	//genero la sequenza di numeri casuali
 	r := rand.New(rand.NewSource(12))
-
+	maxCit := -1
 	for numDoc > docRead {
 
-		newDoc, numNewDoc := GetDocumentsFromPage(wd, numDoc-docRead)
+		newDoc, numNewDoc := GetDocumentsFromPage(wd, numDoc-docRead, maxCit, threshold, perc)
 		allDoc = append(allDoc, newDoc...)
 		//incremento il numero dei documenti letti
 		docRead = docRead + uint64(numNewDoc)
 		fmt.Println("***** docRead= " + strconv.FormatUint(docRead, 10))
 
-		/* Scorro una pagina alla volta in sequenza
+		//Scorro una pagina alla volta in sequenza
 		//vado alla prosssima pagina, se possibile:
 		linkAvanti, err := wd.FindElement(selenium.ByXPATH, "//b[text()='Next']/..")
 		//se non trovo il link per andare avanti, mi fermo
@@ -249,31 +270,15 @@ func GetCiteDocuments(wd selenium.WebDriver, linkCitedBy string, numDoc uint64) 
 		if err != nil {
 			panic(err)
 		}
-		///////////////////////////////////*/
 
 		/* Scorro in sequenza ma aspetto un tempo che cresce in modo esponenziale */
 		waitTimeSec := time.Duration((math.Round(r.ExpFloat64())))
 		time.Sleep(waitTimeSec * time.Second)
 
-		//vado alla prosssima pagina, se possibile:
-		linkAvanti, err := wd.FindElement(selenium.ByXPATH, "//b[text()='Next']/..")
-		//se non trovo il link per andare avanti, mi fermo
-		if err != nil {
-			if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
-				return allDoc, docRead
-			} else {
-				panic(err)
-			}
-		}
-
-		url, err := linkAvanti.GetAttribute("href")
-		if err != nil {
-			panic(err)
-		}
-		//////////////////////////////////////////////
 		if err := wd.Get(structures.URLScholar + url); err != nil {
 			panic(err)
 		}
+
 	}
 	return allDoc, docRead
 }
@@ -288,8 +293,8 @@ func PrintDocuments(allDoc []structures.Document) {
 	for _, autore := range allDoc[0].Authors {
 		fmt.Println("\t", autore)
 	}
-	fmt.Println("Numero di documenti che lo citano: ", allDoc[0].NumCitedBy)
-	fmt.Println("Link ai documenti che lo citano: ", allDoc[0].LinkCitedBy)
+	fmt.Println("Numero di documenti che lo citano: ", allDoc[0].NumCitations)
+	fmt.Println("Link ai documenti che lo citano: ", allDoc[0].LinkCitations)
 
 	fmt.Println("\nDocumento che citano:")
 	for docIndex := 1; docIndex < len(allDoc); docIndex++ {
@@ -297,8 +302,8 @@ func PrintDocuments(allDoc []structures.Document) {
 		for _, autore := range allDoc[docIndex].Authors {
 			fmt.Println("\t", autore)
 		}
-		fmt.Println("Numero di documenti che lo citano: ", allDoc[docIndex].NumCitedBy)
-		fmt.Println("Link ai documenti che lo citano: ", allDoc[docIndex].LinkCitedBy)
+		fmt.Println("Numero di documenti che lo citano: ", allDoc[docIndex].NumCitations)
+		fmt.Println("Link ai documenti che lo citano: ", allDoc[docIndex].LinkCitations)
 	}
 }
 
