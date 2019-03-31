@@ -10,18 +10,26 @@ import (
 	"time"
 
 	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
-	"github.com/return55/tirocinio/docDatabase"
 	"github.com/return55/tirocinio/structures"
+	"github.com/return55/tirocinio/webDriver"
 )
 
-func main3() {
-	//Apro connessione neo4j
+func main22() {
+	/*//Apro connessione neo4j
 	conn := docDatabase.StartNeo4j()
 	defer conn.Close()
 
 	t := docDatabase.AlreadyExplored(conn, "Pyrolysis of Wood/Biomass for Bio-oil: A Critical Review", 1)
 
-	fmt.Println(t)
+	fmt.Println(t)*/
+	service, wd := webDriver.StartSelenium(-1)
+
+	defer service.Stop()
+	defer wd.Quit()
+	/*service, wd = webDriver.StartSelenium(-1)
+
+	defer service.Stop()
+	defer wd.Quit()*/
 }
 
 func main5() { /*
