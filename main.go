@@ -214,7 +214,7 @@ func Concurrency(wd selenium.WebDriver, startLinkCitations string) bool {
 		//faccio partire i threads di ricerca dei documenti
 		var id uint64
 		for id = 1; id <= 1; id++ {
-			go routineGetDocument(id, 30, links, chanNumNewDoc, pool[id])
+			go routineGetDocument(id, 6, links, chanNumNewDoc, pool[id])
 		}
 
 		//pulisco il db
@@ -351,7 +351,7 @@ func main() {
 		//start 5 different Concurrency searches
 		conn := docDatabase.StartNeo4j()
 		defer conn.Close()
-		docDatabase.AddDocument(conn,
+		/*docDatabase.AddDocument(conn,
 			structures.Document{Url: "http://www.jmlr.org/papers/v12/pedregosa11a.html",
 				Title:         "Scikit-learn: Machine learning in Python",
 				Authors:       []string{"F Pedregosa", "G Varoquaux", "A Gramfort"},
@@ -379,6 +379,7 @@ func main() {
 				NumCitations:  9103,
 				LinkCitations: "https://scholar.google.com/scholar?cites=4545908088680685058&as_sdt=2005&sciodt=0,5&hl=en",
 				Date:          2002}, "")
+		service, wd = webDriver.StartSelenium(-1)
 		docDatabase.AddDocument(conn,
 			structures.Document{Url: "https://stacks.stanford.edu/file/druid:jt687kv7146/jt687kv7146.pdf",
 				Title:         "Machine learning",
@@ -390,7 +391,7 @@ func main() {
 		//sequential concurrency call
 		fmt.Println("\n\nInizio Prima Iterazione\n")
 		Concurrency(wd, "https://scholar.google.com/scholar?cites=10998332438567112642&as_sdt=2005&sciodt=0,5&hl=en")
-		fmt.Println("\n\nFinita Prima Iterazione\n")
+		*/fmt.Println("\n\nFinita Prima Iterazione\n")
 		Concurrency(wd, "https://scholar.google.com/scholar?cites=6233967727474674829&as_sdt=2005&sciodt=0,5&hl=en")
 		fmt.Println("\n\nFinita Seconda Iterazione\n")
 		Concurrency(wd, "https://scholar.google.com/scholar?cites=7937078177308138646&as_sdt=2005&sciodt=0,5&hl=en")

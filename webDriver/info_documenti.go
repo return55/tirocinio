@@ -274,8 +274,8 @@ func GetCiteDocuments(wd selenium.WebDriver, LinkCitations string, numDoc uint64
 
 		/* Scorro in sequenza ma aspetto un tempo che cresce in modo esponenziale */
 		waitTimeSec := time.Duration((math.Round(r.ExpFloat64())))
-		fmt.Println("Tempo di attesa: ", waitTimeSec)
-		time.Sleep(waitTimeSec * time.Second)
+		fmt.Println("Tempo di attesa2: ", waitTimeSec)
+		time.Sleep(waitTimeSec * 10 * time.Second)
 
 		if err := wd.Get(structures.URLScholar + url); err != nil {
 			panic(err)
