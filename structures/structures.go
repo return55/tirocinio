@@ -3,7 +3,8 @@ package structures
 //Document e' utilizzata per i documenti presi da Google Scholar
 //!!!!!!!!! CAMBIA CitedBy CON Citations !!!!!!!!!!!!!!
 type Document struct {
-	Url           string   //Singolo link a una sorgente della pubblicazione
+	Url           string //Singolo link a una sorgente della pubblicazione
+	Title         string
 	Authors       []string //Alcuni nomi degli autori del documento
 	NumCitations  uint16   //Numero dei documenti che lo citano
 	LinkCitations string   //URL a quei documenti
@@ -47,7 +48,7 @@ type CiteRelation struct {
 	DestinationTitle string
 }
 
-var FieldsName = []string{"Url", "Authors", "NumCitations", "LinkCitations"}
+var FieldsName = []string{"Url", "Title", "Authors", "NumCitations", "LinkCitations", "Date"}
 
 var FieldsNameMA = []string{"Title", "Url", "Authors", "NumCitations", "LinkCitations", "NumReferences",
 	"LinkReferences", "Abstract", "Date", "FieldsOfStudy"}

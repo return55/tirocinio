@@ -99,6 +99,7 @@ func GetDocumentsFromPage(wd selenium.WebDriver, numDocs uint64, maxCit, thresho
 	for docIndex, otherIndex = 0, 0; docIndex < numDocs; docIndex, otherIndex = docIndex+1, otherIndex+1 {
 		//fmt.Println(docIndex, "------", otherIndex)
 		documents[docIndex].Url, _ = urls[docIndex].GetAttribute("href")
+		documents[docIndex].Title, _ = urls[docIndex].Text()
 
 		text, _ = authors[docIndex].Text()
 		leftSide := strings.Split(text, " -")[0]
@@ -148,7 +149,7 @@ func GetDocumentsFromPage(wd selenium.WebDriver, numDocs uint64, maxCit, thresho
 			if int(numsCitations[i]) < threshold {*/
 			/*Condizione superiore a una percentuale di maxCit*/
 		} else if documents[docIndex].NumCitations < uint16(threshold) || float32(documents[docIndex].NumCitations) < float32(maxCit)*(float32(perc)/100) {
-			return documents[:docIndex-2], uint16(docIndex - 1)
+			return documents[:docIndex-1], uint16(docIndex)
 			break
 		}
 	}
@@ -273,6 +274,7 @@ func GetCiteDocuments(wd selenium.WebDriver, LinkCitations string, numDoc uint64
 
 		/* Scorro in sequenza ma aspetto un tempo che cresce in modo esponenziale */
 		waitTimeSec := time.Duration((math.Round(r.ExpFloat64())))
+		fmt.Println("Tempo di attesa: ", waitTimeSec)
 		time.Sleep(waitTimeSec * time.Second)
 
 		if err := wd.Get(structures.URLScholar + url); err != nil {

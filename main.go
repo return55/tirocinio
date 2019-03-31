@@ -96,11 +96,11 @@ func GetFirstsNDoc(wd selenium.WebDriver) bool {
 		if err != nil {
 			panic(err)
 		}
-		initialDoc.NumCitedBy = uint16(numCytedBy)
+		initialDoc.NumCitations = uint16(numCytedBy)
 		//Link agli articoli che lo citano
 		fmt.Println("Enter the URL of the articles that mention it")
 		startingPoint, _ = reader.ReadString('\n')
-		initialDoc.LinkCitedBy = strings.Replace(startingPoint, "\n", "", -1)
+		initialDoc.LinkCitations = strings.Replace(startingPoint, "\n", "", -1)
 		//-----fine primo articolo-------
 
 		citeInitialDoc, _ := webDriver.GetCiteDocuments(wd, initialDoc.LinkCitations, numDocs, 0, 0)
@@ -307,7 +307,6 @@ func routineAddLinks(newLinks []string, links chan string, id uint64) {
 	logger.Println("AddLinks chiamato da ", id, " e' terminato.")
 }
 
-
 //Per iniziare la ricerca con un articolo scelto da te, devi inserire manualmente
 //tutte le sue informazioni: URL, URL pagina delle citazioni, autori, numero di volte
 //in cui e' stato citato.
@@ -354,41 +353,51 @@ func main() {
 		defer conn.Close()
 		docDatabase.AddDocument(conn,
 			structures.Document{Url: "http://www.jmlr.org/papers/v12/pedregosa11a.html",
+				Title:         "Scikit-learn: Machine learning in Python",
 				Authors:       []string{"F Pedregosa", "G Varoquaux", "A Gramfort"},
 				NumCitations:  15425,
-				LinkCitations: "https://scholar.google.com/scholar?cites=17725825958939227007&as_sdt=2005&sciodt=0,5&hl=en"}, "")
+				LinkCitations: "https://scholar.google.com/scholar?cites=17725825958939227007&as_sdt=2005&sciodt=0,5&hl=en",
+				Date:          2011}, "")
 		docDatabase.AddDocument(conn,
 			structures.Document{Url: "http://cds.cern.ch/record/998831/files/9780387310732_TOC.pdf",
+				Title:         "Pattern recognition and machine learning",
 				Authors:       []string{"CM Bishop"},
 				NumCitations:  35004,
-				LinkCitations: "https://scholar.google.com/scholar?cites=6233967727474674829&as_sdt=2005&sciodt=0,5&hl=en"}, "")
+				LinkCitations: "https://scholar.google.com/scholar?cites=6233967727474674829&as_sdt=2005&sciodt=0,5&hl=en",
+				Date:          2006}, "")
 		docDatabase.AddDocument(conn,
 			structures.Document{Url: "https://link.springer.com/chapter/10.1007/978-3-540-28650-9_4",
+				Title:         "Gaussian processes in machine learning",
 				Authors:       []string{"CE Rasmussen"},
 				NumCitations:  13952,
-				LinkCitations: "https://scholar.google.com/scholar?cites=7937078177308138646&as_sdt=2005&sciodt=0,5&hl=en"}, "")
+				LinkCitations: "https://scholar.google.com/scholar?cites=7937078177308138646&as_sdt=2005&sciodt=0,5&hl=en",
+				Date:          2003}, "")
 		docDatabase.AddDocument(conn,
 			structures.Document{Url: "https://dl.acm.org/citation.cfm?id=505283",
+				Title:         "Machine learning in automated text categorization",
 				Authors:       []string{"F Sebastiani"},
 				NumCitations:  9103,
-				LinkCitations: "https://scholar.google.com/scholar?cites=4545908088680685058&as_sdt=2005&sciodt=0,5&hl=en"}, "")
+				LinkCitations: "https://scholar.google.com/scholar?cites=4545908088680685058&as_sdt=2005&sciodt=0,5&hl=en",
+				Date:          2002}, "")
 		docDatabase.AddDocument(conn,
 			structures.Document{Url: "https://stacks.stanford.edu/file/druid:jt687kv7146/jt687kv7146.pdf",
+				Title:         "Machine learning",
 				Authors:       []string{"D Michie", "DJ Spiegelhalter"},
 				NumCitations:  3569,
-				LinkCitations: "https://scholar.google.com/scholar?cites=10998332438567112642&as_sdt=2005&sciodt=0,5&hl=en"}, "")
+				LinkCitations: "https://scholar.google.com/scholar?cites=10998332438567112642&as_sdt=2005&sciodt=0,5&hl=en",
+				Date:          1994}, "")
 
 		//sequential concurrency call
 		fmt.Println("\n\nInizio Prima Iterazione\n")
-		Concurrency(wd, "https://scholar.google.com/scholar?cites=17725825958939227007&as_sdt=2005&sciodt=0,5&hl=en")
+		Concurrency(wd, "https://scholar.google.com/scholar?cites=10998332438567112642&as_sdt=2005&sciodt=0,5&hl=en")
 		fmt.Println("\n\nFinita Prima Iterazione\n")
 		Concurrency(wd, "https://scholar.google.com/scholar?cites=6233967727474674829&as_sdt=2005&sciodt=0,5&hl=en")
 		fmt.Println("\n\nFinita Seconda Iterazione\n")
 		Concurrency(wd, "https://scholar.google.com/scholar?cites=7937078177308138646&as_sdt=2005&sciodt=0,5&hl=en")
 		fmt.Println("\n\nFinita Terza Iterazione\n")
-		Concurrency(wd, "https://scholar.google.com/scholar?cites=4545908088680685058&as_sdt=2005&sciodt=0,5&hl=en")
+		Concurrency(wd, "https://scholar.google.com/scholar?cites=17725825958939227007&as_sdt=2005&sciodt=0,5&hl=en")
 		fmt.Println("\n\nFinita Quarta Iterazione\n")
-		Concurrency(wd, "https://scholar.google.com/scholar?cites=10998332438567112642&as_sdt=2005&sciodt=0,5&hl=en")
+		Concurrency(wd, "https://scholar.google.com/scholar?cites=4545908088680685058&as_sdt=2005&sciodt=0,5&hl=en")
 		fmt.Println("\n\nFinita Quinta Iterazione\n")
 	default:
 		fmt.Println("I parametri da passare al main possono essere: (everFirst | firstN | thread | stateOfArt) num1 num2 ...")
