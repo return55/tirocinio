@@ -253,16 +253,15 @@ func expandShowMore(wd selenium.WebDriver) {
 
 //Imposto i fields of study e sources(www e pdf) per un singolo doc
 func setFieldsOfStudyAndSources(wd selenium.WebDriver, document *structures.MADocument) {
-	fieldsAndSources, err := wd.FindElements(selenium.ByXPATH,
-		"//section[@class='pure-u-1 pure-u-md-1-4 entity-right detail-right']"+
-			"/ma-ulist/div/div[@class='ulist-body']/ul[@class='ulist-content']")
+	fields, err := wd.FindElements(selenium.ByXPATH,
+		"//div[@class='tag-cloud']")
 	if err != nil {
 		panic(err)
 	}
-	logger.Println(fieldsAndSources)
+	logger.Println(fields)
 	//fields of study
-	fieldsOfStudy, err := fieldsAndSources[0].FindElements(selenium.ByXPATH,
-		"li/a/span")
+	fieldsOfStudy, err := fields[0].FindElements(selenium.ByXPATH,
+		"/ma-link-tag/a/div[@class='text']")
 	if err != nil {
 		if t, _ := regexp.MatchString(".*no such element.*", err.Error()); t {
 			currentUrl, err := wd.CurrentURL()
@@ -282,8 +281,36 @@ func setFieldsOfStudyAndSources(wd selenium.WebDriver, document *structures.MADo
 		}
 	}
 
-	//sources
-	//non posso gestire errore "index out of range", devo controllare la dimensione di fieldsAndSources
+	//all sources: 0 PDF, 1 WWW
+	sources, err := wd.FindElements(selenium.ByXPATH,
+		"//ma-link-collection[@class='source-links au-target']/div[@class='ma-link-collection']")
+	if err != nil {
+		panic(err)
+	}
+	logger.Println(sources)
+	//sources PDF
+	PDFsources, err := sources[0].FindElements(selenium.ByXPATH, "/a")
+	if err != nil {
+		panic(err)
+	}
+	if len(PDFsources) >= 0 {
+		for _, source := range PDFsources {
+			URLSource, _ := source.GetAttribute("href")
+			document.Url.PDF = append(document.Url.PDF, URLSource)
+		}
+	}
+	//sources WEB
+	WWWsources, err := sources[1].FindElements(selenium.ByXPATH, "/a")
+	if err != nil {
+		panic(err)
+	}
+	if len(WWWsources) >= 0 {
+		for _, source := range WWWsources {
+			URLSource, _ := source.GetAttribute("href")
+			document.Url.WWW = append(document.Url.WWW, URLSource)
+		}
+	}
+	/*//non posso gestire errore "index out of range", devo controllare la dimensione di fieldsAndSources
 	if len(fieldsAndSources) > 1 {
 		sources, err := fieldsAndSources[1].FindElements(selenium.ByXPATH,
 			"li/a")
@@ -308,13 +335,13 @@ func setFieldsOfStudyAndSources(wd selenium.WebDriver, document *structures.MADo
 				}
 			}
 		}
-	}
+	}*/
 	//Se non ho trovato PDF o WWW, me lo segno per neo4j
 	if len(document.Url.PDF) == 0 {
 		document.Url.PDF = append(document.Url.PDF, "No Source PDF")
 	}
 	if len(document.Url.WWW) == 0 {
-		document.Url.WWW = append(document.Url.WWW, "No Source WW")
+		document.Url.WWW = append(document.Url.WWW, "No Source WWW")
 	}
 }
 
@@ -334,8 +361,8 @@ func setDate(wd selenium.WebDriver, document *structures.MADocument) {
 }
 
 //Imposto le citazioni(numero e link) e le refernces(numero e link)
-func setCitationsAndReferences(wd selenium.WebDriver, document *structures.MADocument) {
-	referencesAndCitations, err := wd.FindElements(selenium.ByXPATH,
+func setCitationsAndReferences(wd selenium.WebDriver, document *structures.MADocument) []string {
+	/*referencesAndCitations, err := wd.FindElements(selenium.ByXPATH,
 		"//div[@class='pure-u-md-4-24 pure-u-1 digit']")
 	if err != nil {
 		panic(err)
@@ -363,35 +390,48 @@ func setCitationsAndReferences(wd selenium.WebDriver, document *structures.MADoc
 		}
 		textURLRef, _ := URLRef.GetAttribute("href")
 		document.LinkReferences = structures.URLAcademic + textURLRef
-	}
+	}*/
 	//Citations
-	numCit, err := referencesAndCitations[1].FindElement(selenium.ByXPATH,
-		"h1")
+	numCit, err := wd.FindElement(selenium.ByXPATH,
+		"div[@class='stats']/ma-statistics-item/a[@title='Citations*']/div[@class='data']/div[@class='count']")
 	if err != nil {
 		panic(err)
 	}
 	textNumCit, _ := numCit.Text()
+	fmt.Println("Num citazioni= ", textNumCit)
 
-	//elimino la virgola (se presente)
-	textNumCit = strings.Replace(textNumCit, ",", "", -1)
 	logger.Println("Numero citazioni: ", textNumCit)
 	document.NumCitations, err = strconv.ParseInt(textNumCit, 10, 0)
 	logger.Println("numero citazioni: ", document.NumCitations, " ... ", textNumCit)
+
+	//prendo i link ai documenti che citano
+	var urlDocCitations []string
+	//premo pulsante "Cyted by"
+	buttonCytedBy, err := wd.FindElement(selenium.ByXPATH,
+		"ma-call-to-action[@data-appinsights-route='Cited By']")
 	if err != nil {
-		logger.Println("Entro nell'errore delle citazioni")
-		//Non ci sono citations
-		document.NumCitations = 0
-		document.LinkCitations = ""
-	} else {
-		URLCit, err := referencesAndCitations[1].FindElement(selenium.ByXPATH,
-			"a")
+		panic(err)
+	}
+	err = buttonCytedBy.Click()
+	if err != nil {
+		panic(err)
+	}
+	//prendo i url dei doc
+	docs, err := wd.FindElements(selenium.ByXPATH,
+		"div[@class='results']/ma-card/div/compose/div[@class='paper']/a[@class='title au-target']/")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("numero cyted by", len(docs))
+	for _, doc := range docs {
+		href, err := doc.GetAttribute("href")
 		if err != nil {
 			panic(err)
 		}
-		textURLCit, _ := URLCit.GetAttribute("href")
-		logger.Println("Link citazioni: ", textURLCit)
-		document.LinkCitations = structures.URLAcademic + textURLCit
+		urlDocCitations = append(urlDocCitations, structures.URLAcademic+href)
 	}
+
+	return urlDocCitations
 }
 
 //Imposto l'abstract del doc
@@ -759,21 +799,21 @@ func GetInitialDocumentByURL_MA(wd selenium.WebDriver, startURL string) structur
 	var initialDoc structures.MADocument
 
 	//aspetto gli showmore
-	wd.WaitWithTimeout(conditionDocumentPage2, 60*time.Second)
+	//wd.WaitWithTimeout(conditionDocumentPage2, 60*time.Second)
 
 	//prendo il titolo
 	title, err := wd.FindElement(selenium.ByXPATH,
-		"//h1[@class='grey-title ma-sem-paper']/span[@data-bind='text: data.title']")
+		"//div[@class='name-section']")
 	if err != nil {
 		panic(err)
 	}
 	initialDoc.Title, _ = title.Text()
 
 	//Espando gli "show more" di fields of study e sources
-	expandShowMore(wd)
+	//expandShowMore(wd)
 
 	//aspetto di caricare la pagina (i fields of study come riferimento)
-	wd.WaitWithTimeout(conditionDocumentPage, 60*time.Second)
+	//wd.WaitWithTimeout(conditionDocumentPage, 60*time.Second)
 
 	//prendo i fields of study e sources
 	setFieldsOfStudyAndSources(wd, &initialDoc)
@@ -986,4 +1026,44 @@ func GetCiteDocumentsByThreshold_MA(wd selenium.WebDriver, LinkCitations string,
 		//}
 	}
 	return allDoc, numDoc
+}
+
+func GetInfo(wd selenium.WebDriver, startURL string) (structures.MADocument, []string) {
+	fmt.Println(startURL)
+	if err := wd.Get(startURL); err != nil {
+		panic(err)
+	}
+	//stampo url
+	url, _ := wd.CurrentURL()
+	logger.Println("Url: ", url)
+
+	var initialDoc structures.MADocument
+
+	//aspetto gli showmore
+	//wd.WaitWithTimeout(conditionDocumentPage2, 60*time.Second)
+
+	//prendo il titolo
+	title, err := wd.FindElement(selenium.ByXPATH,
+		"//div[@class='name-section']")
+	if err != nil {
+		panic(err)
+	}
+	initialDoc.Title, _ = title.Text()
+
+	//Espando gli "show more" di fields of study e sources
+	//expandShowMore(wd)
+
+	//aspetto di caricare la pagina (i fields of study come riferimento)
+	//wd.WaitWithTimeout(conditionDocumentPage, 60*time.Second)
+
+	//prendo i fields of study e sources
+	setFieldsOfStudyAndSources(wd, &initialDoc)
+
+	//Prendo le citations (0), references (1) (opz. related (2))
+	urlDocCitations := setCitationsAndReferences(wd, &initialDoc)
+
+	//Add its URL
+	initialDoc.URL = startURL
+
+	return initialDoc, urlDocCitations
 }

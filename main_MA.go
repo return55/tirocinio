@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"go/build"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -22,12 +23,77 @@ import (
 
 var (
 	//mi serve per tenere traccia dei livelli
-	fileMA, _ = os.OpenFile("Quali_livelli_ho_fatto", os.O_WRONLY, 0600)
-	//logger         = log.New(fileMA, "", 0)
+	fileMA, _      = os.OpenFile("Quali_livelli_ho_fatto", os.O_WRONLY, 0600)
+	logger         = log.New(fileMA, "", 0)
 	reader         = bufio.NewReader(os.Stdin)
 	researchNumber = 1
 )
 
+//Costruisce l'albero delle citazioni a partire dal documento iniziale,
+//posso decidere il numero dei levels da input, per ora la soglia la decido io.
+//NOTA:
+//Non conoscero' i documenti che citano le foglie del mio albero
+//NOTA:
+//Nuova versione per academic che ha cambiato il look
+func createCitationsTree(startingPoint string) {
+
+	addDoc := make(chan bool, 1)
+	quit := make(chan bool, 1)
+
+	var numDoc int
+
+	fmt.Println("Ho fatto partire la prima routine")
+	go routine("", startingPoint, addDoc, quit, structures.ThreadBasePort)
+
+	for numDoc <= 100 {
+		_ = <-addDoc
+		numDoc++
+		fmt.Println(numDoc)
+	}
+
+	close(quit)
+
+	return
+
+}
+func routine(urlStart, startingPoint string, addDoc, quit chan bool, port int) {
+	select {
+	case _, ok := <-quit:
+		if !ok {
+			fmt.Println("Canale quit chiuso")
+			return
+		}
+	default:
+	}
+	service, wd := webDriver.StartSelenium(port)
+	defer service.Stop()
+	defer wd.Quit()
+
+	//prendo le info su di lui e i link a tutti gli articoli che lo citano
+	fmt.Println("inizio ricerca")
+	initialDoc, urlDocCitations := webDriver.GetInfo(wd, startingPoint)
+	fmt.Println("fine ricerca")
+	select {
+	case _, ok := <-quit:
+		if !ok {
+			fmt.Println("Canale quit chiuso")
+			return
+		}
+	default:
+	}
+	//aggiungo al db
+	conn := docDatabase.StartNeo4j()
+	defer conn.Close()
+	docDatabase.AddDocumentBasic_MA(conn, initialDoc, urlStart, 12)
+	fmt.Println("Aggiunto: " + startingPoint)
+	addDoc <- true
+
+	for i, newStartingPoint := range urlDocCitations {
+		go routine(startingPoint, newStartingPoint, addDoc, quit, port+i)
+	}
+}
+
+//------------------------------------------------------
 //Costruisce l'albero delle citazioni a partire dal documento iniziale,
 //posso decidere il numero dei levels da input, per ora la soglia la decido io.
 //NOTA:
@@ -488,7 +554,7 @@ Per cambiare il documento si puo' cambiare la parola da cercare nella funzione t
 Oppure se al main viene passato un terzo argomento, questo viene considerato l'URL della pagina di Academic del
 primo documento.
 */
-func main2() {
+func main22() {
 	//Initialization: set researchNumber
 	initialization()
 	//if the user pass one command line argument (no matter the value), i start the script research
@@ -571,4 +637,8 @@ func main2() {
 		fmt.Println()
 	}
 
+}
+
+func main() {
+	createCitationsTree("https://academic.microsoft.com/paper/1980245408/reference/search?q=Pyrolysis%20of%20Wood%2FBiomass%20for%20Bio-oil%3A%20A%20Critical%20Review&qe=%2540%2540%2540REFERENCES%253D1980245408&f=&orderBy=0")
 }

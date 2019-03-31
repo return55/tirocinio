@@ -1,9 +1,7 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -20,8 +18,8 @@ import (
 var (
 	//creo il logger per i thread
 	fileThreadTimes, _ = os.OpenFile("thread_times.LOG", os.O_WRONLY, 0600)
-	logger             = log.New(fileThreadTimes, "", 0)
-	reader             = bufio.NewReader(os.Stdin)
+	//logger             = log.New(fileThreadTimes, "", 0)
+	//reader             = bufio.NewReader(os.Stdin)
 )
 
 //Partendo dal classico documento iniziale vado alla pagina di scholar con
@@ -313,7 +311,7 @@ func routineAddLinks(newLinks []string, links chan string, id uint64) {
 //IMPORTANTE: I LINK AI VARI ARTICOLI DEVONO ESSERE ALLE PAGINE WEB IN INGLESE
 //NOTA: DEGLI ARTICOLI DI PARTENZA CONOSCO SOLO L'URL, A MENO CHE NON LI INCONTRI
 //		DURANTE LA RICERCA
-func main() {
+func main2() {
 	/*if len(os.Args) < 3 {
 		fmt.Println("I parametri da passare al main possono essere: (everFirst | firstN | thread) num1 num2")
 		return
